@@ -6,6 +6,12 @@
 //#define PLOT_DETAILS
 //#define PRINT_DEBUG
 
+#ifdef PRINT_DEBUG
+#define DEBUG(S) Serial << S << endl
+#else
+#define DEBUG(S)
+#endif
+
 // Tuning parameters
 const int INTERVAL = 100; // ms
 //const int TIMES = 4;
@@ -104,9 +110,7 @@ void LDR::updateState()
       {
         state = COVERED;
         digitalWrite(ledPin, HIGH);
-#ifdef PRINT_DEBUG
-        Serial << "LDR A" << sensorPin-A0 << " is covered, turn on led " << ledPin << endl;
-#endif
+        DEBUG("LDR A" << sensorPin-A0 << " is covered, turn on led " << ledPin);
       }
       break;
     case COVERED:
@@ -120,9 +124,7 @@ void LDR::updateState()
       {
         state = OPEN;
         digitalWrite(ledPin, LOW);
-#ifdef PRINT_DEBUG
-        Serial << "LDR A" << sensorPin-A0 << " is open, turn off led " << ledPin << endl;
-#endif
+        DEBUG("LDR A" << sensorPin-A0 << " is open, turn off led " << ledPin << endl);
       }
       break;
   }
@@ -193,11 +195,11 @@ Print & operator<<(Print & p, LDR ldrs[])
 void setup() {
   digitalWrite(13, HIGH);
   Serial.begin(115200);
-  // Serial << "Setup()" << endl;
+  // DEBUG("Setup()");
 
   allLdrs([](LDR & ldr) { ldr.init(); });
 
-  // Serial << "Start : " << ldrs << endl;
+  // DEBUG("Start : " << ldrs);
 #ifdef PLOT_DETAILS
   ldrs[0].printTitle(Serial);
   ldrs[1].printTitle(Serial);
