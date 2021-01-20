@@ -2,9 +2,9 @@
 #include <limits.h>
 
 // Choose what set of output is wanted.
-#define PLOT_ALL_VALUES
-//#define PLOT_DETAILS
-//#define PRINT_DEBUG
+//#define PLOT_ALL_VALUES
+#define PLOT_DETAILS
+#define PRINT_DEBUG
 
 #ifdef PRINT_DEBUG
 #define DEBUG(S) Serial << S << endl
@@ -14,9 +14,8 @@
 
 // Tuning parameters
 const int INTERVAL = 100; // ms
-//const int TIMES = 4;
 const float P = 0.10f;  // for moving average
-const int THRESHOLD = 50;
+const int THRESHOLD = 100;
 
 enum LdrState
 {
@@ -24,6 +23,11 @@ enum LdrState
   COVERED,
   COVERING,
   OPENING
+};
+
+enum TransitionState
+{
+  NOT_TRANSITIONING, TRANSITIONING, TRANSITIONED
 };
 
 struct LDR
@@ -55,7 +59,6 @@ struct LDR
     lastValue = analogRead(sensorPin);
     movingAverage = P * lastValue + (1 - P) * movingAverage;
     updateThreshold();
-    updateState();
   }
 
   int value() const
@@ -101,11 +104,17 @@ void LDR::updateState()
   {
     case OPEN:
       if (lastValue > threshold)
+      {
         state = COVERING;
+        DEBUG("LDR A" << sensorPin-A0 << " change to covering.");
+      }
       break;
     case COVERING:
-      if (lastValue < movingAverage)
+      if (lastValue < movingAverage - threshold)
+      {
         state = OPEN;
+        DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
+      }
       else if (movingAverage > oldThreshold && !checkOtherLDRs(this, COVERING))
       {
         state = COVERED;
@@ -115,11 +124,17 @@ void LDR::updateState()
       break;
     case COVERED:
       if (lastValue < threshold)
+      {
         state = OPENING;
+        DEBUG("LDR A" << sensorPin-A0 << " change to opening.");
+      }
       break;
     case OPENING:
-      if (lastValue > movingAverage) 
+      if (lastValue > movingAverage + threshold)
+      {
         state = COVERED;
+        DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");
+      }
       else if (movingAverage < oldThreshold && !checkOtherLDRs(this, OPENING))
       {
         state = OPEN;
@@ -211,10 +226,88 @@ void setup() {
 #endif
 }
 
+TransitionState areLdrsChanging(LdrState transitionState, LdrState altState)
+{
+  int countTransitioning = 0;
+  int countTransitioned = 0;
+  int countAltState = 0;
+  const int ldrCount = sizeof(ldrs) / sizeof(ldrs[0]);
+  for (int i = 0 ; i < ldrCount ; ++i)
+  {
+    if (ldrs[i].state == transitionState)
+    {
+      ++countTransitioning;
+      if ((transitionState == COVERING )
+        ? (ldrs[i].threshold > ldrs[i].lastValue)
+        : (ldrs[i].threshold < ldrs[i].lastValue))
+      {
+        ++countTransitioned;
+      }
+    }
+    if (ldrs[i].state == altState)
+      ++countAltState;
+  }
+  DEBUG("Found " << countTransitioning << " transitioning, " 
+    << countTransitioned << " transitioned, "
+    << countAltState << " in alt state");
+  if (countTransitioning == 0)
+    return NOT_TRANSITIONING;
+  if (countTransitioning + countAltState != ldrCount)
+    return NOT_TRANSITIONING;
+  if (countTransitioned == countTransitioning)
+    return TRANSITIONED;
+  else
+    return TRANSITIONING;
+}
+
+void changeState(LdrState fromState, LdrState toState)
+{
+  const int ldrCount = sizeof(ldrs) / sizeof(ldrs[0]);
+  for (int i = 0 ; i < ldrCount ; ++i)
+  {
+    if (ldrs[i].state == fromState)
+      ldrs[i].state = toState;
+  }
+}
+
+int transitionCount = 0;
+void checkTransitions()
+{
+  TransitionState transitionState = areLdrsChanging(COVERING, COVERED);
+  if (transitionState == TRANSITIONING || transitionState == TRANSITIONED)
+  {
+    DEBUG("Transitioning COVERING");
+    if (transitionState == TRANSITIONED)
+    {
+      DEBUG("Transition time over, change to OPEN");
+      changeState(COVERING, OPEN);
+    }
+  }
+  else
+  {
+    transitionState = areLdrsChanging(COVERING, COVERED);
+    if (transitionState == TRANSITIONING || transitionState == TRANSITIONED)
+    {
+      DEBUG("Transitioning OPENING");
+      if (transitionState == TRANSITIONED)
+      {
+        DEBUG("Transition time over, change to OPEN");
+        changeState(OPENING, COVERED);
+      }
+    }
+    else
+    {
+      transitionCount = 0;
+    }
+  }
+}
+
 long lastMillis = millis();
 void loop() {
   long startMillis = millis();
   allLdrs([](LDR & ldr) { ldr.readValue(); });
+  checkTransitions();
+  allLdrs([](LDR & ldr) { ldr.updateState(); });
 
   long now = millis();
 #ifdef PLOT_DETAILS

@@ -68,8 +68,7 @@ and as a proof-of-concept.
 It will need some tweaking and fix the following problems:
 
 - Turn on lamp with LDR covered makes it think it is open.
-  - Doesn't see that the other LDRs are brighter
+  - Doesn't see that the other LDRs are brighter now.
 - 2 LDRs covered. Turn of lamp. All LEDs go on.
   - Check condition. Need to adjust count.
 - LDR sometimes does not turn off LED when opened.
-- Sometimes LDR turns on after a while after bright light is turned off.
