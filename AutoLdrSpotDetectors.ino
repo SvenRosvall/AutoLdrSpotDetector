@@ -15,7 +15,7 @@
 // Tuning parameters
 const int INTERVAL = 100; // ms
 const float P = 0.10f;  // for moving average
-const int THRESHOLD = 100;
+const int THRESHOLD = 50;
 
 enum LdrState
 {
@@ -110,7 +110,7 @@ void LDR::updateState()
       }
       break;
     case COVERING:
-      if (lastValue < movingAverage - threshold)
+      if (lastValue < movingAverage - THRESHOLD)
       {
         state = OPEN;
         DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
@@ -130,7 +130,7 @@ void LDR::updateState()
       }
       break;
     case OPENING:
-      if (lastValue > movingAverage + threshold)
+      if (lastValue > movingAverage + THRESHOLD)
       {
         state = COVERED;
         DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");

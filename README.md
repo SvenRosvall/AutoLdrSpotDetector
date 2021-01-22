@@ -69,6 +69,10 @@ It will need some tweaking and fix the following problems:
 
 - Turn on lamp with LDR covered makes it think it is open.
   - Doesn't see that the other LDRs are brighter now.
-- 2 LDRs covered. Turn of lamp. All LEDs go on.
-  - Check condition. Need to adjust count.
 - LDR sometimes does not turn off LED when opened.
+- Threshold value can be tricky. Say that the room gets a 
+  bit darker so that only 3 LDRs trigger. Then because the
+  other LDRs are not triggered, there is no consensus and the 
+  triggered 3 LDRs are changed to covered.
+  - Need a different algorithm where the consensus is not only
+    based on the state, but if there is some change at all.
