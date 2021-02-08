@@ -67,8 +67,8 @@ Current version is good enough for demonstrating the principles
 and as a proof-of-concept. 
 It will need some tweaking and fix the following problems:
 
-- Turn on lamp with LDR covered makes it think it is open.
-  - Doesn't see that the other LDRs are brighter now.
+- Turn on lamp with one LDR covered makes it think it is open.
+  - Doesn't see that the other LDRs are also brighter now.
 - LDR sometimes does not turn off LED when opened.
 - Threshold value can be tricky. Say that the room gets a 
   bit darker so that only 3 LDRs trigger. Then because the
@@ -76,3 +76,5 @@ It will need some tweaking and fix the following problems:
   triggered 3 LDRs are changed to covered.
   - Need a different algorithm where the consensus is not only
     based on the state, but if there is some change at all.
+  - Use mAvg-value to deduce trend. Use this trend instead of
+    LDR status when deciding consensus.
