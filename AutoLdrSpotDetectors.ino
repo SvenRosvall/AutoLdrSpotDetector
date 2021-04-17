@@ -76,6 +76,25 @@ struct LDR
   Print & printValue() const;
 };
 
+Print & operator<<(Print & p, LdrState state)
+{
+  switch (state)
+  {
+    case OPEN:
+      p << "OPEN";
+      break;
+    case COVERED:
+      p << "COVERED";
+      break;
+    case COVERING:
+      p << "COVERING";
+      break;
+    case OPENING:
+      p << "OPENING";
+      break;
+  }
+  return p;
+}
 
 void LDR::updateThreshold()
 {
@@ -139,7 +158,7 @@ void LDR::updateState()
       {
         state = OPEN;
         digitalWrite(ledPin, LOW);
-        DEBUG("LDR A" << sensorPin-A0 << " is open, turn off led " << ledPin << endl);
+        DEBUG("LDR A" << sensorPin-A0 << " is open, turn off led " << ledPin);
       }
       break;
   }
@@ -148,7 +167,7 @@ void LDR::updateState()
 Print & LDR::printTitle(Print & p) const
 {
 #ifdef PLOT_DETAILS
-  p << " valA" << sensorPin-A0 << " avgA" << sensorPin-A0 << " thresholdA" << sensorPin-A0;
+  p << " valA" << sensorPin-A0 << " avgA" << sensorPin-A0 << " thresholdA" << sensorPin-A0 << " stateA" << sensorPin-A0;
 #endif
 #ifdef PLOT_ALL_VALUES
   p << " valA" << sensorPin-A0;
@@ -158,7 +177,7 @@ Print & LDR::printTitle(Print & p) const
 Print & LDR::printValue(Print & p) const
 {
 #ifdef PLOT_DETAILS
-  p << " " << lastValue << " " << movingAverage << " " << threshold;
+  p << " " << lastValue << " " << movingAverage << " " << threshold << " " << state;
 #endif
 #ifdef PLOT_ALL_VALUES
   p << " " << lastValue;
@@ -226,11 +245,11 @@ void setup() {
 #endif
 }
 
-TransitionState areLdrsChanging(LdrState transitionState, LdrState altState)
+TransitionState areLdrsChanging(LdrState transitionState, LdrState finalState)
 {
   int countTransitioning = 0;
   int countTransitioned = 0;
-  int countAltState = 0;
+  int countFinalState = 0;
   const int ldrCount = sizeof(ldrs) / sizeof(ldrs[0]);
   for (int i = 0 ; i < ldrCount ; ++i)
   {
@@ -244,20 +263,20 @@ TransitionState areLdrsChanging(LdrState transitionState, LdrState altState)
         ++countTransitioned;
       }
     }
-    if (ldrs[i].state == altState)
-      ++countAltState;
+    if (ldrs[i].state == finalState)
+      ++countFinalState;
   }
-  DEBUG("Found " << countTransitioning << " transitioning, " 
+  DEBUG("Found " << countTransitioning << " transitioning to " << transitionState << ", " 
     << countTransitioned << " transitioned, "
-    << countAltState << " in alt state");
+    << countFinalState << " in alt state");
   if (countTransitioning == 0)
-    return NOT_TRANSITIONING;
-  if (countTransitioning + countAltState != ldrCount)
-    return NOT_TRANSITIONING;
+    return NOT_TRANSITIONING; // None are transitioning
+  if (countTransitioning + countFinalState != ldrCount)
+    return NOT_TRANSITIONING; // There is at least one LDR that never started transitioning.
   if (countTransitioned == countTransitioning)
-    return TRANSITIONED;
+    return TRANSITIONED; // No LDR left transitioning
   else
-    return TRANSITIONING;
+    return TRANSITIONING; // At least one LDR is still transitioning.
 }
 
 void changeState(LdrState fromState, LdrState toState)
@@ -285,20 +304,7 @@ void checkTransitions()
   }
   else
   {
-    transitionState = areLdrsChanging(COVERING, COVERED);
-    if (transitionState == TRANSITIONING || transitionState == TRANSITIONED)
-    {
-      DEBUG("Transitioning OPENING");
-      if (transitionState == TRANSITIONED)
-      {
-        DEBUG("Transition time over, change to OPEN");
-        changeState(OPENING, COVERED);
-      }
-    }
-    else
-    {
-      transitionCount = 0;
-    }
+    transitionCount = 0;
   }
 }
 
