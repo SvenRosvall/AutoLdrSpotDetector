@@ -31,10 +31,10 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors1(action, 1, A0);
+    AutoLdrSpotDetectors detectors1(action, {A0});
     assertEquals(-1, detectors1.getLdrs()[0].value());
 
-    AutoLdrSpotDetectors detectors6(action, 6, A0, A1, A2, A3, A4, A5);
+    AutoLdrSpotDetectors detectors6(action, {A0, A1, A2, A3, A4, A5});
     assertEquals(-1, detectors6.getLdrs()[0].value());
     assertEquals(-1, detectors6.getLdrs()[1].value());
     assertEquals(-1, detectors6.getLdrs()[2].value());
@@ -49,7 +49,7 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors(action, 2, A0, A1);
+    AutoLdrSpotDetectors detectors(action, {A0, A1});
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -67,7 +67,7 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors(action, 2, A0, A1);
+    AutoLdrSpotDetectors detectors(action, {A0, A1});
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -95,7 +95,7 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors(action, 2, A0, A1);
+    AutoLdrSpotDetectors detectors(action, {A0, A1});
     LDR const * ldrs = detectors.getLdrs();
 
     setAnalogRead(A0, 2);

@@ -1,3 +1,4 @@
+#include <initializer_list.h>
 #include "LDR.h"
 
 class SensorChangeAction
@@ -22,7 +23,7 @@ class AutoLdrSpotDetectors
   void checkTransitions();
 
 public:
-  AutoLdrSpotDetectors(SensorChangeAction & action, int ldrCount, ...);
+  AutoLdrSpotDetectors(SensorChangeAction & action, std::initializer_list<int> il);
   void setup();
   void update();
 

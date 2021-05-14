@@ -11,28 +11,26 @@ const int THRESHOLD = 50;
 
 #include <Streaming.h>
 #include <AutoLdrSpotDetectors.h>
-#include <stdarg.h>
+#include <initializer_list.h>
 
 class LedChanger : public SensorChangeAction
 {
   int * leds;
 public:
-  LedChanger(int ledCount, ...);
+  LedChanger(std::initializer_list<int> il);
   void onChange(int ldrIndex, bool covered);
 };
 
-LedChanger::LedChanger(int ledCount, ...)
+LedChanger::LedChanger(std::initializer_list<int> il)
 {
-  leds = new int[ledCount];
-  va_list args;
-  va_start(args, ledCount);
-  for (int i = 0 ; i < ledCount ; ++i)
+  leds = new int[il.size()];
+  auto p = leds;
+  for (auto e : il)
   {
-    leds[i] = va_arg(args, int);
-    pinMode(leds[i], OUTPUT);
-    Serial << "LedChanger with LED pin=" << leds[i] << endl;
+    *p++ = e;
+    pinMode(e, OUTPUT);
+    Serial << "LedChanger with LED pin=" << e << endl;
   }
-  va_end(args);
 }
 
 void LedChanger::onChange(int ldrIndex, bool covered)
@@ -41,8 +39,9 @@ void LedChanger::onChange(int ldrIndex, bool covered)
   Serial << "LedChanger changing led=" << ldrIndex << " pin=" << leds[ldrIndex] << " to " << (covered ? "HIGH" : "LOW") << endl;
 }
 
-LedChanger ledChanger(6, 10, 9, 8, 7, 6, 5);
-AutoLdrSpotDetectors detectors(ledChanger, 6, A0, A1, A2, A3, A4, A5);
+// TODO: Need to declare pairs of LDR pin and LED pin. E.g. {{A0, 10}, {A1, 9}, {A2, 8}, {A3, 7}, {A4, 6}, {A5, 5}}
+LedChanger ledChanger({10, 9, 8, 7, 6, 5});
+AutoLdrSpotDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5});
 
 
 void setup() {

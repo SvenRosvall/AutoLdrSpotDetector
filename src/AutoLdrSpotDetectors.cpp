@@ -1,6 +1,5 @@
 #include <Streaming.h>
 #include <limits.h>
-#include <stdarg.h>
 
 #include "AutoLdrSpotDetectors.h"
 
@@ -249,18 +248,17 @@ void AutoLdrSpotDetectors::checkTransitions()
 }
 
 AutoLdrSpotDetectors::AutoLdrSpotDetectors(SensorChangeAction & action,
-                                           int ldrCount, ...)
+                                           std::initializer_list<int> il)
   : action(action)
-  , ldrCount(ldrCount)
+  , ldrCount(il.size())
 {
   ldrs = new LDR[ldrCount];
-  va_list args;
-  va_start(args, ldrCount);
-  for (int i = 0 ; i < ldrCount ; ++i)
+  
+  auto p = ldrs;
+  for (auto e : il)
   {
-    ldrs[i].create(this, va_arg(args, int));
+    p++->create(this, e);
   }
-  va_end(args);
 }
 
 void AutoLdrSpotDetectors::setup()
