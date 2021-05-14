@@ -39,3 +39,10 @@ include dependencies
 
 clean :
 	-rm *.o *.exe AutoLdrSpotDetectors.cpp
+
+LIBDIR=../../libraries/AutoLdrSpotDetectors
+lib : $(wildcard $(LIBDIR)/src/*.cpp) \
+	$(wildcard $(LIBDIR)/src/*.h)
+
+$(LIBDIR)/src/% : ../src/%
+	cp $< $@
