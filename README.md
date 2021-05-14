@@ -104,3 +104,5 @@ It will need some tweaking and fix the following problems:
     based on the state, but if there is some change at all.
   - Use mAvg-value to deduce trend. Use this trend instead of
     LDR status when deciding consensus.
+- Tuning parameters should be lifter out of AutoLdrSpotDetectors.cpp
+  to the user defined sketch.

@@ -5,6 +5,8 @@ const int A0=20;
 const int A1=21;
 const int A2=22;
 const int A3=23;
+const int A4=24;
+const int A5=25;
 
 enum PinMode {
         OUTPUT,
@@ -25,11 +27,11 @@ void pinMode(int pin, PinMode mode);
 unsigned long millis();
 void delay(int millis);
 
-struct Serial
+struct Print
 {
         void begin(int baudRate);
         void println(const char *);
 };
-extern struct Serial Serial;
+extern struct Print Serial;
 
 #endif

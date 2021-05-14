@@ -4,22 +4,25 @@
 
 /* Mocking implementation */
 
-std::map<int, PinState> digitalReadValues;
+std::map<int, int> analogReadValues;
+void setAnalogRead(int pin, int value)
+{
+        analogReadValues[pin] = value;
+}
 
+std::map<int, PinState> digitalReadValues;
 void setDigitalRead(int pin, PinState value)
 {
         digitalReadValues[pin] = value;
 }
 
 std::map<int, int> analogWrittenValues;
-
 int getAnalogWrite(int pin)
 {
         return analogWrittenValues[pin];
 }
 
 std::map<int, PinState> digitalWrittenValues;
-
 PinState getDigitalWrite(int pin)
 {
         return digitalWrittenValues[pin];
@@ -46,7 +49,7 @@ void analogWrite(int pin, int value)
 }
 int analogRead(int pin)
 {
-        return 0;
+        return analogReadValues[pin];
 }
 void digitalWrite(int pin, PinState value)
 {
@@ -71,11 +74,11 @@ int map(int value, int fromLower, int fromUpper, int toLower, int toUpper)
 }
 
 
-void Serial::begin(int baudRate)
+void Print::begin(int baudRate)
 {
 }
-void Serial::println(const char *)
+void Print::println(const char *)
 {
 }
 
-struct Serial Serial;
+struct Print Serial;

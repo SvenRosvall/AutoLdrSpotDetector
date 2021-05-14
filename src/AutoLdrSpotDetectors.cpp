@@ -1,11 +1,10 @@
 #include <Streaming.h>
 #include <limits.h>
+#include <stdarg.h>
 
-// Choose what set of output is wanted.
-//#define PLOT_ALL_VALUES
-#define PLOT_DETAILS
-#define PRINT_DEBUG
+#include "AutoLdrSpotDetectors.h"
 
+//#define PRINT_DEBUG
 #ifdef PRINT_DEBUG
 #define DEBUG(S) Serial << S << endl
 #else
@@ -17,83 +16,20 @@ const int INTERVAL = 100; // ms
 const float P = 0.10f;  // for moving average
 const int THRESHOLD = 50;
 
-enum LdrState
+void LDR::setup()
 {
-  OPEN,
-  COVERED,
-  COVERING,
-  OPENING
-};
+  pinMode(sensorPin, INPUT_PULLUP);
+  lastValue = analogRead(sensorPin);
+  movingAverage = lastValue;
+  updateThreshold();
+  DEBUG("LDR pin=" << sensorPin << "(A" << sensorPin-A0 << ") value=" << lastValue);
+}
 
-enum TransitionState
+void LDR::readValue()
 {
-  NOT_TRANSITIONING, TRANSITIONING, TRANSITIONED
-};
-
-struct LDR
-{
-  int sensorPin;
-  int ledPin;
-  int lastValue;
-  float movingAverage = -1;
-  LdrState state;
-  int threshold = -1;
-  int oldThreshold = -1;
-  
-  LDR(int sensorPin, int ledPin)
-    : sensorPin(sensorPin), ledPin(ledPin), state(OPEN)
-  {
-    pinMode(sensorPin, INPUT_PULLUP);
-    pinMode(ledPin, OUTPUT);
-  }
-
-  void init()
-  {
-    lastValue = analogRead(sensorPin);
-    movingAverage = lastValue;
-    updateThreshold();
-  }
-
-  void readValue()
-  {
-    lastValue = analogRead(sensorPin);
-    movingAverage = P * lastValue + (1 - P) * movingAverage;
-    updateThreshold();
-  }
-
-  int value() const
-  {
-    return lastValue;
-  }
-
-  void updateThreshold();
-  void updateState();
-
-  bool checkOtherLDRs(LDR * thisLdr, LdrState checkedState);
-
-  Print & printTitle(Print & p) const;
-  Print & printValue(Print & p) const;
-  Print & printValue() const;
-};
-
-Print & operator<<(Print & p, LdrState state)
-{
-  switch (state)
-  {
-    case OPEN:
-      p << "OPEN";
-      break;
-    case COVERED:
-      p << "COVERED";
-      break;
-    case COVERING:
-      p << "COVERING";
-      break;
-    case OPENING:
-      p << "OPENING";
-      break;
-  }
-  return p;
+  lastValue = analogRead(sensorPin);
+  movingAverage = P * lastValue + (1 - P) * movingAverage;
+  updateThreshold();
 }
 
 void LDR::updateThreshold()
@@ -134,11 +70,12 @@ void LDR::updateState()
         state = OPEN;
         DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
       }
-      else if (movingAverage > oldThreshold && !checkOtherLDRs(this, COVERING))
+      // TODO: Checking other LDRs shouldn't be done here. It is per detector.
+      else if (movingAverage > oldThreshold && !parent->checkOtherLDRs(this, COVERING))
       {
         state = COVERED;
-        digitalWrite(ledPin, HIGH);
-        DEBUG("LDR A" << sensorPin-A0 << " is covered, turn on led " << ledPin);
+        DEBUG("LDR A" << sensorPin-A0 << " is covered.");
+        parent->onChange(this, state);
       }
       break;
     case COVERED:
@@ -154,11 +91,12 @@ void LDR::updateState()
         state = COVERED;
         DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");
       }
-      else if (movingAverage < oldThreshold && !checkOtherLDRs(this, OPENING))
+      // TODO: Checking other LDRs shouldn't be done here. It is per detector.
+      else if (movingAverage < oldThreshold && !parent->checkOtherLDRs(this, OPENING))
       {
         state = OPEN;
-        digitalWrite(ledPin, LOW);
-        DEBUG("LDR A" << sensorPin-A0 << " is open, turn off led " << ledPin);
+        DEBUG("LDR A" << sensorPin-A0 << " is open.");
+        parent->onChange(this, state);
       }
       break;
   }
@@ -174,6 +112,7 @@ Print & LDR::printTitle(Print & p) const
 #endif
   return p;
 }
+
 Print & LDR::printValue(Print & p) const
 {
 #ifdef PLOT_DETAILS
@@ -188,20 +127,19 @@ Print & LDR::printValue(Print & p) const
 Print & LDR::printValue() const
 {
   printValue(Serial);
+  return Serial;
 }
 
 Print & operator<<(Print & p, LDR const & ldr)
 {
   return ldr.printValue(p);
+  return Serial;
 }
 
-LDR ldrs[] = { LDR(A0, 10), LDR(A1, 9), LDR(A2, 8), LDR(A3, 7), LDR(A4, 6), LDR(A5, 5) };
-
-bool LDR::checkOtherLDRs(LDR * thisLdr, LdrState checkedState)
+bool AutoLdrSpotDetectors::checkOtherLDRs(LDR * thisLdr, LdrState checkedState)
 {
-  int ldrCount = sizeof(ldrs) / sizeof(ldrs[0]);
-  int countInState = 0;
-  for (int i = 0 ; i < ldrCount ; ++i)
+  unsigned int countInState = 0;
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
     if (ldrs[i].sensorPin == thisLdr->sensorPin)
       continue;
@@ -211,47 +149,33 @@ bool LDR::checkOtherLDRs(LDR * thisLdr, LdrState checkedState)
   return countInState > ldrCount / 2;
 }
 
-void allLdrs(void (*f)(LDR &))
+void AutoLdrSpotDetectors::allLdrs(void (*f)(LDR &))
 {
-  for (int i = 0 ; i < sizeof(ldrs) / sizeof(ldrs[0]) ; ++i)
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
     f(ldrs[i]);
   }
 }
 
-Print & operator<<(Print & p, LDR ldrs[])
+void AutoLdrSpotDetectors::onChange(LDR * thisLdr, LdrState newState)
 {
-  allLdrs([](LDR & ldr){ ldr.printValue(); }); // invalid user-defined conversion from 'operator<<(Print&, LDR*)::<lambda(LDR&)>' to 'void (*)(LDR&)'
-//allLdrs([&](LDR & ldr){ ldr.print(Serial); }); //                cannot convert 'operator<<(Print&, LDR*)::<lambda(LDR&)>' to 'void (*)(LDR&)' for argument '1' to 'void allLdrs(void (*)(LDR&))'
+  action.onChange(thisLdr->sensorPin, newState);
+}
+
+//Print & operator<<(Print & p, LDR ldrs[])
+Print & operator<<(Print & p, AutoLdrSpotDetectors & detectors)
+{
+  detectors.allLdrs([](LDR & ldr){ ldr.printValue(); }); 
   return p;
 }
 
-void setup() {
-  digitalWrite(13, HIGH);
-  Serial.begin(115200);
-  // DEBUG("Setup()");
-
-  allLdrs([](LDR & ldr) { ldr.init(); });
-
-  // DEBUG("Start : " << ldrs);
-#ifdef PLOT_DETAILS
-  ldrs[0].printTitle(Serial);
-  ldrs[1].printTitle(Serial);
-  Serial << endl;
-#endif
-#ifdef PLOT_ALL_VALUES
-  allLdrs([](LDR & ldr) { ldr.printTitle(Serial); });
-  Serial << endl;
-#endif
-}
-
-TransitionState areLdrsChanging(LdrState transitionState, LdrState finalState)
+TransitionState AutoLdrSpotDetectors::areLdrsChanging(LdrState transitionState, LdrState finalState)
 {
-  int countTransitioning = 0;
-  int countTransitioned = 0;
-  int countFinalState = 0;
-  const int ldrCount = sizeof(ldrs) / sizeof(ldrs[0]);
-  for (int i = 0 ; i < ldrCount ; ++i)
+  unsigned int countTransitioning = 0;
+  unsigned int countTransitioned = 0;
+  unsigned int countFinalState = 0;
+
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
     if (ldrs[i].state == transitionState)
     {
@@ -279,10 +203,9 @@ TransitionState areLdrsChanging(LdrState transitionState, LdrState finalState)
     return TRANSITIONING; // At least one LDR is still transitioning.
 }
 
-void changeState(LdrState fromState, LdrState toState)
+void AutoLdrSpotDetectors::changeState(LdrState fromState, LdrState toState)
 {
-  const int ldrCount = sizeof(ldrs) / sizeof(ldrs[0]);
-  for (int i = 0 ; i < ldrCount ; ++i)
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
     if (ldrs[i].state == fromState)
       ldrs[i].state = toState;
@@ -290,7 +213,7 @@ void changeState(LdrState fromState, LdrState toState)
 }
 
 int transitionCount = 0;
-void checkTransitions()
+void AutoLdrSpotDetectors::checkTransitions()
 {
   TransitionState transitionState = areLdrsChanging(COVERING, COVERED);
   if (transitionState == TRANSITIONING || transitionState == TRANSITIONED)
@@ -302,32 +225,52 @@ void checkTransitions()
       changeState(COVERING, OPEN);
     }
   }
+#if 0
   else
   {
-    transitionCount = 0;
-  }
+    // Do we need to check for changes to opening?
+    // We assume that most LDRs will be open in most cases.
+    transitionState = areLdrsChanging(COVERING, COVERED);  // TODO: Should these states be the same as above?
+    if (transitionState == TRANSITIONING || transitionState == TRANSITIONED)
+    {
+      DEBUG("Transitioning OPENING");
+      if (transitionState == TRANSITIONED)
+      {
+        DEBUG("Transition time over, change to COVERED");
+        changeState(OPENING, COVERED);
+      }
+    }
+#endif
+    else
+    {
+      transitionCount = 0;
+    }
+//  }
 }
 
-long lastMillis = millis();
-void loop() {
-  long startMillis = millis();
+AutoLdrSpotDetectors::AutoLdrSpotDetectors(SensorChangeAction & action,
+                                           int ldrCount, ...)
+  : action(action)
+  , ldrCount(ldrCount)
+{
+  ldrs = new LDR[ldrCount];
+  va_list args;
+  va_start(args, ldrCount);
+  for (int i = 0 ; i < ldrCount ; ++i)
+  {
+    ldrs[i].create(this, va_arg(args, int));
+  }
+  va_end(args);
+}
+
+void AutoLdrSpotDetectors::setup()
+{
+  allLdrs([](LDR & ldr) { ldr.setup(); });
+}
+
+void AutoLdrSpotDetectors::update()
+{
   allLdrs([](LDR & ldr) { ldr.readValue(); });
   checkTransitions();
   allLdrs([](LDR & ldr) { ldr.updateState(); });
-
-  long now = millis();
-#ifdef PLOT_DETAILS
-  Serial // << _WIDTH(now-lastMillis,3)
-         // << _WIDTH(now-startMillis,3)
-         << ldrs[0]
-         << ldrs[1]
-         << endl;
-#endif
-#ifdef PLOT_ALL_VALUES
-  allLdrs([](LDR & ldr) { ldr.printValue(Serial); });
-  Serial << endl;
-#endif
-  
-  lastMillis = now;
-  delay(INTERVAL);
 }
