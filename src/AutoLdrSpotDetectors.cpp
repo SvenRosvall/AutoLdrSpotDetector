@@ -158,7 +158,8 @@ void AutoLdrSpotDetectors::allLdrs(void (*f)(LDR &))
 
 void AutoLdrSpotDetectors::onChange(LDR * thisLdr, LdrState newState)
 {
-  action.onChange(thisLdr->sensorPin, newState);
+  int index = thisLdr - ldrs;
+  action.onChange(index, newState);
 }
 
 //Print & operator<<(Print & p, LDR ldrs[])

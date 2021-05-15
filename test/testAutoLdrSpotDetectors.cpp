@@ -144,6 +144,8 @@ namespace
     detectors.update();
     showLdr("after update() 5", ldrs[0]);
     assertEquals(1, action.changes.size());
+    assertEquals(0, action.changes[0].ldrIndex);
+    assertEquals(true, action.changes[0].covered);
     assertEquals(COVERED, ldrs[0].state);
   }
 }

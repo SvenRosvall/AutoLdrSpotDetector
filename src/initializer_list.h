@@ -24,7 +24,7 @@ namespace std
       constexpr const E*
       end() const noexcept { return begin() + size(); }
 
-    private:
+      // private:
       // The compiler uses this
       constexpr initializer_list(const E* a, size_t l)
         : array(a), len(l) { }
