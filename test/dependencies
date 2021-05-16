@@ -1,12 +1,16 @@
 ArduinoMock.o: ArduinoMock.cpp Arduino.hpp ArduinoMock.hpp
 AutoLdrSpotDetectors.o: AutoLdrSpotDetectors.cpp Arduino.hpp Streaming.h \
- ../src/AutoLdrSpotDetectors.h ../src/LDR.h ../src/LdrState.h
+ ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h ../src/LDR.h \
+ ../src/LdrState.h
+Streaming.o: Streaming.cpp Streaming.h
 TestTools.o: TestTools.cpp TestTools.hpp
 sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../examples/DemoWithLEDs/DemoWithLEDs.ino Streaming.h \
- ../src/AutoLdrSpotDetectors.h ../src/LDR.h ../src/LdrState.h
+ ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h ../src/LDR.h \
+ ../src/LdrState.h
 testAll.o: testAll.cpp testArduino.hpp testAutoLdrSpotDetectors.h
 testArduino.o: testArduino.cpp Arduino.hpp TestTools.hpp
 testAutoLdrSpotDetectors.o: testAutoLdrSpotDetectors.cpp Arduino.hpp \
- ArduinoMock.hpp TestTools.hpp ../src/AutoLdrSpotDetectors.h ../src/LDR.h \
- ../src/LdrState.h testAutoLdrSpotDetectors.h
+ ArduinoMock.hpp TestTools.hpp ../src/AutoLdrSpotDetectors.h \
+ ../src/initializer_list.h ../src/LDR.h ../src/LdrState.h \
+ testAutoLdrSpotDetectors.h

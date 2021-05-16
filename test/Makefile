@@ -20,6 +20,7 @@ testAll : testAll.o \
 	testArduino.o \
 	AutoLdrSpotDetectors.o \
 	ArduinoMock.o \
+	Streaming.o \
 	TestTools.o
 
 #AutoLdrSpotDetectors.o : ../src/AutoLdrSpotDetectors.cpp

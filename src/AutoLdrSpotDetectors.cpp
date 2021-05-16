@@ -273,3 +273,41 @@ void AutoLdrSpotDetectors::update()
   checkTransitions();
   allLdrs([](LDR & ldr) { ldr.updateState(); });
 }
+
+void AutoLdrSpotDetectors::plotTitleAll()
+{
+  allLdrs([](LDR & ldr) { ldr.printTitle(Serial); });
+  Serial << endl;
+}
+
+void AutoLdrSpotDetectors::plotAll()
+{
+  allLdrs([](LDR & ldr) { ldr.printValue(Serial); });
+  Serial << endl;
+}
+
+void AutoLdrSpotDetectors::plotTitleDetailed(unsigned int nLdr)
+{
+  if (ldrCount < nLdr)
+  {
+    nLdr = ldrCount;
+  }
+  for (unsigned int i = 0 ; i < nLdr ; ++i)
+  {
+    ldrs[i].printTitle(Serial);
+  }
+  Serial << endl;
+}
+
+void AutoLdrSpotDetectors::plotDetailed(unsigned int nLdr)
+{
+  if (ldrCount < nLdr)
+  {
+    nLdr = ldrCount;
+  }
+  for (unsigned int i = 0 ; i < nLdr ; ++i)
+  {
+    ldrs[i].printValue(Serial);
+  }
+  Serial << endl;
+}

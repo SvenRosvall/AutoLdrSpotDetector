@@ -32,9 +32,9 @@ public:
   void onChange(LDR * thisLdr, LdrState newState);
 
   void plotTitleAll();
-  void plotTitleDetailed(int nLdr);
   void plotAll();
-  void plotDetailed(int nLdr);
+  void plotTitleDetailed(unsigned int nLdr);
+  void plotDetailed(unsigned int nLdr);
 
   LDR const * getLdrs() const
   {
