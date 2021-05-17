@@ -137,3 +137,9 @@ Hardware here is one pullup resistor and a diode for each LDR.
 For all solutions above the Arduino must wait for the A/D converter
 to complete and produce a stable value. 
 Does analogRead() do this or do we have to wait in code?
+
+### Collaborating modules
+To get a wider consensus on the ambient light level
+several modules could send messages to each other.
+This would allow for a bigger pool of LDRs when
+deciding if a light level change is local or wide.
