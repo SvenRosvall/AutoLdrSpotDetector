@@ -18,13 +18,13 @@ PCB by Alan Turner in https://merg.org.uk/merg_wiki/doku.php?id=kits:pcb_for_det
 Geoff Gibson presents a self-setting LDR solution with a reference 
 LDR in Journal 2017 No 3, page 66.
 
-Julian Coles who presents a PIC based solution that self adjusts: 
+Julian Coles who presented a PIC based solution that self adjusts: 
 https://merg.org.uk/forum/viewtopic.php?f=29&t=11781
 David Mason mentions Arduino Nano in the same thread.
 
-This projects brings self adjustments and reference LDRs together.
+This project brings self adjustments and reference LDRs together.
 It assumes that all LDRs are never covered at the same time.
-Thus it uses the uncovered LDRs as references.
+Thus, it uses the uncovered LDRs as references.
 
 Hardware
 --------
@@ -61,7 +61,7 @@ value range.
 Timing of A/D conversion
 ------------------------
 Expect to manage 8x inputs in <1s. 
-Otherwise need to reconsider algorithm.
+Otherwise, need to reconsider algorithm.
 
 Found a ref saying a/d con takes 100 us.
 
@@ -98,7 +98,7 @@ It will need some tweaking and fix the following problems:
 - LDR sometimes does not turn off LED when opened.
 - Threshold value can be tricky. Say that the room gets a 
   bit darker so that only 3 LDRs trigger. Then because the
-  other LDRs are not triggered, there is no consensus and the 
+  other LDRs are not triggered, there is no consensus, and the 
   triggered 3 LDRs are changed to covered.
   - Need a different algorithm where the consensus is not only
     based on the state, but if there is some change at all.
@@ -106,3 +106,34 @@ It will need some tweaking and fix the following problems:
     LDR status when deciding consensus.
 - Tuning parameters should be lifter out of AutoLdrSpotDetectors.cpp
   to the user defined sketch.
+- Dave McCabe warned about coach lighting and loco headlights that
+  might light up the LDRs. 
+  When this light source disappears the LDR may go into covered state.
+  
+Proposed Features
+---
+### Provide more LDR inputs
+Having 6 analog LDR inputs might be restrictive in some cases.
+Multiplexing can be utilized to allow more LDR inputs.
+
+Use analogue multiplexers. 
+Select which input to use with a set of digital output pins.
+For an 8-1 multiplexer we can now use 48 LDRs.
+This requires 3 digital outputs.
+Must use pullup resistors for each LDR instead of the built-in ones.
+Hardware to use is one multiplexer per analog pin and 
+a pullup resistor for each LDR. 
+
+Use output pins to select a set of <= 6 lDRs.
+Use external pullup resistors that are powered by digital
+output pins.
+The measuring point between the pull-up and the LDR connects
+to the analog input via a diode.
+Using 8 digital output pins for selecting the LDR to use for
+each analog input gives us 48 LDRs.
+This is simpler, and possibly cheaper than multiplexers.
+Hardware here is one pullup resistor and a diode for each LDR.
+
+For all solutions above the Arduino must wait for the A/D converter
+to complete and produce a stable value. 
+Does analogRead() do this or do we have to wait in code?
