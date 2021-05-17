@@ -30,5 +30,7 @@ struct LDR
 
   Print & printTitle(Print & p) const;
   Print & printValue(Print & p) const;
+  Print & printTitleDetailed(Print & p) const;
+  Print & printValueDetailed(Print & p) const;
   Print & printValue() const;
 };

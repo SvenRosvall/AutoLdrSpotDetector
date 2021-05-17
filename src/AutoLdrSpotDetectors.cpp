@@ -103,23 +103,25 @@ void LDR::updateState()
 
 Print & LDR::printTitle(Print & p) const
 {
-#ifdef PLOT_DETAILS
-  p << " valA" << sensorPin-A0 << " avgA" << sensorPin-A0 << " thresholdA" << sensorPin-A0 << " stateA" << sensorPin-A0;
-#endif
-#ifdef PLOT_ALL_VALUES
   p << " valA" << sensorPin-A0;
-#endif
   return p;
 }
 
 Print & LDR::printValue(Print & p) const
 {
-#ifdef PLOT_DETAILS
-  p << " " << lastValue << " " << movingAverage << " " << threshold << " " << state;
-#endif
-#ifdef PLOT_ALL_VALUES
   p << " " << lastValue;
-#endif
+  return p;
+}
+
+Print & LDR::printTitleDetailed(Print & p) const
+{
+  p << " valA" << sensorPin-A0 << " avgA" << sensorPin-A0 << " thresholdA" << sensorPin-A0 << " stateA" << sensorPin-A0;
+  return p;
+}
+
+Print & LDR::printValueDetailed(Print & p) const
+{
+  p << " " << lastValue << " " << movingAverage << " " << threshold << " " << state;
   return p;
 }
 
@@ -294,7 +296,7 @@ void AutoLdrSpotDetectors::plotTitleDetailed(unsigned int nLdr)
   }
   for (unsigned int i = 0 ; i < nLdr ; ++i)
   {
-    ldrs[i].printTitle(Serial);
+    ldrs[i].printTitleDetailed(Serial);
   }
   Serial << endl;
 }
@@ -307,7 +309,7 @@ void AutoLdrSpotDetectors::plotDetailed(unsigned int nLdr)
   }
   for (unsigned int i = 0 ; i < nLdr ; ++i)
   {
-    ldrs[i].printValue(Serial);
+    ldrs[i].printValueDetailed(Serial);
   }
   Serial << endl;
 }

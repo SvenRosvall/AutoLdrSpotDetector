@@ -13,23 +13,25 @@ run-%: % srcObjects
 CC=g++
 CPPFLAGS=-std=gnu++11 -I../src -I. -g -Wall
 
-srcObjects : AutoLdrSpotDetectors.o
+srcObjects : AutoLdrSpotDetectors.o \
+	Helper.o
 
-testAll : testAll.o \
+testAll : AutoLdrSpotDetectors.o \
+	Helper.o \
+	testAll.o \
 	testAutoLdrSpotDetectors.o \
 	testArduino.o \
-	AutoLdrSpotDetectors.o \
 	ArduinoMock.o \
 	Streaming.o \
 	TestTools.o
 
-#AutoLdrSpotDetectors.o : ../src/AutoLdrSpotDetectors.cpp
-#	$(CC) $(CPPFLAGS) -c $<
 AutoLdrSpotDetectors.cpp : ../src/AutoLdrSpotDetectors.cpp
 	echo '#include "Arduino.hpp"' > $@
 	echo '#line 1 "../src/AutoLdrSpotDetectors.cpp"' >> $@
 	cat $< >> $@
 
+Helper.o : ../src/Helper.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
 examples: sketchDemoWithLeds.o
 
