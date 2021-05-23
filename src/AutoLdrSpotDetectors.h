@@ -1,3 +1,5 @@
+#pragma once
+
 #include <initializer_list.h>
 #include "LDR.h"
 

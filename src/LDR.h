@@ -1,3 +1,5 @@
+#pragma once
+
 #include "LdrState.h"
 
 struct LDR

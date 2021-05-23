@@ -12,62 +12,7 @@ const int THRESHOLD = 50;
 #include <Streaming.h>
 #include <AutoLdrSpotDetectors.h>
 #include <initializer_list.h>
-
-struct LdrLedPair
-{
-  int ldrPin;
-  int ledPin;
-};
-
-std::initializer_list<int> getLdrPins(std::initializer_list<LdrLedPair> il)
-{
-  int * ret = new int[il.size()];
-  auto p = ret;
-  for (auto e : il)
-  {
-    *p++ = e.ldrPin;
-  }
-  return std::initializer_list<int>(ret, il.size());
-}
-
-class LedChanger : public SensorChangeAction
-{
-  int * leds;
-public:
-  LedChanger(std::initializer_list<int> il);
-  LedChanger(std::initializer_list<LdrLedPair> il);
-  void onChange(int ldrIndex, bool covered);
-};
-
-LedChanger::LedChanger(std::initializer_list<int> il)
-{
-  leds = new int[il.size()];
-  auto p = leds;
-  for (auto e : il)
-  {
-    *p++ = e;
-    pinMode(e, OUTPUT);
-    Serial << "LedChanger with LED pin=" << e << endl;
-  }
-}
-
-LedChanger::LedChanger(std::initializer_list<LdrLedPair> il)
-{
-  leds = new int[il.size()];
-  auto p = leds;
-  for (auto e : il)
-  {
-    *p++ = e.ledPin;
-    pinMode(e.ledPin, OUTPUT);
-    Serial << "LedChanger with LED pin=" << e.ledPin << endl;
-  }
-}
-
-void LedChanger::onChange(int ldrIndex, bool covered)
-{
-  digitalWrite(leds[ldrIndex], covered ? HIGH : LOW);
-  Serial << "LedChanger changing led=" << ldrIndex << " pin=" << leds[ldrIndex] << " to " << (covered ? "HIGH" : "LOW") << endl;
-}
+#include "LedChanger.h"
 
 // TODO: Need to declare pairs of LDR pin and LED pin. E.g. {{A0, 10}, {A1, 9}, {A2, 8}, {A3, 7}, {A4, 6}, {A5, 5}}
 std::initializer_list<LdrLedPair> ldrLedPairs = {{A0, 10}, {A1, 9}, {A2, 8}, {A3, 7}, {A4, 6}, {A5, 5}};
