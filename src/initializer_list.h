@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _INITIALIZER_LIST
+#define _INITIALIZER_LIST
 
 #include <stddef.h>
 
@@ -42,3 +43,4 @@ namespace std
     end(initializer_list<T> ils) noexcept
     { return ils.end(); }
 }
+#endif

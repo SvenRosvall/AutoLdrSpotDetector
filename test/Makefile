@@ -14,9 +14,11 @@ CC=g++
 CPPFLAGS=-std=gnu++11 -I../src -I. -g -Wall
 
 srcObjects : AutoLdrSpotDetectors.o \
+    LDR.o \
 	Helper.o
 
 testAll : AutoLdrSpotDetectors.o \
+    LDR.o \
 	Helper.o \
 	testAll.o \
 	testAutoLdrSpotDetectors.o \
@@ -29,6 +31,9 @@ AutoLdrSpotDetectors.cpp : ../src/AutoLdrSpotDetectors.cpp
 	echo '#include "Arduino.hpp"' > $@
 	echo '#line 1 "../src/AutoLdrSpotDetectors.cpp"' >> $@
 	cat $< >> $@
+
+LDR.o : ../src/LDR.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
 Helper.o : ../src/Helper.cpp
 	$(CC) $(CPPFLAGS) -c $<

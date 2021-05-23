@@ -1,5 +1,7 @@
 // Action to change an LED when a corresponding LDR changes.
 
+#pragma once
+
 #include <AutoLdrSpotDetectors.h>
 #include <initializer_list.h>
 
