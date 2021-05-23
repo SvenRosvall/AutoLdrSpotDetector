@@ -11,12 +11,26 @@ struct LDR
   LdrState state;
   int threshold = -1;
   int oldThreshold = -1;
+
+  // Tunable parameters
+  int thresholdLevel = 50;
+  float movingAverageP = 0.1;
   
   void create(AutoLdrSpotDetectors * parent, int sensorPin)
   {
     this->parent = parent;
     this->sensorPin = sensorPin;
     this->state = OPEN;
+  }
+
+  void setThresholdLevel(int l)
+  {
+    this->thresholdLevel = l;
+  }
+
+  void setMovingAverageP(float p)
+  {
+    this->movingAverageP = p;
   }
 
   void setup();

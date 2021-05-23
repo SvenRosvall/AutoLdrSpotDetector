@@ -10,9 +10,6 @@
 #define DEBUG(S)
 #endif
 
-const float P = 0.10f;  // for moving average
-const int THRESHOLD = 50;
-
 void LDR::setup()
 {
   pinMode(sensorPin, INPUT_PULLUP);
@@ -25,7 +22,7 @@ void LDR::setup()
 void LDR::readValue()
 {
   lastValue = analogRead(sensorPin);
-  movingAverage = P * lastValue + (1 - P) * movingAverage;
+  movingAverage = movingAverageP * lastValue + (1 - movingAverageP) * movingAverage;
   updateThreshold();
 }
 
@@ -34,18 +31,18 @@ void LDR::updateThreshold()
   switch (state)
   {
     case OPEN:
-      threshold = movingAverage + THRESHOLD;
+      threshold = movingAverage + thresholdLevel;
       oldThreshold = threshold;
       break;
     case COVERING:
-      threshold = movingAverage + THRESHOLD;
+      threshold = movingAverage + thresholdLevel;
       break;
     case COVERED:
-      threshold = movingAverage - THRESHOLD;
+      threshold = movingAverage - thresholdLevel;
       oldThreshold = threshold;
       break;
     case OPENING:
-      threshold = movingAverage - THRESHOLD;
+      threshold = movingAverage - thresholdLevel;
       break;
   }
 }
@@ -62,7 +59,7 @@ void LDR::updateState()
       }
       break;
     case COVERING:
-      if (lastValue < movingAverage - THRESHOLD)
+      if (lastValue < movingAverage - thresholdLevel)
       {
         state = OPEN;
         DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
@@ -83,7 +80,7 @@ void LDR::updateState()
       }
       break;
     case OPENING:
-      if (lastValue > movingAverage + THRESHOLD)
+      if (lastValue > movingAverage + thresholdLevel)
       {
         state = COVERED;
         DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");

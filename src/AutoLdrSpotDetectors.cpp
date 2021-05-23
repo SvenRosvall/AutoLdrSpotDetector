@@ -10,9 +10,6 @@
 #define DEBUG(S)
 #endif
 
-// Tuning parameters
-const int INTERVAL = 100; // ms
-
 bool AutoLdrSpotDetectors::checkOtherLDRs(LDR * thisLdr, LdrState checkedState)
 {
   unsigned int countInState = 0;
@@ -139,6 +136,23 @@ AutoLdrSpotDetectors::AutoLdrSpotDetectors(SensorChangeAction & action,
     p++->create(this, e);
   }
 }
+
+void AutoLdrSpotDetectors::setThresholdLevel(int l)
+{
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
+  {
+    ldrs[i].setThresholdLevel(l);
+  }
+}
+
+void AutoLdrSpotDetectors::setMovingAverageP(float p)
+{
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
+  {
+    ldrs[i].setMovingAverageP(p);
+  }
+}
+
 
 void AutoLdrSpotDetectors::setup()
 {

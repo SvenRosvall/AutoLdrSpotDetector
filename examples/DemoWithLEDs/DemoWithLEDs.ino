@@ -28,6 +28,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Setup()");
 
+  detectors.setMovingAverageP(P);
+  detectors.setThresholdLevel(THRESHOLD);
   detectors.setup();
 
   // DEBUG("Start : " << ldrs);

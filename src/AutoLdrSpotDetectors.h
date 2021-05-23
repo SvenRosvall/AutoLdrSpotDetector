@@ -26,6 +26,9 @@ class AutoLdrSpotDetectors
 
 public:
   AutoLdrSpotDetectors(SensorChangeAction & action, std::initializer_list<int> il);
+  void setThresholdLevel(int l);
+  void setMovingAverageP(float p);
+
   void setup();
   void update();
 
