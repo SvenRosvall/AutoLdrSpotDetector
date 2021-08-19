@@ -34,7 +34,7 @@ void AutoLdrSpotDetectors::allLdrs(void (*f)(LDR &))
 void AutoLdrSpotDetectors::onChange(LDR * thisLdr, LdrState newState)
 {
   int index = thisLdr - ldrs;
-  action.onChange(index, newState);
+  action.onChange(index, newState == COVERED);
 }
 
 //Print & operator<<(Print & p, LDR ldrs[])
