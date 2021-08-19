@@ -1,13 +1,19 @@
 
 // Choose what set of output is wanted.
-//#define PLOT_ALL_VALUES
+#define PLOT_ALL_VALUES
 //#define PLOT_DETAILS
 //#define PRINT_DEBUG
 
 // Tuning parameters
 const int INTERVAL = 100; // ms
-const float P = 0.10f;  // for moving average
-const int THRESHOLD = 50;
+const float P = 0.050f;  // for moving average
+// 0.02 is too slow. Reaction time is 2-3 seconds.
+const int THRESHOLD = 150;
+// 50 is too low. Will trigger on a train on the adjacent track.
+// Note that the difference between open and covered is different at bright levels (low values) and dark levels (high values).
+// Sample levels for LDR 2:
+// Morning window: open: 100-120 covered: 300-350
+// Curtains: open: 350 covered: 750
 
 #include <Streaming.h>
 #include <AutoLdrSpotDetectors.h>
