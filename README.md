@@ -58,6 +58,30 @@ The LDR values vary up to 20% within a batch of the same model.
 For my Nano I have chosen model 5537 as this provides the best
 value range.
 
+High Level Design
+-----------------
+
+Each LDR is connected to an analog pin and the Arduino reads
+a value (0-1023) which is low for bright light and high for darkness.
+
+The key idea is that each LDR maintains a state (covered / not covered)
+and an average level. 
+This average level is adjusted to follow changes in the ambient light.
+The algorithm for changing the average level is based on a moving exponential
+average with the following formula.
+
+```AVnext = Value * P + AVprevious * (1-P)```
+
+A threshold is set above or below this average level. 
+When the LDR value crosses the threshold we treat the LDR as changing,
+either as a candidate for covered or for getting uncovered.
+If the LDR value stays at this side of the threshold for a given time then the
+LDR is changed to a new state.
+
+The time the LDR value has to breach the threshold is the time
+it takes for the average level to be adjusted to the value where 
+LDR value first breached the threshold
+
 Timing of A/D conversion
 ------------------------
 Expect to manage 8x inputs in <1s. 
@@ -67,8 +91,11 @@ Found a ref saying a/d con takes 100 us.
 
 Measured loop() iteration with 6 analogRead() calls takes 1-2 ms.
 
-Circuit
+Example Circuit
 -------
+This project comes with an example sketch called DemoWithLEDs.
+It connects LDRs to indicator LEDs to for testing and demonstrating
+the LdrSpotAutoDetector.
 
 Indicator LEDs are connected between a digital output and ground
 with a suitable resistor in series.
@@ -91,9 +118,9 @@ Current version is good enough for demonstrating the principles
 and as a proof-of-concept. 
 It will need some tweaking and fix the following problems:
 
-- Turn on lamp with one LDR covered makes it think it is open.
+- Increase ambient light with one LDR covered makes it think it is open.
   - Doesn't see that the other LDRs are also brighter now.
-- 2 LDRs covered. Turn of lamp. All LEDs go on.
+- 2 LDRs covered. Turn of room light. All LEDs go on.
   - Check condition. Need to adjust count.
 - LDR sometimes does not turn off LED when opened.
 - Threshold value can be tricky. Say that the room gets a 
@@ -104,8 +131,25 @@ It will need some tweaking and fix the following problems:
     based on the state, but if there is some change at all.
   - Use mAvg-value to deduce trend. Use this trend instead of
     LDR status when deciding consensus.
-- Tuning parameters should be lifter out of AutoLdrSpotDetectors.cpp
+- Tuning parameters should be lifted out of AutoLdrSpotDetectors.cpp
   to the user defined sketch.
+- Response is currently quite slow, about 1-2 seconds.
+  Should react within 0.5 seconds.
+  Probably need to change the idea where the reaction time is given
+  by the time it takes for the moving average to reach the point where
+  the LDR value first crossed the threshold.
+  Change this algorithm to a fixed time or something else.
+- Misses short fast trains. (single locomotive)
+  This is probably due to slow reaction times as described above.
+- Misses slow moving trains. 
+  It is mistaken for changes in ambient light. 
+  Note that the algorithm only checks the other (reference) LDRs when
+  the LDR is tripped. 
+  Change this to check the other LDRs when changing to COVERING.
+- Add information about LDR value moving trend. This means that we
+  can see if all LDRs are on the way up or down eventhough they
+  haven't yet crossed their thresholds.
+  Suggest using a moving average for the value changes. 
 - Dave McCabe warned about coach lighting and loco headlights that
   might light up the LDRs. 
   When this light source disappears the LDR may go into covered state.
