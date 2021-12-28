@@ -96,6 +96,20 @@ void LDR::updateState()
   }
 }
 
+bool LDR::isCovered() const
+{
+  switch (state)
+  {
+    case OPEN: case COVERING:
+      return false;
+    case COVERED: case OPENING:
+      return true;
+    default:
+      DEBUG("Unknown LDR state: " << state);
+      return false;
+  }
+}
+
 Print & LDR::printTitle(Print & p) const
 {
   p << " valA" << sensorPin-A0;

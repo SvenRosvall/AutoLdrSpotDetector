@@ -44,6 +44,8 @@ struct LDR
   void updateThreshold();
   void updateState();
 
+  bool isCovered() const;
+
   Print & printTitle(Print & p) const;
   Print & printValue(Print & p) const;
   Print & printTitleDetailed(Print & p) const;

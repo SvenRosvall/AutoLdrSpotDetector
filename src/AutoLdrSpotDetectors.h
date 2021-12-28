@@ -45,4 +45,9 @@ public:
   {
     return ldrs;
   }
+
+  int getLdrCount() const
+  {
+    return ldrCount;
+  }
 };
