@@ -2,8 +2,8 @@
 #include "ArduinoMock.hpp"
 #include "TestTools.hpp"
 
-#include "AutoLdrSpotDetectors.h"
-#include "testAutoLdrSpotDetectors.h"
+#include "MovingAverageDetectors.h"
+#include "testMovingAverageDetectors.h"
 #include <vector>
 #include <iostream>
 
@@ -25,16 +25,16 @@ namespace
     }
   };
 
-  void testAutoLdrSpotDetectors_construct()
+  void testMovingAverageDetectors_construct()
   {
     test();
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors1(action, {A0});
+    MovingAverageDetectors detectors1(action, {A0});
     assertEquals(-1, detectors1.getLdrs()[0].value());
 
-    AutoLdrSpotDetectors detectors6(action, {A0, A1, A2, A3, A4, A5});
+    MovingAverageDetectors detectors6(action, {A0, A1, A2, A3, A4, A5});
     assertEquals(-1, detectors6.getLdrs()[0].value());
     assertEquals(-1, detectors6.getLdrs()[1].value());
     assertEquals(-1, detectors6.getLdrs()[2].value());
@@ -43,13 +43,13 @@ namespace
     assertEquals(-1, detectors6.getLdrs()[5].value());
   }
 
-  void testAutoLdrSpotDetectors_setup()
+  void testMovingAverageDetectors_setup()
   {
     test();
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors(action, {A0, A1});
+    MovingAverageDetectors detectors(action, {A0, A1});
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -61,13 +61,13 @@ namespace
     assertEquals(129, ldrs[1].value());
   }
 
-  void testAutoLdrSpotDetectors_update()
+  void testMovingAverageDetectors_update()
   {
     test();
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors(action, {A0, A1});
+    MovingAverageDetectors detectors(action, {A0, A1});
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -89,13 +89,13 @@ namespace
   {
     std::cout << msg << ": state=" << ldr.state << " value=" << ldr.value() << " mAvg=" << ldr.movingAverage << " threshold=" << ldr.threshold << " oldThreshold=" << ldr.oldThreshold << std::endl;
   }
-  void testAutoLdrSpotDetectors_changeToCovered()
+  void testMovingAverageDetectors_changeToCovered()
   {
     test();
     clearArduinoValues();
 
     MockAction action;
-    AutoLdrSpotDetectors detectors(action, {A0, A1});
+    MovingAverageDetectors detectors(action, {A0, A1});
     LDR const * ldrs = detectors.getLdrs();
 
     setAnalogRead(A0, 2);
@@ -151,10 +151,10 @@ namespace
 }
 
 
-void testAutoLdrSpotDetectors()
+void testMovingAverageDetectors()
 {
-  testAutoLdrSpotDetectors_construct();
-  testAutoLdrSpotDetectors_setup();
-  testAutoLdrSpotDetectors_update();
-  testAutoLdrSpotDetectors_changeToCovered();
+  testMovingAverageDetectors_construct();
+  testMovingAverageDetectors_setup();
+  testMovingAverageDetectors_update();
+  testMovingAverageDetectors_changeToCovered();
 }

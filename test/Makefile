@@ -14,14 +14,16 @@ CC=g++
 CPPFLAGS=-std=gnu++11 -I../src -I. -g -Wall
 
 srcObjects : AutoLdrSpotDetectors.o \
+    MovingAverageDetectors.o \
     LDR.o \
 	Helper.o
 
 testAll : AutoLdrSpotDetectors.o \
+    MovingAverageDetectors.o \
     LDR.o \
 	Helper.o \
 	testAll.o \
-	testAutoLdrSpotDetectors.o \
+	testMovingAverageDetectors.o \
 	testArduino.o \
 	ArduinoMock.o \
 	Streaming.o \
@@ -30,6 +32,11 @@ testAll : AutoLdrSpotDetectors.o \
 AutoLdrSpotDetectors.cpp : ../src/AutoLdrSpotDetectors.cpp
 	echo '#include "Arduino.hpp"' > $@
 	echo '#line 1 "../src/AutoLdrSpotDetectors.cpp"' >> $@
+	cat $< >> $@
+
+MovingAverageDetectors.cpp : ../src/MovingAverageDetectors.cpp
+	echo '#include "Arduino.hpp"' > $@
+	echo '#line 1 "../src/MovingAverageDetectors.cpp"' >> $@
 	cat $< >> $@
 
 LDR.o : ../src/LDR.cpp
@@ -46,7 +53,7 @@ depend :
 include dependencies
 
 clean :
-	-rm *.o *.exe AutoLdrSpotDetectors.cpp
+	-rm *.o *.exe AutoLdrSpotDetectors.cpp MovingAverageDetectors.cpp
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \

@@ -1,11 +1,11 @@
 #include <map>
 #include <string>
 #include "testArduino.hpp"
-#include "testAutoLdrSpotDetectors.h"
+#include "testMovingAverageDetectors.h"
 
 std::map<std::string, void (*)()> suites = {
   {"Arduino", testArduino},
-  {"AutoLdrSpotDetectors", testAutoLdrSpotDetectors},
+  {"MovingAverageDetectors", testMovingAverageDetectors},
 };
 
 int main(int argc, const char * const * argv)
