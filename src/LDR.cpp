@@ -1,3 +1,6 @@
+#ifndef LDR_cpp
+#define LDR_cpp
+
 #include "LDR.h"
 #include "AutoLdrSpotDetectors.h"
 #include <Arduino.h>
@@ -10,7 +13,8 @@
 #define DEBUG(S)
 #endif
 
-void LDR::setup()
+template<class LDRT>
+void LDR<LDRT>::setup()
 {
   pinMode(sensorPin, INPUT_PULLUP);
   lastValue = analogRead(sensorPin);
@@ -19,14 +23,16 @@ void LDR::setup()
   DEBUG("LDR pin=" << sensorPin << "(A" << sensorPin-A0 << ") value=" << lastValue);
 }
 
-void LDR::readValue()
+template<class LDRT>
+void LDR<LDRT>::readValue()
 {
   lastValue = analogRead(sensorPin);
   movingAverage = movingAverageP * lastValue + (1 - movingAverageP) * movingAverage;
   updateThreshold();
 }
 
-void LDR::updateThreshold()
+template<class LDRT>
+void LDR<LDRT>::updateThreshold()
 {
   switch (state)
   {
@@ -47,7 +53,8 @@ void LDR::updateThreshold()
   }
 }
 
-void LDR::updateState()
+template<class LDRT>
+void LDR<LDRT>::updateState()
 {
   switch (state)
   {
@@ -96,7 +103,8 @@ void LDR::updateState()
   }
 }
 
-bool LDR::isCovered() const
+template<class LDRT>
+bool LDR<LDRT>::isCovered() const
 {
   switch (state)
   {
@@ -110,38 +118,46 @@ bool LDR::isCovered() const
   }
 }
 
-Print & LDR::printTitle(Print & p) const
+template<class LDRT>
+Print & LDR<LDRT>::printTitle(Print & p) const
 {
   p << " valA" << sensorPin-A0;
   return p;
 }
 
-Print & LDR::printValue(Print & p) const
+template<class LDRT>
+Print & LDR<LDRT>::printValue(Print & p) const
 {
   p << " " << lastValue;
   return p;
 }
 
-Print & LDR::printTitleDetailed(Print & p) const
+template<class LDRT>
+Print & LDR<LDRT>::printTitleDetailed(Print & p) const
 {
   p << " valA" << sensorPin-A0 << " avgA" << sensorPin-A0 << " thresholdA" << sensorPin-A0 << " stateA" << sensorPin-A0;
   return p;
 }
 
-Print & LDR::printValueDetailed(Print & p) const
+template<class LDRT>
+Print & LDR<LDRT>::printValueDetailed(Print & p) const
 {
   p << " " << lastValue << " " << movingAverage << " " << threshold << " " << state;
   return p;
 }
 
-Print & LDR::printValue() const
+template<class LDRT>
+Print & LDR<LDRT>::printValue() const
 {
   printValue(Serial);
   return Serial;
 }
 
-Print & operator<<(Print & p, LDR const & ldr)
+template<class LDRT>
+Print & operator<<(Print & p, LDRT const & ldr)
 {
   return ldr.printValue(p);
   return Serial;
 }
+
+#endif

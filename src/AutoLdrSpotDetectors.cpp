@@ -1,6 +1,10 @@
+#ifndef AutoLdrSpotDetectors_cpp
+#define AutoLdrSpotDetectors_cpp
+
 #include <Streaming.h>
 #include <limits.h>
 
+// Temporarily reverse inclusion as this contains template code.
 #include "AutoLdrSpotDetectors.h"
 
 //#define PRINT_DEBUG
@@ -10,7 +14,8 @@
 #define DEBUG(S)
 #endif
 
-bool AutoLdrSpotDetectors::checkOtherLDRs(LDR * thisLdr, LdrState checkedState)
+template<class LDRT>
+bool AutoLdrSpotDetectors<LDRT>::checkOtherLDRs(LDR<LDRT> * thisLdr, LdrState checkedState)
 {
   unsigned int countInState = 0;
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
@@ -23,7 +28,8 @@ bool AutoLdrSpotDetectors::checkOtherLDRs(LDR * thisLdr, LdrState checkedState)
   return countInState > ldrCount / 2;
 }
 
-void AutoLdrSpotDetectors::allLdrs(void (*f)(LDR &))
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::allLdrs(void (*f)(LDR<LDRT> &))
 {
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
@@ -31,20 +37,23 @@ void AutoLdrSpotDetectors::allLdrs(void (*f)(LDR &))
   }
 }
 
-void AutoLdrSpotDetectors::onChange(LDR * thisLdr, LdrState newState)
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::onChange(LDR<LDRT> * thisLdr, LdrState newState)
 {
-  int index = thisLdr - ldrs;
+  int index = thisLdr - (LDR<LDRT>*) ldrs;
   action.onChange(index, newState == COVERED);
 }
 
-//Print & operator<<(Print & p, LDR ldrs[])
-Print & operator<<(Print & p, AutoLdrSpotDetectors & detectors)
+//Print & operator<<(Print & p, LDRT ldrs[])
+template<class LDRT>
+Print & operator<<(Print & p, AutoLdrSpotDetectors<LDRT> & detectors)
 {
-  detectors.allLdrs([](LDR & ldr){ ldr.printValue(); }); 
+  detectors.allLdrs([](LDRT & ldr){ ldr.printValue(); }); 
   return p;
 }
 
-TransitionState AutoLdrSpotDetectors::areLdrsChanging(LdrState transitionState, LdrState finalState)
+template<class LDRT>
+TransitionState AutoLdrSpotDetectors<LDRT>::areLdrsChanging(LdrState transitionState, LdrState finalState)
 {
   unsigned int countTransitioning = 0;
   unsigned int countTransitioned = 0;
@@ -78,7 +87,8 @@ TransitionState AutoLdrSpotDetectors::areLdrsChanging(LdrState transitionState, 
     return TRANSITIONING; // At least one LDR is still transitioning.
 }
 
-void AutoLdrSpotDetectors::changeState(LdrState fromState, LdrState toState)
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::changeState(LdrState fromState, LdrState toState)
 {
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
@@ -87,8 +97,9 @@ void AutoLdrSpotDetectors::changeState(LdrState fromState, LdrState toState)
   }
 }
 
-int transitionCount = 0;
-void AutoLdrSpotDetectors::checkTransitions()
+//int transitionCount = 0;
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::checkTransitions()
 {
   TransitionState transitionState = areLdrsChanging(COVERING, COVERED);
   if (transitionState == TRANSITIONING || transitionState == TRANSITIONED)
@@ -118,17 +129,18 @@ void AutoLdrSpotDetectors::checkTransitions()
 #endif
     else
     {
-      transitionCount = 0;
+      //      transitionCount = 0;
     }
 //  }
 }
 
-AutoLdrSpotDetectors::AutoLdrSpotDetectors(SensorChangeAction & action,
-                                           std::initializer_list<int> il)
+template<class LDRT>
+AutoLdrSpotDetectors<LDRT>::AutoLdrSpotDetectors(SensorChangeAction & action,
+                                           const std::initializer_list<int> & il)
   : action(action)
   , ldrCount(il.size())
 {
-  ldrs = new LDR[ldrCount];
+  ldrs = new LDRT[ldrCount];
   
   auto p = ldrs;
   for (auto e : il)
@@ -137,7 +149,8 @@ AutoLdrSpotDetectors::AutoLdrSpotDetectors(SensorChangeAction & action,
   }
 }
 
-void AutoLdrSpotDetectors::setThresholdLevel(int l)
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::setThresholdLevel(int l)
 {
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
@@ -145,7 +158,8 @@ void AutoLdrSpotDetectors::setThresholdLevel(int l)
   }
 }
 
-void AutoLdrSpotDetectors::setMovingAverageP(float p)
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::setMovingAverageP(float p)
 {
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
@@ -154,31 +168,36 @@ void AutoLdrSpotDetectors::setMovingAverageP(float p)
 }
 
 
-void AutoLdrSpotDetectors::setup()
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::setup()
 {
-  allLdrs([](LDR & ldr) { ldr.setup(); });
+  allLdrs([](LDR<LDRT> & ldr) { ldr.setup(); });
 }
 
-void AutoLdrSpotDetectors::update()
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::update()
 {
-  allLdrs([](LDR & ldr) { ldr.readValue(); });
+  allLdrs([](LDR<LDRT> & ldr) { ldr.readValue(); });
   checkTransitions();
-  allLdrs([](LDR & ldr) { ldr.updateState(); });
+  allLdrs([](LDR<LDRT> & ldr) { ldr.updateState(); });
 }
 
-void AutoLdrSpotDetectors::plotTitleAll()
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::plotTitleAll()
 {
-  allLdrs([](LDR & ldr) { ldr.printTitle(Serial); });
+  allLdrs([](LDR<LDRT> & ldr) { ldr.printTitle(Serial); });
   Serial << endl;
 }
 
-void AutoLdrSpotDetectors::plotAll()
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::plotAll()
 {
-  allLdrs([](LDR & ldr) { ldr.printValue(Serial); });
+  allLdrs([](LDR<LDRT> & ldr) { ldr.printValue(Serial); });
   Serial << endl;
 }
 
-void AutoLdrSpotDetectors::plotTitleDetailed(unsigned int nLdr)
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::plotTitleDetailed(unsigned int nLdr)
 {
   if (ldrCount < nLdr)
   {
@@ -191,7 +210,8 @@ void AutoLdrSpotDetectors::plotTitleDetailed(unsigned int nLdr)
   Serial << endl;
 }
 
-void AutoLdrSpotDetectors::plotDetailed(unsigned int nLdr)
+template<class LDRT>
+void AutoLdrSpotDetectors<LDRT>::plotDetailed(unsigned int nLdr)
 {
   if (ldrCount < nLdr)
   {
@@ -203,3 +223,5 @@ void AutoLdrSpotDetectors::plotDetailed(unsigned int nLdr)
   }
   Serial << endl;
 }
+
+#endif

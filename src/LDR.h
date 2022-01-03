@@ -2,9 +2,13 @@
 
 #include "LdrState.h"
 
+template <class LDRT>
+class AutoLdrSpotDetectors;
+
+template <class LDRT>
 struct LDR
 {
-  class AutoLdrSpotDetectors * parent;
+  class AutoLdrSpotDetectors<LDRT> * parent;
   int sensorPin = -1;
   int lastValue = -1;
   float movingAverage = -1;
@@ -16,7 +20,7 @@ struct LDR
   int thresholdLevel = 50;
   float movingAverageP = 0.1;
   
-  void create(AutoLdrSpotDetectors * parent, int sensorPin)
+  void create(AutoLdrSpotDetectors<LDRT> * parent, int sensorPin)
   {
     this->parent = parent;
     this->sensorPin = sensorPin;
@@ -52,3 +56,5 @@ struct LDR
   Print & printValueDetailed(Print & p) const;
   Print & printValue() const;
 };
+
+#include "LDR.cpp"

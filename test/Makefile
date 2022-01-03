@@ -14,15 +14,22 @@ CC=g++
 CPPFLAGS=-std=gnu++11 -I../src -I. -g -Wall
 
 srcObjects : AutoLdrSpotDetectors.o \
+    ThresholdDetectors.o \
     MovingAverageDetectors.o \
     LDR.o \
+    ThresholdLDR.o \
+    MovingAverageLDR.o \
 	Helper.o
 
 testAll : AutoLdrSpotDetectors.o \
+    ThresholdDetectors.o \
     MovingAverageDetectors.o \
     LDR.o \
+    ThresholdLDR.o \
+    MovingAverageLDR.o \
 	Helper.o \
 	testAll.o \
+	testThresholdDetectors.o \
 	testMovingAverageDetectors.o \
 	testArduino.o \
 	ArduinoMock.o \
@@ -34,12 +41,23 @@ AutoLdrSpotDetectors.cpp : ../src/AutoLdrSpotDetectors.cpp
 	echo '#line 1 "../src/AutoLdrSpotDetectors.cpp"' >> $@
 	cat $< >> $@
 
+ThresholdDetectors.cpp : ../src/ThresholdDetectors.cpp
+	echo '#include "Arduino.hpp"' > $@
+	echo '#line 1 "../src/ThresholdDetectors.cpp"' >> $@
+	cat $< >> $@
+
 MovingAverageDetectors.cpp : ../src/MovingAverageDetectors.cpp
 	echo '#include "Arduino.hpp"' > $@
 	echo '#line 1 "../src/MovingAverageDetectors.cpp"' >> $@
 	cat $< >> $@
 
 LDR.o : ../src/LDR.cpp
+	$(CC) $(CPPFLAGS) -c $<
+
+ThresholdLDR.o : ../src/ThresholdLDR.cpp
+	$(CC) $(CPPFLAGS) -c $<
+
+MovingAverageLDR.o : ../src/MovingAverageLDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 Helper.o : ../src/Helper.cpp
@@ -53,7 +71,7 @@ depend :
 include dependencies
 
 clean :
-	-rm *.o *.exe AutoLdrSpotDetectors.cpp MovingAverageDetectors.cpp
+	-rm *.o *.exe AutoLdrSpotDetectors.cpp ThresholdDetectors.cpp MovingAverageDetectors.cpp
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \

@@ -16,7 +16,7 @@ const int THRESHOLD = 150;
 // Curtains: open: 350 covered: 750
 
 #include <Streaming.h>
-#include <AutoLdrSpotDetectors.h>
+#include <MovingAverageDetectors.h>
 #include <initializer_list.h>
 #include "LedChanger.h"
 
@@ -25,8 +25,8 @@ std::initializer_list<LdrLedPair> ldrLedPairs = {{A0, 10}, {A1, 9}, {A2, 8}, {A3
 
 //LedChanger ledChanger({10, 9, 8, 7, 6, 5});
 LedChanger ledChanger(ldrLedPairs);
-//AutoLdrSpotDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5});
-AutoLdrSpotDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
+//MovingAverageDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5});
+MovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
 
 
 void setup() {

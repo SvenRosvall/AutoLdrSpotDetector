@@ -1,10 +1,12 @@
 #include <map>
 #include <string>
 #include "testArduino.hpp"
+#include "testThresholdDetectors.h"
 #include "testMovingAverageDetectors.h"
 
 std::map<std::string, void (*)()> suites = {
   {"Arduino", testArduino},
+  {"ThresholdDetectors", testThresholdDetectors},
   {"MovingAverageDetectors", testMovingAverageDetectors},
 };
 
