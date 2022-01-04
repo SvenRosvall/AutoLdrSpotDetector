@@ -89,7 +89,7 @@ namespace
 
   void showLdr(const char * msg, ThresholdLDR const & ldr)
   {
-    std::cout << msg << ": state=" << ldr.state << " value=" << ldr.value() << " mAvg=" << ldr.movingAverage << " threshold=" << ldr.threshold << " oldThreshold=" << ldr.oldThreshold << std::endl;
+    std::cout << msg << ": state=" << ldr.state << " value=" << ldr.value() <<" threshold=" << ldr.threshold << std::endl;
   }
   void testThresholdDetectors_changeToCovered()
   {
@@ -113,9 +113,9 @@ namespace
     setAnalogRead(A0, 202);
     setAnalogRead(A1, 4);
     detectors.update();
-    showLdr("after update()", ldrs[0]);
+    showLdr("after update()  ", ldrs[0]);
 
-    assertEquals(0, action.changes.size());
+    assertEquals(1, action.changes.size());
     assertEquals(COVERED, ldrs[0].state);
     assertEquals(202, ldrs[0].value());
     assertEquals(4, ldrs[1].value());

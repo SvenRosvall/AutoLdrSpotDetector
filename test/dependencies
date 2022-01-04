@@ -5,7 +5,11 @@ AutoLdrSpotDetectors.o: AutoLdrSpotDetectors.cpp Arduino.hpp Streaming.h \
 MovingAverageDetectors.o: MovingAverageDetectors.cpp Arduino.hpp
 Streaming.o: Streaming.cpp Streaming.h Arduino.hpp
 TestTools.o: TestTools.cpp TestTools.hpp
-ThresholdDetectors.o: ThresholdDetectors.cpp Arduino.hpp
+ThresholdDetectors.o: ThresholdDetectors.cpp Arduino.hpp \
+ ../src/ThresholdDetectors.h ../src/AutoLdrSpotDetectors.h \
+ ../src/initializer_list.h ../src/LdrState.h \
+ ../src/AutoLdrSpotDetectors.cpp Streaming.h Arduino.hpp \
+ ../src/ThresholdLDR.h ../src/LDR.h ../src/LDR.cpp Arduino.h
 sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../examples/DemoWithLEDs/DemoWithLEDs.ino Streaming.h Arduino.hpp \
  ../src/MovingAverageDetectors.h ../src/AutoLdrSpotDetectors.h \

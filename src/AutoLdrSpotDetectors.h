@@ -21,6 +21,7 @@ enum TransitionState
 template <class LDRT>
 class AutoLdrSpotDetectors
 {
+protected:
   SensorChangeAction & action;
   unsigned int ldrCount;
   LDRT * ldrs;
