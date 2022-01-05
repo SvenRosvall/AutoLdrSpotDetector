@@ -26,17 +26,13 @@ protected:
   unsigned int ldrCount;
   LDRT * ldrs;
 
-  TransitionState areLdrsChanging(LdrState transitionState, LdrState finalState);
   void changeState(LdrState fromState, LdrState toState);
-  void checkTransitions();
 
 public:
   AutoLdrSpotDetectors(SensorChangeAction & action, const std::initializer_list<int> & il);
-  void setThresholdLevel(int l);
-  void setMovingAverageP(float p);
 
   void setup();
-  void update();
+  virtual void update() = 0;
 
   void allLdrs(void (*f)(LDRT &));
   void onChange(LDRT * thisLdr, LdrState newState);

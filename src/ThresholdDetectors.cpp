@@ -9,3 +9,9 @@ ThresholdDetectors::ThresholdDetectors(SensorChangeAction & action, const std::i
     ldrs[i].threshold = threshold;
   }
 }
+
+void ThresholdDetectors::update()
+{
+  allLdrs([](ThresholdLDR & ldr) { ldr.readValue(); });
+  allLdrs([](ThresholdLDR & ldr) { ldr.updateState(); });
+}

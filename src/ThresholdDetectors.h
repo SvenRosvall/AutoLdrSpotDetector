@@ -7,4 +7,6 @@ class ThresholdDetectors : public AutoLdrSpotDetectors<ThresholdLDR>
 {
 public:
   ThresholdDetectors(SensorChangeAction & action, const std::initializer_list<int> & il, int threshold);
+
+  virtual void update() override;
 };
