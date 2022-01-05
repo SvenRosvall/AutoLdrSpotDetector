@@ -1,4 +1,5 @@
 #include "ThresholdDetectors.h"
+#include "ThresholdLDR.h"
 
 ThresholdDetectors::ThresholdDetectors(SensorChangeAction & action, const std::initializer_list<int> & il, int threshold)
   : AutoLdrSpotDetectors(action, il)

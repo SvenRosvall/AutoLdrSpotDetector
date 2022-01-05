@@ -15,21 +15,7 @@
 #endif
 
 template<class LDRT>
-bool AutoLdrSpotDetectors<LDRT>::checkOtherLDRs(LDR<LDRT> * thisLdr, LdrState checkedState)
-{
-  unsigned int countInState = 0;
-  for (unsigned int i = 0 ; i < ldrCount ; ++i)
-  {
-    if (ldrs[i].sensorPin == thisLdr->sensorPin)
-      continue;
-    if (ldrs[i].state == checkedState)
-      ++countInState;
-  }
-  return countInState > ldrCount / 2;
-}
-
-template<class LDRT>
-void AutoLdrSpotDetectors<LDRT>::allLdrs(void (*f)(LDR<LDRT> &))
+void AutoLdrSpotDetectors<LDRT>::allLdrs(void (*f)(LDRT &))
 {
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
@@ -38,9 +24,9 @@ void AutoLdrSpotDetectors<LDRT>::allLdrs(void (*f)(LDR<LDRT> &))
 }
 
 template<class LDRT>
-void AutoLdrSpotDetectors<LDRT>::onChange(LDR<LDRT> * thisLdr, LdrState newState)
+void AutoLdrSpotDetectors<LDRT>::onChange(LDRT * thisLdr, LdrState newState)
 {
-  int index = thisLdr - (LDR<LDRT>*) ldrs;
+  int index = thisLdr - (LDRT*) ldrs;
   action.onChange(index, newState == COVERED);
 }
 
@@ -171,28 +157,28 @@ void AutoLdrSpotDetectors<LDRT>::setMovingAverageP(float p)
 template<class LDRT>
 void AutoLdrSpotDetectors<LDRT>::setup()
 {
-  allLdrs([](LDR<LDRT> & ldr) { ldr.setup(); });
+  allLdrs([](LDRT & ldr) { ldr.setup(); });
 }
 
 template<class LDRT>
 void AutoLdrSpotDetectors<LDRT>::update()
 {
-  allLdrs([](LDR<LDRT> & ldr) { ldr.readValue(); });
+  allLdrs([](LDRT & ldr) { ldr.readValue(); });
   checkTransitions();
-  allLdrs([](LDR<LDRT> & ldr) { ldr.updateState(); });
+  allLdrs([](LDRT & ldr) { ldr.updateState(); });
 }
 
 template<class LDRT>
 void AutoLdrSpotDetectors<LDRT>::plotTitleAll()
 {
-  allLdrs([](LDR<LDRT> & ldr) { ldr.printTitle(Serial); });
+  allLdrs([](LDRT & ldr) { ldr.printTitle(Serial); });
   Serial << endl;
 }
 
 template<class LDRT>
 void AutoLdrSpotDetectors<LDRT>::plotAll()
 {
-  allLdrs([](LDR<LDRT> & ldr) { ldr.printValue(Serial); });
+  allLdrs([](LDRT & ldr) { ldr.printValue(Serial); });
   Serial << endl;
 }
 

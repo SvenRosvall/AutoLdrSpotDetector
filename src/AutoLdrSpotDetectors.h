@@ -4,7 +4,7 @@
 
 #include "LdrState.h"
 
-template <class LDRT>
+template <class LDRT, class DetectorT>
 struct LDR;
 
 class SensorChangeAction
@@ -38,9 +38,8 @@ public:
   void setup();
   void update();
 
-  void allLdrs(void (*f)(LDR<LDRT> &));
-  bool checkOtherLDRs(LDR<LDRT> * thisLdr, LdrState checkedState);
-  void onChange(LDR<LDRT> * thisLdr, LdrState newState);
+  void allLdrs(void (*f)(LDRT &));
+  void onChange(LDRT * thisLdr, LdrState newState);
 
   void plotTitleAll();
   void plotAll();

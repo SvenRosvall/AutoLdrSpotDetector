@@ -3,6 +3,7 @@
 #include "TestTools.hpp"
 
 #include "ThresholdDetectors.h"
+#include "ThresholdLDR.h"
 #include "testThresholdDetectors.h"
 #include <vector>
 #include <iostream>

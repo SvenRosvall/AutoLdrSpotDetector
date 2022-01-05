@@ -1,15 +1,16 @@
 #include "MovingAverageLDR.h"
+#include "MovingAverageDetectors.h"
 
 void MovingAverageLDR::setup()
 {
-  LDR<MovingAverageLDR>::setup();
+  LDR<MovingAverageLDR, MovingAverageDetectors>::setup();
   movingAverage = lastValue;
   updateThreshold();
 }
 
 void MovingAverageLDR::readValue()
 {
-  LDR<MovingAverageLDR>::readValue();
+  LDR<MovingAverageLDR, MovingAverageDetectors>::readValue();
   movingAverage = movingAverageP * lastValue + (1 - movingAverageP) * movingAverage;
   updateThreshold();
 }
@@ -87,14 +88,14 @@ void MovingAverageLDR::updateState()
 
 Print & MovingAverageLDR::printTitleDetailed(Print & p) const
 {
-  LDR<MovingAverageLDR>::printTitleDetailed(p);
+  LDR<MovingAverageLDR, MovingAverageDetectors>::printTitleDetailed(p);
   p << " avgA" << sensorPin-A0;
   return p;
 }
 
 Print & MovingAverageLDR::printValueDetailed(Print & p) const
 {
-  LDR<MovingAverageLDR>::printValueDetailed(p);
+  LDR<MovingAverageLDR, MovingAverageDetectors>::printValueDetailed(p);
   p << " " << movingAverage;
   return p;
 }

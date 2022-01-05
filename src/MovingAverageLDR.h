@@ -1,8 +1,9 @@
 #pragma once
 
 #include "LDR.h"
+class MovingAverageDetectors;
 
-struct MovingAverageLDR : public LDR<MovingAverageLDR>
+struct MovingAverageLDR : public LDR<MovingAverageLDR, MovingAverageDetectors>
 {
   float movingAverage = -1;
   int oldThreshold = -1;

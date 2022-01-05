@@ -1,4 +1,5 @@
 #include "ThresholdLDR.h"
+#include "ThresholdDetectors.h"
 
 
 void ThresholdLDR::updateState()

@@ -3,6 +3,7 @@
 #include "TestTools.hpp"
 
 #include "MovingAverageDetectors.h"
+#include "MovingAverageLDR.h"
 #include "testMovingAverageDetectors.h"
 #include <vector>
 #include <iostream>

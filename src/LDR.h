@@ -7,10 +7,10 @@
 template <class LDRT>
 class AutoLdrSpotDetectors;
 
-template <class LDRT>
+template <class LDRT, class DetectorT>
 struct LDR
 {
-  class AutoLdrSpotDetectors<LDRT> * parent;
+  DetectorT * parent;
   int sensorPin = -1;
   int lastValue = -1;
   LdrState state;
@@ -18,7 +18,7 @@ struct LDR
 
   void create(AutoLdrSpotDetectors<LDRT> * parent, int sensorPin)
   {
-    this->parent = parent;
+    this->parent = (DetectorT *) parent;
     this->sensorPin = sensorPin;
     this->state = OPEN;
   }
@@ -43,6 +43,6 @@ struct LDR
 };
 
 template <class LDRT>
-Print & operator<<(Print & p, LDR<LDRT> const & ldr);
+Print & operator<<(Print & p, LDRT const & ldr);
 
 #include "LDR.cpp"
