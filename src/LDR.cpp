@@ -77,8 +77,8 @@ Print & LDR<LDRT, DetectorT>::printValue() const
   return Serial;
 }
 
-template<class LDRT>
-Print & operator<<(Print & p, LDRT const & ldr)
+template<class LDRT, class DetectorT>
+Print & operator<<(Print & p, LDR<LDRT, DetectorT> const & ldr)
 {
   ldr.printValue(p);
   return Serial;
