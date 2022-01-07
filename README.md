@@ -7,7 +7,7 @@ LDRs are simple and cheap detectors, but they are sensitive
 to ambient light levels and usually requires adjustment potentiometers.
 
 This sketch connects up to 6 LDR (Light Dependent Resistors) to the analog pins
-and decides if each LDR is covered or not.
+of an arduino and decides if each LDR is covered or not.
 It considers sudden changes in light levels and also compares the LDRs to each other.
 
 Prior work
@@ -58,29 +58,21 @@ The LDR values vary up to 20% within a batch of the same model.
 For my Nano I have chosen model 5537 as this provides the best
 value range.
 
-High Level Design
------------------
+LDR Detector algorithms
+-----------------------
+This library contains a few different algorithms that can be
+selected in the Arduino sketch.
+The example sketch [DemoWitLEDs.ino](examples/DemoWithLEDs/DemoWithLEDs.ino)
+is prepared for easy selection of algorithm.
 
-Each LDR is connected to an analog pin and the Arduino reads
-a value (0-1023) which is low for bright light and high for darkness.
-
-The key idea is that each LDR maintains a state (covered / not covered)
-and an average level. 
-This average level is adjusted to follow changes in the ambient light.
-The algorithm for changing the average level is based on a moving exponential
-average with the following formula.
-
-```AVnext = Value * P + AVprevious * (1-P)```
-
-A threshold is set above or below this average level. 
-When the LDR value crosses the threshold we treat the LDR as changing,
-either as a candidate for covered or for getting uncovered.
-If the LDR value stays at this side of the threshold for a given time then the
-LDR is changed to a new state.
-
-The time the LDR value has to breach the threshold is the time
-it takes for the average level to be adjusted to the value where 
-LDR value first breached the threshold
+The currently available algorithms are:
+* [Simple Threshold](ThresholdDesign.md) implements a simple threshold.
+  The LDR is considered covered when the read value exceeds a set threshold value.
+  This algorithm is used for testing the hardware and as a reference
+  implementation to show what can be achieved with LDR detectors.
+* [Moving Average](MovingAverageDesign.md) implements a self adjusting 
+  algorithm where a threshold is set based on an average value read from
+  each LDR.
 
 Timing of A/D conversion
 ------------------------
@@ -111,6 +103,15 @@ digital pins:
 | A3 | 7 |
 | A4 | 6 |
 | A5 | 5 |
+
+## Debug output
+Define one of the following macros for useful debug output.
+
+| Macro | Description |
+| --- | --- |
+| PRINT_DEBUG | Shows debug text messages to describe what is happening. |
+| PLOT_ALL_VALUES | Prints the read value for each LDR. Use this with the serial plotter. |
+| PLOT_DETAILS | Prints read values, moving average and threshold for the first two LDRs. Use this with the serial plotter. |
 
 TODO
 ----

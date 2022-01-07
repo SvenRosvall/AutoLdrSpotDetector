@@ -2,14 +2,35 @@
 The key elements are the LDR objects that represent a physical LDR.
 It captures the sensor pin, state and trending value.
 
-## Debug output
-Define one of the following macros for useful debug output.
+High Level Design
+-----------------
 
-| Macro | Description |
-| --- | --- |
-| PRINT_DEBUG | Shows debug text messages to describe what is happening. |
-| PLOT_ALL_VALUES | Prints the read value for each LDR. Use this with the serial plotter. |
-| PLOT_DETAILS | Prints read values, moving average and threshold for the first two LDRs. Use this with the serial plotter. |
+Each LDR is connected to an analog pin and the Arduino reads
+a value (0-1023) which is low for bright light and high for darkness.
+
+The key idea is that each LDR maintains a state (covered / not covered)
+and an average level.
+This average level is adjusted to follow changes in the ambient light.
+The algorithm for changing the average level is based on a moving exponential
+average with the following formula.
+
+```AVnext = Value * P + AVprevious * (1-P)```
+
+A threshold is set above or below this average level.
+When the LDR value crosses the threshold we treat the LDR as changing,
+either as a candidate for covered or for getting uncovered.
+If the LDR value stays at this side of the threshold for a given time then the
+LDR is changed to a new state.
+
+The time the LDR value has to breach the threshold is the time
+it takes for the average level to be adjusted to the value where
+LDR value first breached the threshold
+
+When an LDR is considered about to be covered the other LDRs are also
+checked to see if they also are getting covered. 
+If the majority of the LDRs are getting covered at the same time it
+is assumed that the ambient light is changing rapidly and the LDRs
+are not consired to be covered anymore.
 
 ## LDR Class
 Contains the following member objects:
