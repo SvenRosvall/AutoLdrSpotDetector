@@ -3,11 +3,13 @@
 #include "testArduino.hpp"
 #include "testThresholdDetectors.h"
 #include "testMovingAverageDetectors.h"
+#include "testGroupMovingAverageDetectors.h"
 
 std::map<std::string, void (*)()> suites = {
   {"Arduino", testArduino},
   {"ThresholdDetectors", testThresholdDetectors},
   {"MovingAverageDetectors", testMovingAverageDetectors},
+  {"GroupMovingAverageDetectors", testGroupMovingAverageDetectors},
 };
 
 int main(int argc, const char * const * argv)
