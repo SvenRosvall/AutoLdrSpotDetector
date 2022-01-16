@@ -22,7 +22,7 @@ LedChanger::LedChanger(std::initializer_list<int> il)
   {
     *p++ = e;
     pinMode(e, OUTPUT);
-    Serial << "LedChanger with LED pin=" << e << endl;
+    //Serial << "LedChanger with LED pin=" << e << endl;
   }
 }
 
@@ -34,12 +34,12 @@ LedChanger::LedChanger(std::initializer_list<LdrLedPair> il)
   {
     *p++ = e.ledPin;
     pinMode(e.ledPin, OUTPUT);
-    Serial << "LedChanger with LED pin=" << e.ledPin << endl;
+    //Serial << "LedChanger with LED pin=" << e.ledPin << endl;
   }
 }
 
 void LedChanger::onChange(int ldrIndex, bool covered)
 {
   digitalWrite(leds[ldrIndex], covered ? HIGH : LOW);
-  Serial << "LedChanger changing led=" << ldrIndex << " pin=" << leds[ldrIndex] << " to " << (covered ? "HIGH" : "LOW") << endl;
+  //Serial << "LedChanger changing led=" << ldrIndex << " pin=" << leds[ldrIndex] << " to " << (covered ? "HIGH" : "LOW") << endl;
 }
