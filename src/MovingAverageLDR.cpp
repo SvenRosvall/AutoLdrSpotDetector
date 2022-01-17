@@ -48,7 +48,7 @@ void MovingAverageLDR::updateState()
       }
       break;
     case COVERING:
-      if (lastValue < movingAverage - thresholdLevel)
+      if (lastValue < movingAverage)
       {
         state = OPEN;
         DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
@@ -59,6 +59,8 @@ void MovingAverageLDR::updateState()
         state = COVERED;
         DEBUG("LDR A" << sensorPin-A0 << " is covered.");
         parent->onChange(this, state);
+        movingAverage = lastValue;
+        threshold = movingAverage - thresholdLevel;
       }
       break;
     case COVERED:
@@ -80,6 +82,8 @@ void MovingAverageLDR::updateState()
         state = OPEN;
         DEBUG("LDR A" << sensorPin-A0 << " is open.");
         parent->onChange(this, state);
+        movingAverage = lastValue;
+        threshold = movingAverage + thresholdLevel;
       }
       break;
   }
