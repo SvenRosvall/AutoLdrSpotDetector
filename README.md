@@ -73,6 +73,11 @@ The currently available algorithms are:
 * [Moving Average](MovingAverageDesign.md) implements a self adjusting 
   algorithm where a threshold is set based on an average value read from
   each LDR.
+* [Group Moving Average](GroupMovingAverageDesign.md) is a variation
+  where a moving average is kept of the recent difference between the last value
+  and the moving average value.
+  The LDR is adjusted with this average diff from all LDRs. The own
+  LDR diff is weighted higher.
 
 Timing of A/D conversion
 ------------------------
@@ -121,7 +126,7 @@ It will need some tweaking and fix the following problems:
 
 - Increase ambient light with one LDR covered makes it think it is open.
   - Doesn't see that the other LDRs are also brighter now.
-- 2 LDRs covered. Turn of room light. All LEDs go on.
+- 2 LDRs covered. Turn off room light. All LEDs go on.
   - Check condition. Need to adjust count.
 - LDR sometimes does not turn off LED when opened.
 - Threshold value can be tricky. Say that the room gets a 
@@ -154,7 +159,12 @@ It will need some tweaking and fix the following problems:
 - Dave McCabe warned about coach lighting and loco headlights that
   might light up the LDRs. 
   When this light source disappears the LDR may go into covered state.
-  
+- When flickering LDR on and off rapidly (before it triggers) the 
+  moving average increases slowly, and the threshold increases too.
+  Then when the LDR is properly covered, the threshold is now so high
+  that the LDR is not triggered.
+  - Can argue that this is an artificial use case that won't happen. 
+
 Proposed Features
 ---
 ### Provide more LDR inputs
