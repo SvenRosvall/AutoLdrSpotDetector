@@ -19,6 +19,8 @@ void MovingAverageDetectors::setMovingAverageP(float p)
 
 bool MovingAverageDetectors::checkOtherLDRs(MovingAverageLDR * thisLdr, LdrState checkedState)
 {
+  // TODO: Counting LDRs in a given state is not reliable as some LDRs may have already done this check
+  // and reverted back to non-changing state.
   unsigned int countInState = 0;
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
