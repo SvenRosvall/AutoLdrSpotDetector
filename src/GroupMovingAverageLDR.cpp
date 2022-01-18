@@ -1,6 +1,15 @@
 #include "GroupMovingAverageLDR.h"
 #include "GroupMovingAverageDetectors.h"
 
+#include <Streaming.h>
+
+//#define PRINT_DEBUG
+#ifdef PRINT_DEBUG
+#define DEBUG(S) Serial << S << endl
+#else
+#define DEBUG(S)
+#endif
+
 void GroupMovingAverageLDR::setup()
 {
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::setup();
@@ -57,22 +66,19 @@ void GroupMovingAverageLDR::updateState()
       }
       break;
     case COVERING:
-      if (lastValue > threshold)
-      {
-        if (millis() > timer)
-        {
-          state = COVERED;
-          DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
-          parent->onChange(this, state);
-          movingAverage = lastValue;
-          threshold = movingAverage - thresholdLevel;
-        }
-      }
-      else
+      if (lastValue < threshold)
       {
         // Not above threshold anymore. Revert to OPEN.
         state = OPEN;
         DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
+      }
+      else if (millis() > timer && !parent->checkOtherLDRs(this, COVERING))
+      {
+        state = COVERED;
+        DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
+        parent->onChange(this, state);
+        movingAverage = lastValue;
+        threshold = movingAverage - thresholdLevel;
       }
       break;
     case COVERED:
@@ -84,23 +90,20 @@ void GroupMovingAverageLDR::updateState()
         DEBUG("changeInterval = " << changeInterval);
       }
       break;
-     case OPENING:
-      if (lastValue < threshold)
-      {
-        if (millis() > timer)
-        {
-          state = OPEN;
-          DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
-          parent->onChange(this, state);
-          movingAverage = lastValue;
-          threshold = movingAverage + thresholdLevel;
-        }
-      }
-      else
+    case OPENING:
+      if (lastValue > threshold)
       {
         // Not above threshold anymore. Revert to COVERED.
         state = COVERED;
         DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");
+      }
+      else if (millis() > timer && !parent->checkOtherLDRs(this, OPENING))
+      {
+        state = OPEN;
+        DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
+        parent->onChange(this, state);
+        movingAverage = lastValue;
+        threshold = movingAverage + thresholdLevel;
       }
       break;
    }

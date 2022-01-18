@@ -101,14 +101,14 @@ namespace
     detectors.setChangeInterval(20);
 
     setAnalogRead(A0, 2);
-    setAnalogRead(A1, 3);
+    setAnalogRead(A1, 4);
     detectors.setup();
     showLdr("after setup()   ", ldrs[0]);
 
     assertEquals(0, action.changes.size());
     assertEquals(OPEN, ldrs[0].state);
     assertEquals(2, ldrs[0].value());
-    assertEquals(3, ldrs[1].value());
+    assertEquals(4, ldrs[1].value());
 
     setAnalogRead(A0, 202);
     setAnalogRead(A1, 4);

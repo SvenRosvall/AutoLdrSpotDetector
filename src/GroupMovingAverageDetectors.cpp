@@ -1,6 +1,8 @@
 #include "GroupMovingAverageDetectors.h"
 #include "GroupMovingAverageLDR.h"
 
+#include <Streaming.h>
+
 void GroupMovingAverageDetectors::setThresholdLevel(int l)
 {
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
@@ -58,3 +60,26 @@ void GroupMovingAverageDetectors::update()
   allLdrs([](GroupMovingAverageLDR & ldr) { ldr.updateState(); });
 }
 
+bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr, LdrState checkedState)
+{
+  // Check the trend (avgDiff) for the other LDRs.
+  int sumOfDiffs = 0;
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
+  {
+    if (ldrs[i].sensorPin == thisLdr->sensorPin)
+      continue;
+    sumOfDiffs += ldrs[i].movingDiffAverage;
+  }
+  DEBUG("checkOtherLdrs(this Pin=" << thisLdr->sensorPin << ", checkedState=" << checkedState
+        << ") sumOfDiffs=" << sumOfDiffs << " ldrCount=" << ldrCount);
+  switch (checkedState)
+  {
+    case COVERING:
+      return sumOfDiffs / ((int) ldrCount - 1) > 10;
+    case OPENING:
+      return sumOfDiffs / ((int) ldrCount - 1) < -10;
+    default:
+      Serial.println("Unknown state to check in GroupMovingAverageDetectors::checkOtherLDRs()");
+      return false;
+  }
+}

@@ -21,4 +21,5 @@ public:
   }
 
   virtual void update() override;
+  bool checkOtherLDRs(GroupMovingAverageLDR * thisLdr, LdrState checkedState);
 };
