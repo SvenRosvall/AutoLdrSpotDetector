@@ -12,7 +12,6 @@ public:
 
   virtual void update() override;
   void checkTransitions();
-  bool checkOtherLDRs(MovingAverageLDR * thisLdr,
-                      LdrState checkedState);
+  bool checkOtherLDRs(MovingAverageLDR * thisLdr, LdrState checkedState);
   TransitionState areLdrsChanging(LdrState transitionState, LdrState finalState);
 };

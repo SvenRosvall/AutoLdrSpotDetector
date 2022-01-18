@@ -57,7 +57,7 @@ void MovingAverageLDR::updateState()
       else if (movingAverage > oldThreshold && !parent->checkOtherLDRs(this, COVERING))
       {
         state = COVERED;
-        DEBUG("LDR A" << sensorPin-A0 << " is covered.");
+        DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
         parent->onChange(this, state);
         movingAverage = lastValue;
         threshold = movingAverage - thresholdLevel;
@@ -80,7 +80,7 @@ void MovingAverageLDR::updateState()
       else if (movingAverage < oldThreshold && !parent->checkOtherLDRs(this, OPENING))
       {
         state = OPEN;
-        DEBUG("LDR A" << sensorPin-A0 << " is open.");
+        DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
         parent->onChange(this, state);
         movingAverage = lastValue;
         threshold = movingAverage + thresholdLevel;
