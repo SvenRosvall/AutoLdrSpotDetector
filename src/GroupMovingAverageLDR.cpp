@@ -15,13 +15,13 @@ void GroupMovingAverageLDR::setup()
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::setup();
   movingAverage = lastValue;
   state = OPEN;
-  threshold = movingAverage + thresholdLevel;
+  threshold = movingAverage + parent->getThresholdLevel();
 }
 
 void GroupMovingAverageLDR::readValue()
 {
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::readValue();
-  movingDiffAverage = movingDiffAverageP * (lastValue - movingAverage) + (1 - movingDiffAverageP) * movingDiffAverage;
+  movingDiffAverage = parent->getMovingDiffAverageP() * (lastValue - movingAverage) + (1 - parent->getMovingDiffAverageP()) * movingDiffAverage;
 }
 
 void GroupMovingAverageLDR::updateMovingAverage()
@@ -30,8 +30,8 @@ void GroupMovingAverageLDR::updateMovingAverage()
   float allLdrMovingDiffAverage = parent->getAvgOfDiffs();
 
   // - Apply a portion of the sum of diffs and a portion of diff for this LDR.
-  float diffToApply = selfDiffRatio * movingDiffAverage + (1-selfDiffRatio) * allLdrMovingDiffAverage;
-  movingAverage += movingAverageP * diffToApply;
+  float diffToApply = parent->getSelfDiffRatio() * movingDiffAverage + (1-parent->getSelfDiffRatio()) * allLdrMovingDiffAverage;
+  movingAverage += parent->getMovingAverageP() * diffToApply;
 }
 
 void GroupMovingAverageLDR::updateThreshold()
@@ -40,11 +40,11 @@ void GroupMovingAverageLDR::updateThreshold()
   {
     case OPEN:
     case COVERING:
-      threshold = movingAverage + thresholdLevel;
+      threshold = movingAverage + parent->getThresholdLevel();
       break;
     case COVERED:
     case OPENING:
-      threshold = movingAverage - thresholdLevel;
+      threshold = movingAverage - parent->getThresholdLevel();
       break;
   }
 }
@@ -60,9 +60,9 @@ void GroupMovingAverageLDR::updateState()
       if (lastValue > threshold)
       {
         state = COVERING;
-        timer = millis() + changeInterval;
+        timer = millis() + parent->getChangeInterval();
         DEBUG("LDR A" << sensorPin-A0 << " change to covering.");
-        DEBUG("changeInterval = " << changeInterval);
+        DEBUG("changeInterval = " << parent->getChangeInterval());
       }
       break;
     case COVERING:
@@ -78,16 +78,16 @@ void GroupMovingAverageLDR::updateState()
         DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
         parent->onChange(this, state);
         movingAverage = lastValue;
-        threshold = movingAverage - thresholdLevel;
+        threshold = movingAverage - parent->getThresholdLevel();
       }
       break;
     case COVERED:
       if (lastValue < threshold)
       {
         state = OPENING;
-        timer = millis() + changeInterval;
+        timer = millis() + parent->getChangeInterval();
         DEBUG("LDR A" << sensorPin-A0 << " change to opening.");
-        DEBUG("changeInterval = " << changeInterval);
+        DEBUG("changeInterval = " << parent->getChangeInterval());
       }
       break;
     case OPENING:
@@ -103,7 +103,7 @@ void GroupMovingAverageLDR::updateState()
         DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
         parent->onChange(this, state);
         movingAverage = lastValue;
-        threshold = movingAverage + thresholdLevel;
+        threshold = movingAverage + parent->getThresholdLevel();
       }
       break;
    }
