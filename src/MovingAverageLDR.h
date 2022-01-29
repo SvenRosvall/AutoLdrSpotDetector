@@ -23,7 +23,7 @@ struct MovingAverageLDR : public LDR<MovingAverageLDR, MovingAverageDetectors>
   }
 
   void setup() override;
-  void readValue();
+  void readValue() override;
   void updateThreshold();
   virtual void updateState() override;
   virtual Print & printTitleDetailed(Print & p) const override;

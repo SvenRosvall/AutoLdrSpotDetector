@@ -26,6 +26,7 @@ void AutoLdrSpotDetectors<LDRT>::allLdrs(void (*f)(LDRT &))
 template<class LDRT>
 void AutoLdrSpotDetectors<LDRT>::onChange(LDRT * thisLdr, LdrState newState)
 {
+  // onChange() must be part of the parent detectors object to calculate the index.
   int index = thisLdr - (LDRT*) ldrs;
   action.onChange(index, newState == COVERED);
 }
