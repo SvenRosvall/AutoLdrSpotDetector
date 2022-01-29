@@ -1,3 +1,8 @@
+AdjustingDetectors.o: AdjustingDetectors.cpp Arduino.hpp \
+ ../src/AdjustingDetectors.h ../src/AutoLdrSpotDetectors.h \
+ ../src/initializer_list.h ../src/LdrState.h \
+ ../src/AutoLdrSpotDetectors.cpp Streaming.h Arduino.hpp \
+ ../src/AdjustingLDR.h ../src/LDR.h ../src/LDR.cpp Arduino.h
 ArduinoMock.o: ArduinoMock.cpp Arduino.hpp ArduinoMock.hpp
 AutoLdrSpotDetectors.o: AutoLdrSpotDetectors.cpp Arduino.hpp Streaming.h \
  Arduino.hpp ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h \
@@ -27,8 +32,15 @@ sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../src/AutoLdrSpotDetectors.cpp ../src/GroupMovingAverageLDR.h \
  ../src/LDR.h ../src/LDR.cpp Arduino.h \
  ../examples/DemoWithLEDs/LedChanger.h
+testAdjustingDetectors.o: testAdjustingDetectors.cpp Arduino.hpp \
+ ArduinoMock.hpp TestTools.hpp ../src/AdjustingDetectors.h \
+ ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h \
+ ../src/LdrState.h ../src/AutoLdrSpotDetectors.cpp Streaming.h \
+ Arduino.hpp ../src/AdjustingLDR.h ../src/LDR.h ../src/LDR.cpp Arduino.h \
+ testAdjustingDetectors.h
 testAll.o: testAll.cpp testArduino.hpp testThresholdDetectors.h \
- testMovingAverageDetectors.h testGroupMovingAverageDetectors.h
+ testAdjustingDetectors.h testMovingAverageDetectors.h \
+ testGroupMovingAverageDetectors.h
 testArduino.o: testArduino.cpp Arduino.hpp TestTools.hpp
 testGroupMovingAverageDetectors.o: testGroupMovingAverageDetectors.cpp \
  Arduino.hpp ArduinoMock.hpp TestTools.hpp \

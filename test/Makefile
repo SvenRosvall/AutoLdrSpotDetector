@@ -9,27 +9,24 @@ run-%: % srcObjects
 CC=g++
 CPPFLAGS=-std=gnu++11 -I../src -I. -g -Wall
 
-srcObjects : AutoLdrSpotDetectors.o \
+SRC_OBJECTS=AutoLdrSpotDetectors.o \
     ThresholdDetectors.o \
+    AdjustingDetectors.o \
     MovingAverageDetectors.o \
     GroupMovingAverageDetectors.o \
     LDR.o \
     ThresholdLDR.o \
+    AdjustingLDR.o \
     MovingAverageLDR.o \
     GroupMovingAverageLDR.o \
     Helper.o
 
-testAll : AutoLdrSpotDetectors.o \
-    ThresholdDetectors.o \
-    MovingAverageDetectors.o \
-    GroupMovingAverageDetectors.o \
-    LDR.o \
-    ThresholdLDR.o \
-    MovingAverageLDR.o \
-    GroupMovingAverageLDR.o \
-    Helper.o \
+srcObjects : $(SRC_OBJECTS)
+
+testAll : ${SRC_OBJECTS} \
     testAll.o \
     testThresholdDetectors.o \
+    testAdjustingDetectors.o \
     testMovingAverageDetectors.o \
     testGroupMovingAverageDetectors.o \
     testArduino.o \
@@ -47,6 +44,11 @@ ThresholdDetectors.cpp : ../src/ThresholdDetectors.cpp
 	echo '#line 1 "../src/ThresholdDetectors.cpp"' >> $@
 	cat $< >> $@
 
+AdjustingDetectors.cpp : ../src/AdjustingDetectors.cpp
+	echo '#include "Arduino.hpp"' > $@
+	echo '#line 1 "../src/AdjustingDetectors.cpp"' >> $@
+	cat $< >> $@
+
 MovingAverageDetectors.cpp : ../src/MovingAverageDetectors.cpp
 	echo '#include "Arduino.hpp"' > $@
 	echo '#line 1 "../src/MovingAverageDetectors.cpp"' >> $@
@@ -61,6 +63,9 @@ LDR.o : ../src/LDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 ThresholdLDR.o : ../src/ThresholdLDR.cpp
+	$(CC) $(CPPFLAGS) -c $<
+
+AdjustingLDR.o : ../src/AdjustingLDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 MovingAverageLDR.o : ../src/MovingAverageLDR.cpp
@@ -80,7 +85,9 @@ depend :
 include dependencies
 
 clean :
-	-rm *.o *.exe AutoLdrSpotDetectors.cpp ThresholdDetectors.cpp MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp
+	-rm *.o *.exe AutoLdrSpotDetectors.cpp \
+		ThresholdDetectors.cpp AdjustingDetectors.cpp \
+		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \

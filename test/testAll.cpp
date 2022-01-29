@@ -3,12 +3,14 @@
 #include <iostream>
 #include "testArduino.hpp"
 #include "testThresholdDetectors.h"
+#include "testAdjustingDetectors.h"
 #include "testMovingAverageDetectors.h"
 #include "testGroupMovingAverageDetectors.h"
 
 std::map<std::string, void (*)()> suites = {
   {"Arduino", testArduino},
   {"ThresholdDetectors", testThresholdDetectors},
+  {"AdjustingDetectors", testAdjustingDetectors},
   {"MovingAverageDetectors", testMovingAverageDetectors},
   {"GroupMovingAverageDetectors", testGroupMovingAverageDetectors},
 };

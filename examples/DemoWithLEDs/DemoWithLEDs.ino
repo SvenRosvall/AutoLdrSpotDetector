@@ -1,11 +1,12 @@
 // Choose what algorithm to use.
 //#define THRESHOLD_DETECTORS
+#define ADJUSTING_DETECTORS
 //#define MOVING_AVERAGE_DETECTORS
-#define GROUP_MOVING_AVERAGE_DETECTORS
+//#define GROUP_MOVING_AVERAGE_DETECTORS
 
 // Choose what set of output is wanted.
-#define PLOT_ALL_VALUES
-//#define PLOT_DETAILS
+//#define PLOT_ALL_VALUES
+#define PLOT_DETAILS
 //#define PRINT_DEBUG
 
 // Tuning parameters
@@ -23,7 +24,7 @@ const int THRESHOLD_LEVEL = 150;
 const float P = 0.050f;  // for moving average
 const float Q = 0.2f;  // for moving diff average
 const float SelfDiffRatio = 0.3f; // How much to weigh in own LDR vs all LDRs
-const int CHANGE_INTERVAL = 1000;
+const int CHANGE_INTERVAL = 500; // ms
 const int THRESHOLD_LEVEL = 100;
 #endif
 
@@ -35,6 +36,9 @@ const int THRESHOLD_LEVEL = 100;
 #include <Streaming.h>
 #ifdef THRESHOLD_DETECTORS
 #include <ThresholdDetectors.h>
+#endif
+#ifdef ADJUSTING_DETECTORS
+#include <AdjustingDetectors.h>
 #endif
 #ifdef MOVING_AVERAGE_DETECTORS
 #include <MovingAverageDetectors.h>
@@ -52,6 +56,9 @@ std::initializer_list<LdrLedPair> ldrLedPairs = {{A0, 10}, {A1, 9}, {A2, 8}, {A3
 LedChanger ledChanger(ldrLedPairs);
 #ifdef THRESHOLD_DETECTORS
 ThresholdDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), THRESHOLD);
+#endif
+#ifdef ADJUSTING_DETECTORS
+AdjustingDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5}, 250);
 #endif
 #ifdef MOVING_AVERAGE_DETECTORS
 MovingAverageDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5});
@@ -99,7 +106,7 @@ void loop() {
 //         << endl;
 
 #ifdef PLOT_DETAILS
-  detectors.plotDetailed(2);
+  detectors.plotDetailed(1);
 #endif
 #ifdef PLOT_ALL_VALUES
   detectors.plotAll();
