@@ -10,6 +10,11 @@
 
 namespace
 {
+  auto LED_PINS_A = {A0};
+  // "auto" type doesn't work with numbers as their type is "int".
+  // Must explicitly say that the type is "uint8_t".
+  std::initializer_list<uint8_t> LED_PINS_D = {20};
+  
   class MockAction : public SensorChangeAction
   {
   public:
@@ -34,6 +39,9 @@ namespace
     MockAction action;
     GroupMovingAverageDetectors detectors1(action, {A0});
     assertEquals(-1, detectors1.getLdrs()[0].value());
+
+    GroupMovingAverageDetectors detectors2(action, LED_PINS_A);
+    GroupMovingAverageDetectors detectors3(action, LED_PINS_D);
 
     GroupMovingAverageDetectors detectors6(action, {A0, A1, A2, A3, A4, A5});
     assertEquals(-1, detectors6.getLdrs()[0].value());

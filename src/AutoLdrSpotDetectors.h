@@ -1,6 +1,7 @@
 #pragma once
 
 #include <initializer_list.h>
+#include <Arduino.h>
 
 #include "LdrState.h"
 
@@ -29,7 +30,7 @@ protected:
   void changeState(LdrState fromState, LdrState toState);
 
 public:
-  AutoLdrSpotDetectors(SensorChangeAction & action, const std::initializer_list<int> & il);
+  AutoLdrSpotDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il);
 
   void setup();
   virtual void update() = 0;

@@ -1,7 +1,7 @@
 #include "AdjustingDetectors.h"
 #include "AdjustingLDR.h"
 
-AdjustingDetectors::AdjustingDetectors(SensorChangeAction & action, const std::initializer_list<int> & il, int thresholdLevel)
+AdjustingDetectors::AdjustingDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il, int thresholdLevel)
   : AutoLdrSpotDetectors(action, il)
   , thresholdLevel(thresholdLevel)
 {

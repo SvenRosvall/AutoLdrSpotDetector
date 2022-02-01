@@ -51,7 +51,7 @@ void AutoLdrSpotDetectors<LDRT>::changeState(LdrState fromState, LdrState toStat
 
 template<class LDRT>
 AutoLdrSpotDetectors<LDRT>::AutoLdrSpotDetectors(SensorChangeAction & action,
-                                           const std::initializer_list<int> & il)
+                                           const std::initializer_list<uint8_t> & il)
   : action(action)
   , ldrCount(il.size())
 {

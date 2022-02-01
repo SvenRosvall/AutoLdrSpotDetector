@@ -1,12 +1,14 @@
 #ifndef ARDUINO_HPP
 #define ARDUINO_HPP
 
-const int A0=20;
-const int A1=21;
-const int A2=22;
-const int A3=23;
-const int A4=24;
-const int A5=25;
+typedef unsigned char uint8_t;
+
+const uint8_t A0=20;
+const uint8_t A1=21;
+const uint8_t A2=22;
+const uint8_t A3=23;
+const uint8_t A4=24;
+const uint8_t A5=25;
 
 enum PinMode {
         OUTPUT,
