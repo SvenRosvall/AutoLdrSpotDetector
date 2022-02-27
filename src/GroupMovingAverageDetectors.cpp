@@ -35,9 +35,9 @@ bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr
   switch (checkedState)
   {
     case COVERING:
-      return sumOfDiffs / ((int) ldrCount - 1) > 10;
+      return sumOfDiffs / ((int) ldrCount - 1) > 100;
     case OPENING:
-      return sumOfDiffs / ((int) ldrCount - 1) < -10;
+      return sumOfDiffs / ((int) ldrCount - 1) < -100;
     default:
       Serial.println("Unknown state to check in GroupMovingAverageDetectors::checkOtherLDRs()");
       return false;
