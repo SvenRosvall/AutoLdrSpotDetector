@@ -21,7 +21,8 @@ void GroupMovingAverageLDR::setup()
 void GroupMovingAverageLDR::readValue()
 {
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::readValue();
-  movingDiffAverage = parent->getMovingDiffAverageP() * (lastValue - movingAverage) + (1 - parent->getMovingDiffAverageP()) * movingDiffAverage;
+  float P = parent->getMovingDiffAverageP();
+  movingDiffAverage = P * (lastValue - movingAverage) + (1 - P) * movingDiffAverage;
 }
 
 void GroupMovingAverageLDR::updateMovingAverage()
@@ -30,7 +31,8 @@ void GroupMovingAverageLDR::updateMovingAverage()
   float allLdrMovingDiffAverage = parent->getAvgOfDiffs();
 
   // - Apply a portion of the sum of diffs and a portion of diff for this LDR.
-  float diffToApply = parent->getSelfDiffRatio() * movingDiffAverage + (1-parent->getSelfDiffRatio()) * allLdrMovingDiffAverage;
+  float R = parent->getSelfDiffRatio();
+  float diffToApply = R * movingDiffAverage + (1 - R) * allLdrMovingDiffAverage;
   movingAverage += parent->getMovingAverageP() * diffToApply;
 }
 
