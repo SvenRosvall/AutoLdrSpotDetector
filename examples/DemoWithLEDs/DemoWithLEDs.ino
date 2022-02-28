@@ -6,7 +6,7 @@
 
 // Choose what set of output is wanted.
 //#define PLOT_ALL_VALUES
-#define PLOT_DETAILS
+#define PLOT_DETAILS 0
 //#define PRINT_DEBUG
 
 // Tuning parameters
@@ -87,7 +87,7 @@ void setup() {
 
   // DEBUG("Start : " << ldrs);
 #ifdef PLOT_DETAILS
-  detectors.plotTitleDetailed(2);
+  detectors.plotTitleDetailed(PLOT_DETAILS);
 #endif
 #ifdef PLOT_ALL_VALUES
   detectors.plotTitleAll();
@@ -106,7 +106,7 @@ void loop() {
 //         << endl;
 
 #ifdef PLOT_DETAILS
-  detectors.plotDetailed(1);
+  detectors.plotDetailed(PLOT_DETAILS);
 #endif
 #ifdef PLOT_ALL_VALUES
   detectors.plotAll();

@@ -85,30 +85,24 @@ void AutoLdrSpotDetectors<LDRT>::plotAll()
 }
 
 template<class LDRT>
-void AutoLdrSpotDetectors<LDRT>::plotTitleDetailed(unsigned int nLdr)
+void AutoLdrSpotDetectors<LDRT>::plotTitleDetailed(unsigned int ldrNumber)
 {
-  if (ldrCount < nLdr)
+  if (ldrCount < ldrNumber)
   {
-    nLdr = ldrCount;
+    ldrNumber = 0;
   }
-  for (unsigned int i = 0 ; i < nLdr ; ++i)
-  {
-    ldrs[i].printTitleDetailed(Serial);
-  }
+  ldrs[ldrNumber].printTitleDetailed(Serial);
   Serial << endl;
 }
 
 template<class LDRT>
-void AutoLdrSpotDetectors<LDRT>::plotDetailed(unsigned int nLdr)
+void AutoLdrSpotDetectors<LDRT>::plotDetailed(unsigned int ldrNumber)
 {
-  if (ldrCount < nLdr)
+  if (ldrCount < ldrNumber)
   {
-    nLdr = ldrCount;
+    ldrNumber = 0;
   }
-  for (unsigned int i = 0 ; i < nLdr ; ++i)
-  {
-    ldrs[i].printValueDetailed(Serial);
-  }
+  ldrs[ldrNumber].printValueDetailed(Serial);
   Serial << endl;
 }
 
