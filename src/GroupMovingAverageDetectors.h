@@ -10,7 +10,8 @@ class GroupMovingAverageDetectors : public AutoLdrSpotDetectors<GroupMovingAvera
   float movingAverageP = 0.1;
   float movingDiffAverageP = 0.3;
   float selfDiffRatio = 0.5;
-  unsigned int changeInterval = 300; // ms
+  unsigned int changeCoverInterval = 300; // ms
+  unsigned int changeOpenInterval = 300; // ms
 
   // Calculated values
   float avgOfDiffs;
@@ -32,8 +33,11 @@ public:
   void setSelfDiffRatio(float r) { this->selfDiffRatio = r; }
   float getSelfDiffRatio() { return selfDiffRatio; }
 
-  void setChangeInterval(unsigned int i) { this->changeInterval = i; }
-  unsigned int getChangeInterval() { return changeInterval; }
+  void setChangeCoverInterval(unsigned int i) { this->changeCoverInterval = i; }
+  unsigned int getChangeCoverInterval() { return changeCoverInterval; }
+
+  void setChangeOpenInterval(unsigned int i) { this->changeOpenInterval = i; }
+  unsigned int getChangeOpenInterval() { return changeOpenInterval; }
 
   float getAvgOfDiffs() const
   {

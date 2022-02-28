@@ -80,7 +80,8 @@ void setup() {
   detectors.setMovingAverageP(P);
   detectors.setMovingDiffAverageP(Q);
   detectors.setSelfDiffRatio(SelfDiffRatio);
-  detectors.setChangeInterval(CHANGE_INTERVAL);
+  detectors.setChangeCoverInterval(CHANGE_INTERVAL);
+  detectors.setChangeOpenInterval(CHANGE_INTERVAL);
   detectors.setThresholdLevel(THRESHOLD_LEVEL);
 #endif
   detectors.setup();

@@ -69,7 +69,7 @@ While in COVERING/OPENING state, checks
 1. if the last value has suddenly changed back to a value where 
    state should be reverted.
    This is to avoid intermittent changes.
-1. if the changeInterval has elapsed
+1. if the changeCoverInterval/changeOpenInterval has elapsed
    AND the other LDRs are not changing in the same direction.
    Then the LDR is considered to have completed its transition.
 

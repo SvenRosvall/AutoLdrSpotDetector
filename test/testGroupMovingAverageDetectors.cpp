@@ -106,7 +106,8 @@ namespace
     MockAction action;
     GroupMovingAverageDetectors detectors(action, {A0, A1});
     GroupMovingAverageLDR const * ldrs = detectors.getLdrs();
-    detectors.setChangeInterval(20);
+    detectors.setChangeCoverInterval(20);
+    detectors.setChangeOpenInterval(20);
 
     setAnalogRead(A0, 2);
     setAnalogRead(A1, 4);
