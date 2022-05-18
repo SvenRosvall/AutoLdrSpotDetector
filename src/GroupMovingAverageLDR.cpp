@@ -38,15 +38,23 @@ void GroupMovingAverageLDR::updateMovingAverage()
 
 void GroupMovingAverageLDR::updateThreshold()
 {
+  // Threshold shall be set a bit below or above the average level.
+  // How much below/above depends on the current ambient light level.
+  // For bright conditions (low levels) the threshold must be set wider
+  // than for dark conditions (high levels).
+  // Use the configured threshold level and scale it depending on the light level.
+  const float S = 0.8; // How much to take scaling into account. 1.0 => totally. 0.0 => Use threshold level as is.
+  float scale = (1-S) + S * (1024 - movingAverage) / 1024.0f;
+  int adjustedThresholdLevel = scale * parent->getThresholdLevel() ;
   switch (state)
   {
     case OPEN:
     case COVERING:
-      threshold = movingAverage + parent->getThresholdLevel();
+      threshold = movingAverage + adjustedThresholdLevel;
       break;
     case COVERED:
     case OPENING:
-      threshold = movingAverage - parent->getThresholdLevel();
+      threshold = movingAverage - adjustedThresholdLevel;
       break;
   }
 }
@@ -80,7 +88,7 @@ void GroupMovingAverageLDR::updateState()
         DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
         parent->onChange(this, state);
         movingAverage = lastValue;
-        threshold = movingAverage - parent->getThresholdLevel();
+        updateThreshold();
       }
       break;
     case COVERED:
@@ -105,7 +113,7 @@ void GroupMovingAverageLDR::updateState()
         DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
         parent->onChange(this, state);
         movingAverage = lastValue;
-        threshold = movingAverage + parent->getThresholdLevel();
+        updateThreshold();
       }
       break;
    }
