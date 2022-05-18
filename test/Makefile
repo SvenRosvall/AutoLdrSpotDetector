@@ -29,6 +29,7 @@ testAll : ${SRC_OBJECTS} \
     testAdjustingDetectors.o \
     testMovingAverageDetectors.o \
     testGroupMovingAverageDetectors.o \
+    testGroupMovingAverageLDR.o \
     testArduino.o \
     ArduinoMock.o \
     Streaming.o \

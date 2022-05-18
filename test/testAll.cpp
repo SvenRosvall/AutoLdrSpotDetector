@@ -6,6 +6,7 @@
 #include "testAdjustingDetectors.h"
 #include "testMovingAverageDetectors.h"
 #include "testGroupMovingAverageDetectors.h"
+#include "testGroupMovingAverageLDR.h"
 
 std::map<std::string, void (*)()> suites = {
   {"Arduino", testArduino},
@@ -13,6 +14,7 @@ std::map<std::string, void (*)()> suites = {
   {"AdjustingDetectors", testAdjustingDetectors},
   {"MovingAverageDetectors", testMovingAverageDetectors},
   {"GroupMovingAverageDetectors", testGroupMovingAverageDetectors},
+  {"GroupMovingAverageLDR", testGroupMovingAverageLDR},
 };
 
 int main(int argc, const char * const * argv)
