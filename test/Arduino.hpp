@@ -9,6 +9,8 @@ const uint8_t A2=22;
 const uint8_t A3=23;
 const uint8_t A4=24;
 const uint8_t A5=25;
+const uint8_t A6=26;
+const uint8_t A7=27;
 
 enum PinMode {
         OUTPUT,

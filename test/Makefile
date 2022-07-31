@@ -78,7 +78,8 @@ GroupMovingAverageLDR.o : ../src/GroupMovingAverageLDR.cpp
 Helper.o : ../src/Helper.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
-examples: sketchDemoWithLeds.o
+examples: sketchDemoWithLeds.o \
+	sketchMonitorLDRs.o
 
 depend :
 	$(CC) -MM $(CPPFLAGS) *.cpp > dependencies
