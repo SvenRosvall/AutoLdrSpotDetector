@@ -49,22 +49,21 @@ const int THRESHOLD_LEVEL = 150;
 #include <initializer_list.h>
 #include "LedChanger.h"
 
-// TODO: Need to declare pairs of LDR pin and LED pin. E.g. {{A0, 10}, {A1, 9}, {A2, 8}, {A3, 7}, {A4, 6}, {A5, 5}}
+// Declare pairs of LDR pin and LED pin.
 std::initializer_list<LdrLedPair> ldrLedPairs = {{A0, 10}, {A1, 9}, {A2, 8}, {A3, 7}, {A4, 6}, {A5, 5}};
-
-//LedChanger ledChanger({10, 9, 8, 7, 6, 5});
 LedChanger ledChanger(ldrLedPairs);
+
 #ifdef THRESHOLD_DETECTORS
 ThresholdDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), THRESHOLD);
 #endif
 #ifdef ADJUSTING_DETECTORS
-AdjustingDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5}, 250);
+AdjustingDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), 250);
 #endif
 #ifdef MOVING_AVERAGE_DETECTORS
-MovingAverageDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5});
+MovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
 #endif
 #ifdef GROUP_MOVING_AVERAGE_DETECTORS
-GroupMovingAverageDetectors detectors(ledChanger, {A0, A1, A2, A3, A4, A5});
+GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
 #endif
 
 
