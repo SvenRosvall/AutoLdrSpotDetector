@@ -13,12 +13,12 @@ struct LdrLedPair
 
 class LedChanger : public SensorChangeAction
 {
-  int * leds;
+  uint8_t * leds;
 public:
-  LedChanger(std::initializer_list<int> il);
+  LedChanger(std::initializer_list<uint8_t> il);
   LedChanger(std::initializer_list<LdrLedPair> il);
   void onChange(int ldrIndex, bool covered);
 };
 
 // Helper to get a list of LDR pins from LDR/LED pairs.
-std::initializer_list<int> getLdrPins(std::initializer_list<LdrLedPair> il);
+std::initializer_list<uint8_t> getLdrPins(std::initializer_list<LdrLedPair> il);

@@ -3,20 +3,20 @@
 #include <Streaming.h>
 
 // Helper to get a list of LDR pins from LDR/LED pairs.
-std::initializer_list<int> getLdrPins(std::initializer_list<LdrLedPair> il)
+std::initializer_list<uint8_t> getLdrPins(std::initializer_list<LdrLedPair> il)
 {
-  int * ret = new int[il.size()];
+  uint8_t * ret = new uint8_t[il.size()];
   auto p = ret;
   for (auto e : il)
   {
     *p++ = e.ldrPin;
   }
-  return std::initializer_list<int>(ret, il.size());
+  return std::initializer_list<uint8_t>(ret, il.size());
 }
 
-LedChanger::LedChanger(std::initializer_list<int> il)
+LedChanger::LedChanger(std::initializer_list<uint8_t> il)
 {
-  leds = new int[il.size()];
+  leds = new uint8_t[il.size()];
   auto p = leds;
   for (auto e : il)
   {
@@ -28,7 +28,7 @@ LedChanger::LedChanger(std::initializer_list<int> il)
 
 LedChanger::LedChanger(std::initializer_list<LdrLedPair> il)
 {
-  leds = new int[il.size()];
+  leds = new uint8_t[il.size()];
   auto p = leds;
   for (auto e : il)
   {
