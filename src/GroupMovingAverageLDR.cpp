@@ -53,7 +53,7 @@ void GroupMovingAverageLDR::updateThreshold()
   // For bright conditions (low levels) the threshold must be set wider
   // than for dark conditions (high levels).
   // Use the configured threshold level and scale it depending on the light level.
-  const float S = 0.8; // How much to take scaling into account. 1.0 => totally. 0.0 => Use threshold level as is.
+  const float S = 0.7; // How much to take scaling into account. 1.0 => totally. 0.0 => Use threshold level as is.
   float scale = (1-S) + S * (1024 - movingAverage) / 1024.0f;
   int adjustedThresholdLevel = scale * parent->getThresholdLevel() ;
   switch (state)
