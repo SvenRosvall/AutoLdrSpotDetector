@@ -30,10 +30,20 @@ void GroupMovingAverageLDR::updateMovingAverage()
   // add up all movingDiffAverage for all LDRs
   float allLdrMovingDiffAverage = parent->getAvgOfDiffs();
 
+#if 0
+  // This didn't work well. It can make the threshold overshoot the value
+  // and thus cause a false state change.
+  // TODO: Review this idea if it can be tuned better or shall be scrapped.
+
   // - Apply a portion of the sum of diffs and a portion of diff for this LDR.
   float R = parent->getSelfDiffRatio();
   float diffToApply = R * movingDiffAverage + (1 - R) * allLdrMovingDiffAverage;
   movingAverage += parent->getMovingAverageP() * diffToApply;
+#else
+  // Use exponential smooting for the average.
+  float P = parent->getMovingAverageP();
+  movingAverage = P * lastValue + (1 - P) * movingAverage;
+#endif
 }
 
 void GroupMovingAverageLDR::updateThreshold()
