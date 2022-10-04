@@ -22,6 +22,8 @@ void GroupMovingAverageDetectors::update()
 
 bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr, LdrState checkedState)
 {
+  const int diffChangeThreshold = 50;
+
   // Check the trend (avgDiff) for the other LDRs.
   int sumOfDiffs = 0;
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
@@ -35,9 +37,9 @@ bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr
   switch (checkedState)
   {
     case COVERING:
-      return sumOfDiffs / ((int) ldrCount - 1) > 100;
+      return sumOfDiffs / ((int) ldrCount - 1) > diffChangeThreshold;
     case OPENING:
-      return sumOfDiffs / ((int) ldrCount - 1) < -100;
+      return sumOfDiffs / ((int) ldrCount - 1) < -diffChangeThreshold;
     default:
       Serial.println("Unknown state to check in GroupMovingAverageDetectors::checkOtherLDRs()");
       return false;
