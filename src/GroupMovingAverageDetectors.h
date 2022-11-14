@@ -12,6 +12,7 @@ class GroupMovingAverageDetectors : public AutoLdrSpotDetectors<GroupMovingAvera
   float selfDiffRatio = 0.5;
   unsigned int changeCoverInterval = 300; // ms
   unsigned int changeOpenInterval = 300; // ms
+  float thresholdScaling = 0.8;
 
   // Calculated values
   float avgOfDiffs;
@@ -38,6 +39,9 @@ public:
 
   void setChangeOpenInterval(unsigned int i) { this->changeOpenInterval = i; }
   unsigned int getChangeOpenInterval() { return changeOpenInterval; }
+
+  void setThresholdScaling(float s) { this->thresholdScaling = s; }
+  float getThresholdScaling() { return thresholdScaling; }
 
   float getAvgOfDiffs() const
   {

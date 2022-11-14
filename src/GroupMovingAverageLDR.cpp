@@ -27,13 +27,13 @@ void GroupMovingAverageLDR::readValue()
 
 void GroupMovingAverageLDR::updateMovingAverage()
 {
-  // add up all movingDiffAverage for all LDRs
-  float allLdrMovingDiffAverage = parent->getAvgOfDiffs();
-
 #if 0
   // This didn't work well. It can make the threshold overshoot the value
   // and thus cause a false state change.
   // TODO: Review this idea if it can be tuned better or shall be scrapped.
+
+  // add up all movingDiffAverage for all LDRs
+  float allLdrMovingDiffAverage = parent->getAvgOfDiffs();
 
   // - Apply a portion of the sum of diffs and a portion of diff for this LDR.
   float R = parent->getSelfDiffRatio();
@@ -53,7 +53,7 @@ void GroupMovingAverageLDR::updateThreshold()
   // For bright conditions (low levels) the threshold must be set wider
   // than for dark conditions (high levels).
   // Use the configured threshold level and scale it depending on the light level.
-  const float S = 0.7; // How much to take scaling into account. 1.0 => totally. 0.0 => Use threshold level as is.
+  const float S = parent->getThresholdScaling(); // How much to take scaling into account. 1.0 => totally. 0.0 => Use threshold level as is.
   float scale = (1-S) + S * (1024 - movingAverage) / 1024.0f;
   int adjustedThresholdLevel = scale * parent->getThresholdLevel() ;
   switch (state)
