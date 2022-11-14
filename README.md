@@ -167,6 +167,18 @@ It will need some tweaking and fix the following problems:
 
 Proposed Features
 ---
+### Use a reference LDR
+Use one of the LDRs as a reference that knows for sure how
+the ambient light is changing. 
+This removes the need for checking the other LDRs and 
+deciding a majority vote.
+
+There is an edge case when few LDRs are used where two trains
+cover one LDR each at the same time. 
+This meant that there was no clear majority vote by the LDRs
+and the two LDRs did not report that they changed.
+A reference LDR would avoid this edge case.
+
 ### Provide more LDR inputs
 Having 6 analog LDR inputs might be restrictive in some cases.
 Multiplexing can be utilized to allow more LDR inputs.
