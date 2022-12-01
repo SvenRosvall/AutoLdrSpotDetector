@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LdrState.h"
+#include "LdrBase.h"
 
 #include "Streaming.h"
 
@@ -8,7 +9,7 @@ template <class LDRT>
 class AutoLdrSpotDetectors;
 
 template <class LDRT, class DetectorT>
-class LDR
+class LDR : public LdrBase
 {
   friend AutoLdrSpotDetectors<LDRT>;
 
@@ -30,9 +31,9 @@ public:
   virtual void setup();
   virtual void readValue();
 
-  int value() const { return lastValue; }
+  int value() const override { return lastValue; }
   int getState() const { return state; }
-  int getThreshold() const { return threshold; }
+  int getThreshold() const override { return threshold; }
 
   virtual void updateState() = 0;
 

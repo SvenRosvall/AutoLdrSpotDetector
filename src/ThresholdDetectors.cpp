@@ -1,5 +1,6 @@
 #include "ThresholdDetectors.h"
 #include "ThresholdLDR.h"
+#include "InstantStateDecider.h"
 
 ThresholdDetectors::ThresholdDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il, int threshold)
   : AutoLdrSpotDetectors(action, il)
@@ -7,6 +8,7 @@ ThresholdDetectors::ThresholdDetectors(SensorChangeAction & action, const std::i
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
     ldrs[i].threshold = threshold;
+    ldrs[i].stateDecider = new InstantStateDecider();
   }
 }
 

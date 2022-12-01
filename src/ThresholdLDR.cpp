@@ -4,7 +4,7 @@
 
 void ThresholdLDR::updateState()
 {
-  LdrState newState = (lastValue < threshold) ? OPEN : COVERED;
+  LdrState newState = stateDecider->decide(*this);
   if (state != newState)
   {
     state = newState;
