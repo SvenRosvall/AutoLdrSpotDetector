@@ -11,6 +11,7 @@ void MovingAverageLDR::setup()
 void MovingAverageLDR::readValue()
 {
   LDR<MovingAverageLDR, MovingAverageDetectors>::readValue();
+  float movingAverageP = parent->getMovingAverageP();
   movingAverage = movingAverageP * lastValue + (1 - movingAverageP) * movingAverage;
   updateThreshold();
 }
@@ -20,18 +21,18 @@ void MovingAverageLDR::updateThreshold()
   switch (state)
   {
     case OPEN:
-      threshold = movingAverage + thresholdLevel;
+      threshold = movingAverage + parent->getThresholdLevel();
       oldThreshold = threshold;
       break;
     case COVERING:
-      threshold = movingAverage + thresholdLevel;
+      threshold = movingAverage + parent->getThresholdLevel();
       break;
     case COVERED:
-      threshold = movingAverage - thresholdLevel;
+      threshold = movingAverage - parent->getThresholdLevel();
       oldThreshold = threshold;
       break;
     case OPENING:
-      threshold = movingAverage - thresholdLevel;
+      threshold = movingAverage - parent->getThresholdLevel();
       break;
   }
 }
@@ -60,7 +61,7 @@ void MovingAverageLDR::updateState()
         DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
         parent->onChange(this, state);
         movingAverage = lastValue;
-        threshold = movingAverage - thresholdLevel;
+        threshold = movingAverage - parent->getThresholdLevel();
       }
       break;
     case COVERED:
@@ -71,7 +72,7 @@ void MovingAverageLDR::updateState()
       }
       break;
     case OPENING:
-      if (lastValue > movingAverage + thresholdLevel)
+      if (lastValue > movingAverage + parent->getThresholdLevel())
       {
         state = COVERED;
         DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");
@@ -83,7 +84,7 @@ void MovingAverageLDR::updateState()
         DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
         parent->onChange(this, state);
         movingAverage = lastValue;
-        threshold = movingAverage + thresholdLevel;
+        threshold = movingAverage + parent->getThresholdLevel();
       }
       break;
   }

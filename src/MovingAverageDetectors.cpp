@@ -1,22 +1,6 @@
 #include "MovingAverageDetectors.h"
 #include "MovingAverageLDR.h"
 
-void MovingAverageDetectors::setThresholdLevel(int l)
-{
-  for (unsigned int i = 0 ; i < ldrCount ; ++i)
-  {
-    ldrs[i].setThresholdLevel(l);
-  }
-}
-
-void MovingAverageDetectors::setMovingAverageP(float p)
-{
-  for (unsigned int i = 0 ; i < ldrCount ; ++i)
-  {
-    ldrs[i].setMovingAverageP(p);
-  }
-}
-
 bool MovingAverageDetectors::checkOtherLDRs(MovingAverageLDR * thisLdr, LdrState checkedState)
 {
   // TODO: Counting LDRs in a given state is not reliable as some LDRs may have already done this check
