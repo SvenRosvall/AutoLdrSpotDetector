@@ -11,7 +11,11 @@ public:
   void setMovingAverageP(float p);
 
   virtual void update() override;
-  void checkTransitions();
+
+  // Called from MovingAverageLDR
   bool checkOtherLDRs(MovingAverageLDR * thisLdr, LdrState checkedState);
+
+private:
+  void checkTransitions();
   TransitionState areLdrsChanging(LdrState transitionState, LdrState finalState);
 };
