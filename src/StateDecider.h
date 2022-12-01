@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LdrState.h"
+
 class LdrBase;
 
 class StateDecider

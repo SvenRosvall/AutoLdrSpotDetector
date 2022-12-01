@@ -25,6 +25,7 @@ srcObjects : $(SRC_OBJECTS)
 
 testAll : ${SRC_OBJECTS} \
     testAll.o \
+    testInstantStateDecider.o \
     testThresholdDetectors.o \
     testAdjustingDetectors.o \
     testMovingAverageDetectors.o \
