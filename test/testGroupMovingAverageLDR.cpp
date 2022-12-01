@@ -6,6 +6,14 @@
 #include "GroupMovingAverageLDR.h"
 #include "testGroupMovingAverageLDR.h"
 
+// Backdoor for setting state of an LDR.
+void testGroupMovingAverageLDR_setState(GroupMovingAverageLDR & ldr, LdrState state, float ma)
+{
+  ldr.state = state;
+  ldr.movingAverage = ma;
+  ldr.updateThreshold();
+}
+
 namespace
 {
   class MockAction : public SensorChangeAction
@@ -28,23 +36,17 @@ namespace
     GroupMovingAverageLDR & ldr = (const_cast<GroupMovingAverageLDR *>(detectors.getLdrs()))[0];
     detectors.setThresholdLevel(100);
 
-    ldr.movingAverage = 0;
-    ldr.updateThreshold();
-    assertEquals(100, ldr.threshold);
+    testGroupMovingAverageLDR_setState(ldr, OPEN, 0);
+    assertEquals(100, ldr.getThreshold());
 
-    ldr.movingAverage = 512;
-    ldr.updateThreshold();
-    assertEquals(572, ldr.threshold);
+    testGroupMovingAverageLDR_setState(ldr, OPEN, 512);
+    assertEquals(572, ldr.getThreshold());
 
-    ldr.state = COVERED;
+    testGroupMovingAverageLDR_setState(ldr, COVERED, 512);
+    assertEquals(452, ldr.getThreshold());
 
-    ldr.movingAverage = 512;
-    ldr.updateThreshold();
-    assertEquals(452, ldr.threshold);
-
-    ldr.movingAverage = 922;
-    ldr.updateThreshold();
-    assertEquals(895, ldr.threshold);
+    testGroupMovingAverageLDR_setState(ldr, COVERED, 922);
+    assertEquals(895, ldr.getThreshold());
   }
 }
 

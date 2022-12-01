@@ -90,7 +90,7 @@ namespace
 
   void showLdr(const char * msg, ThresholdLDR const & ldr)
   {
-    std::cout << msg << ": state=" << ldr.state << " value=" << ldr.value() <<" threshold=" << ldr.threshold << std::endl;
+    std::cout << msg << ": state=" << ldr.getState() << " value=" << ldr.value() <<" threshold=" << ldr.getThreshold() << std::endl;
   }
   void testThresholdDetectors_changeToCovered()
   {
@@ -107,7 +107,7 @@ namespace
     showLdr("after setup()   ", ldrs[0]);
 
     assertEquals(0, action.changes.size());
-    assertEquals(OPEN, ldrs[0].state);
+    assertEquals(OPEN, ldrs[0].getState());
     assertEquals(2, ldrs[0].value());
     assertEquals(3, ldrs[1].value());
 
@@ -117,7 +117,7 @@ namespace
     showLdr("after update()  ", ldrs[0]);
 
     assertEquals(1, action.changes.size());
-    assertEquals(COVERED, ldrs[0].state);
+    assertEquals(COVERED, ldrs[0].getState());
     assertEquals(202, ldrs[0].value());
     assertEquals(4, ldrs[1].value());
   }

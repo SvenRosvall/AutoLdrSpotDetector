@@ -88,7 +88,7 @@ namespace
 
   void showLdr(const char * msg, MovingAverageLDR const & ldr)
   {
-    std::cout << msg << ": state=" << ldr.state << " value=" << ldr.value() << " mAvg=" << ldr.movingAverage << " threshold=" << ldr.threshold << " oldThreshold=" << ldr.oldThreshold << std::endl;
+    std::cout << msg << ": state=" << ldr.getState() << " value=" << ldr.value() << " mAvg=" << ldr.getMovingAverage() << " threshold=" << ldr.getThreshold() << " oldThreshold=" << ldr.getOldThreshold() << std::endl;
   }
   void testMovingAverageDetectors_changeToCovered()
   {
@@ -105,7 +105,7 @@ namespace
     showLdr("after setup()   ", ldrs[0]);
 
     assertEquals(0, action.changes.size());
-    assertEquals(OPEN, ldrs[0].state);
+    assertEquals(OPEN, ldrs[0].getState());
     assertEquals(2, ldrs[0].value());
     assertEquals(3, ldrs[1].value());
 
@@ -115,7 +115,7 @@ namespace
     showLdr("after update() 1", ldrs[0]);
 
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     assertEquals(202, ldrs[0].value());
     assertEquals(4, ldrs[1].value());
 
@@ -124,21 +124,21 @@ namespace
     detectors.update();
     showLdr("after update() 2", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
 
     setAnalogRead(A0, 202);
     setAnalogRead(A1, 4);
     detectors.update();
     showLdr("after update() 3", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     
     setAnalogRead(A0, 202);
     setAnalogRead(A1, 4);
     detectors.update();
     showLdr("after update() 4", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     
     setAnalogRead(A0, 202);
     setAnalogRead(A1, 4);
@@ -147,7 +147,7 @@ namespace
     assertEquals(1, action.changes.size());
     assertEquals(0, action.changes[0].ldrIndex);
     assertEquals(true, action.changes[0].covered);
-    assertEquals(COVERED, ldrs[0].state);
+    assertEquals(COVERED, ldrs[0].getState());
   }
 }
 

@@ -90,7 +90,7 @@ namespace
 
   void showLdr(const char * msg, AdjustingLDR const & ldr)
   {
-    std::cout << msg << ": state=" << ldr.state << " value=" << ldr.value() <<" threshold=" << ldr.threshold << std::endl;
+    std::cout << msg << ": state=" << ldr.getState() << " value=" << ldr.value() <<" threshold=" << ldr.getThreshold() << std::endl;
   }
   void testAdjustingDetectors_changeToCovered()
   {
@@ -107,7 +107,7 @@ namespace
     showLdr("after setup()   ", ldrs[0]);
 
     assertEquals(0, action.changes.size());
-    assertEquals(OPEN, ldrs[0].state);
+    assertEquals(OPEN, ldrs[0].getState());
     assertEquals(2, ldrs[0].value());
     assertEquals(3, ldrs[1].value());
 
@@ -117,7 +117,7 @@ namespace
     showLdr("after update() 1 ", ldrs[0]);
 
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     assertEquals(202, ldrs[0].value());
     assertEquals(4, ldrs[1].value());
 
@@ -127,7 +127,7 @@ namespace
     detectors.update();
     showLdr("after update() 2", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
 
     addMillis(100);
     setAnalogRead(A0, 202);
@@ -135,7 +135,7 @@ namespace
     detectors.update();
     showLdr("after update() 3", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     
     addMillis(100);
     setAnalogRead(A0, 202);
@@ -143,7 +143,7 @@ namespace
     detectors.update();
     showLdr("after update() 4", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     
     addMillis(100);
     setAnalogRead(A0, 202);
@@ -151,7 +151,7 @@ namespace
     detectors.update();
     showLdr("after update() 5", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].state);
+    assertEquals(COVERING, ldrs[0].getState());
     
     addMillis(100);
     setAnalogRead(A0, 202);
@@ -161,7 +161,7 @@ namespace
     assertEquals(1, action.changes.size());
     assertEquals(0, action.changes[0].ldrIndex);
     assertEquals(true, action.changes[0].covered);
-    assertEquals(COVERED, ldrs[0].state);
+    assertEquals(COVERED, ldrs[0].getState());
   }
 }
 

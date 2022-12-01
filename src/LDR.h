@@ -8,14 +8,18 @@ template <class LDRT>
 class AutoLdrSpotDetectors;
 
 template <class LDRT, class DetectorT>
-struct LDR
+class LDR
 {
+  friend AutoLdrSpotDetectors<LDRT>;
+
+protected:
   DetectorT * parent;
   int sensorPin = -1;
   int lastValue = -1;
   LdrState state;
   int threshold = -1;
 
+public:
   void create(AutoLdrSpotDetectors<LDRT> * parent, int sensorPin)
   {
     this->parent = (DetectorT *) parent;
@@ -26,10 +30,9 @@ struct LDR
   virtual void setup();
   virtual void readValue();
 
-  int value() const
-  {
-    return lastValue;
-  }
+  int value() const { return lastValue; }
+  int getState() const { return state; }
+  int getThreshold() const { return threshold; }
 
   virtual void updateState() = 0;
 

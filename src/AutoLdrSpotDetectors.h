@@ -6,7 +6,7 @@
 #include "LdrState.h"
 
 template <class LDRT, class DetectorT>
-struct LDR;
+class LDR;
 
 class SensorChangeAction
 {

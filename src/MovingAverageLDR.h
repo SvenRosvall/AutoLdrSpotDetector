@@ -3,14 +3,21 @@
 #include "LDR.h"
 class MovingAverageDetectors;
 
-struct MovingAverageLDR : public LDR<MovingAverageLDR, MovingAverageDetectors>
+class MovingAverageLDR : public LDR<MovingAverageLDR, MovingAverageDetectors>
 {
+  friend MovingAverageDetectors;
+
+private:
   float movingAverage = -1;
   int oldThreshold = -1;
 
   // Tunable parameters
   int thresholdLevel = 50;
   float movingAverageP = 0.1;
+
+public:
+  float getMovingAverage() const { return movingAverage; }
+  float getOldThreshold() const { return oldThreshold; }
 
   void setThresholdLevel(int l)
   {
