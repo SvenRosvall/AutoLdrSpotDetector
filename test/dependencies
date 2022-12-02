@@ -2,7 +2,8 @@ AdjustingDetectors.o: AdjustingDetectors.cpp Arduino.hpp \
  ../src/AdjustingDetectors.h ../src/AutoLdrSpotDetectors.h \
  ../src/initializer_list.h Arduino.h Arduino.hpp ../src/LdrState.h \
  ../src/AutoLdrSpotDetectors.cpp Streaming.h ../src/AdjustingLDR.h \
- ../src/LDR.h ../src/LdrBase.h ../src/LDR.cpp
+ ../src/LDR.h ../src/LdrBase.h ../src/LDR.cpp ../src/StateDecider.h \
+ ../src/TimedStateDecider.h
 ArduinoMock.o: ArduinoMock.cpp Arduino.hpp ArduinoMock.hpp
 AutoLdrSpotDetectors.o: AutoLdrSpotDetectors.cpp Arduino.hpp Streaming.h \
  Arduino.hpp ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h \
@@ -26,6 +27,9 @@ ThresholdDetectors.o: ThresholdDetectors.cpp Arduino.hpp \
  ../src/AutoLdrSpotDetectors.cpp Streaming.h ../src/ThresholdLDR.h \
  ../src/LDR.h ../src/LdrBase.h ../src/LDR.cpp ../src/StateDecider.h \
  ../src/InstantStateDecider.h
+TimedStateDecider.o: TimedStateDecider.cpp Arduino.hpp \
+ ../src/TimedStateDecider.h ../src/StateDecider.h ../src/LdrState.h \
+ ../src/LdrBase.h
 sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../examples/DemoWithLEDs/DemoWithLEDs.ino Streaming.h Arduino.hpp \
  ../src/GroupMovingAverageDetectors.h ../src/AutoLdrSpotDetectors.h \
@@ -38,16 +42,17 @@ sketchMonitorLDRs.o: sketchMonitorLDRs.cpp Arduino.hpp \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \
  Arduino.hpp ../src/LdrState.h ../src/AutoLdrSpotDetectors.cpp \
  Streaming.h ../src/AdjustingLDR.h ../src/LDR.h ../src/LdrBase.h \
- ../src/LDR.cpp
+ ../src/LDR.cpp ../src/StateDecider.h
 testAdjustingDetectors.o: testAdjustingDetectors.cpp Arduino.hpp \
  ArduinoMock.hpp TestTools.hpp ../src/AdjustingDetectors.h \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \
  Arduino.hpp ../src/LdrState.h ../src/AutoLdrSpotDetectors.cpp \
  Streaming.h ../src/AdjustingLDR.h ../src/LDR.h ../src/LdrBase.h \
- ../src/LDR.cpp testAdjustingDetectors.h
+ ../src/LDR.cpp ../src/StateDecider.h testAdjustingDetectors.h
 testAll.o: testAll.cpp testArduino.hpp testThresholdDetectors.h \
  testAdjustingDetectors.h testMovingAverageDetectors.h \
- testGroupMovingAverageDetectors.h testGroupMovingAverageLDR.h
+ testGroupMovingAverageDetectors.h testGroupMovingAverageLDR.h \
+ testInstantStateDecider.h testTimedStateDecider.h
 testArduino.o: testArduino.cpp Arduino.hpp TestTools.hpp
 testGroupMovingAverageDetectors.o: testGroupMovingAverageDetectors.cpp \
  Arduino.hpp ArduinoMock.hpp TestTools.hpp \
@@ -62,6 +67,9 @@ testGroupMovingAverageLDR.o: testGroupMovingAverageLDR.cpp Arduino.hpp \
  Arduino.hpp ../src/LdrState.h ../src/AutoLdrSpotDetectors.cpp \
  Streaming.h ../src/GroupMovingAverageLDR.h ../src/LDR.h ../src/LdrBase.h \
  ../src/LDR.cpp testGroupMovingAverageLDR.h
+testInstantStateDecider.o: testInstantStateDecider.cpp Arduino.hpp \
+ ArduinoMock.hpp TestTools.hpp ../src/InstantStateDecider.h \
+ ../src/StateDecider.h ../src/LdrState.h ../src/LdrBase.h
 testMovingAverageDetectors.o: testMovingAverageDetectors.cpp Arduino.hpp \
  ArduinoMock.hpp TestTools.hpp ../src/MovingAverageDetectors.h \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \
@@ -74,3 +82,6 @@ testThresholdDetectors.o: testThresholdDetectors.cpp Arduino.hpp \
  Arduino.hpp ../src/LdrState.h ../src/AutoLdrSpotDetectors.cpp \
  Streaming.h ../src/ThresholdLDR.h ../src/LDR.h ../src/LdrBase.h \
  ../src/LDR.cpp ../src/StateDecider.h testThresholdDetectors.h
+testTimedStateDecider.o: testTimedStateDecider.cpp Arduino.hpp \
+ ArduinoMock.hpp TestTools.hpp ../src/TimedStateDecider.h \
+ ../src/StateDecider.h ../src/LdrState.h ../src/LdrBase.h

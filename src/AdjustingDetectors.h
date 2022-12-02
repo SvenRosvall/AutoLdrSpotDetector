@@ -13,7 +13,7 @@ class AdjustingDetectors : public AutoLdrSpotDetectors<AdjustingLDR>
 public:
   AdjustingDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il, int thresholdLevel = 100);
 
-  int getThresholdLevel() { return thresholdLevel; }
+  int getThresholdLevel() const { return thresholdLevel; }
 
   virtual void update() override;
 };

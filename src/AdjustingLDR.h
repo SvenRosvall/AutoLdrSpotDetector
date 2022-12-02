@@ -1,11 +1,18 @@
 #pragma once
 
 #include "LDR.h"
+#include "StateDecider.h"
+
 class AdjustingDetectors;
 
 class AdjustingLDR : public LDR<AdjustingLDR, AdjustingDetectors>
 {
-  unsigned long timer;
+  friend AdjustingDetectors;
+
+  StateDecider * stateDecider;
+
+  void resetThreshold();
+  void updateThreshold();
 
 public:
 

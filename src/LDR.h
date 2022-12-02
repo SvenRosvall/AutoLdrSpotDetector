@@ -32,7 +32,7 @@ public:
   virtual void readValue();
 
   int value() const override { return lastValue; }
-  int getState() const { return state; }
+  LdrState getState() const override { return state; }
   int getThreshold() const override { return threshold; }
 
   virtual void updateState() = 0;

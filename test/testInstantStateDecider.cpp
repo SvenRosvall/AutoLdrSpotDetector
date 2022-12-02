@@ -3,6 +3,7 @@
 #include "TestTools.hpp"
 
 #include "InstantStateDecider.h"
+#include "LdrBase.h"
 
 namespace
 {
@@ -11,6 +12,7 @@ namespace
     int lastValue;
     int threshold;
 
+    virtual LdrState getState() const override { return OPEN; }
     virtual int value() const override { return lastValue; }
     virtual int getThreshold() const override { return threshold; }
   };

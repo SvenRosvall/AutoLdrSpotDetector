@@ -19,6 +19,7 @@ SRC_OBJECTS=AutoLdrSpotDetectors.o \
     AdjustingLDR.o \
     MovingAverageLDR.o \
     GroupMovingAverageLDR.o \
+    TimedStateDecider.o \
     Helper.o
 
 srcObjects : $(SRC_OBJECTS)
@@ -26,6 +27,7 @@ srcObjects : $(SRC_OBJECTS)
 testAll : ${SRC_OBJECTS} \
     testAll.o \
     testInstantStateDecider.o \
+    testTimedStateDecider.o \
     testThresholdDetectors.o \
     testAdjustingDetectors.o \
     testMovingAverageDetectors.o \
@@ -61,6 +63,11 @@ GroupMovingAverageDetectors.cpp : ../src/GroupMovingAverageDetectors.cpp
 	echo '#line 1 "../src/GroupMovingAverageDetectors.cpp"' >> $@
 	cat $< >> $@
 
+TimedStateDecider.cpp : ../src/TimedStateDecider.cpp
+	echo '#include "Arduino.hpp"' > $@
+	echo '#line 1 "../src/TimedStateDecider.cpp"' >> $@
+	cat $< >> $@
+
 LDR.o : ../src/LDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
@@ -90,7 +97,8 @@ include dependencies
 clean :
 	-rm *.o *.exe AutoLdrSpotDetectors.cpp \
 		ThresholdDetectors.cpp AdjustingDetectors.cpp \
-		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp
+		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp \
+		TimedStateDecider.cpp
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \

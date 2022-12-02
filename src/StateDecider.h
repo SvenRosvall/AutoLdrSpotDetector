@@ -7,5 +7,5 @@ class LdrBase;
 class StateDecider
 {
 public:
-  virtual LdrState decide(LdrBase const & ldr) const = 0;
+  virtual LdrState decide(LdrBase const & ldr) = 0;
 };
