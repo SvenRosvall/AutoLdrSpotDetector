@@ -71,6 +71,7 @@ namespace
     ldr.state = OPEN;
 
     TimedStateDecider decider(ldr);
+
     assertEquals(OPEN, decider.decide(ldr));
 
     addMillis(300);
@@ -108,6 +109,58 @@ namespace
     addMillis(300);
     assertEquals(OPEN, decider.decide(ldr));
   }
+
+  void testTimedStateDecider_changeCovered_after1s()
+  {
+    test();
+    clearArduinoValues();
+
+    MockLdr ldr;
+    ldr.threshold = 500;
+    ldr.lastValue = 499;
+    ldr.state = OPEN;
+
+    TimedStateDecider decider(ldr);
+    decider.setChangeInterval(1000);
+
+    assertEquals(OPEN, decider.decide(ldr));
+
+    addMillis(300);
+    ldr.lastValue = 501;
+    assertEquals(OPEN, decider.decide(ldr));
+
+    addMillis(800);
+    assertEquals(OPEN, decider.decide(ldr));
+
+    addMillis(300);
+    assertEquals(COVERED, decider.decide(ldr));
+  }
+
+  void testTimedStateDecider_changeOpen_after1s()
+  {
+    test();
+    clearArduinoValues();
+
+    MockLdr ldr;
+    ldr.threshold = 500;
+    ldr.lastValue = 501;
+    ldr.state = COVERED;
+
+    TimedStateDecider decider(ldr);
+    decider.setChangeInterval(1000);
+
+    assertEquals(COVERED, decider.decide(ldr));
+
+    addMillis(300);
+    ldr.lastValue = 499;
+    assertEquals(COVERED, decider.decide(ldr));
+
+    addMillis(800);
+    assertEquals(COVERED, decider.decide(ldr));
+
+    addMillis(300);
+    assertEquals(OPEN, decider.decide(ldr));
+  }
 }
 
 void testTimedStateDecider()
@@ -116,4 +169,6 @@ void testTimedStateDecider()
   testTimedStateDecider_aboveThreshold_noChange();
   testTimedStateDecider_changeCovered();
   testTimedStateDecider_changeOpen();
+  testTimedStateDecider_changeCovered_after1s();
+  testTimedStateDecider_changeOpen_after1s();
 }

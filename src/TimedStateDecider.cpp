@@ -8,7 +8,7 @@ LdrState TimedStateDecider::decide(LdrBase const & ldr)
     if (ldr.value() > ldr.getThreshold())
     {
       state = COVERING;
-      timer = millis() + 500;
+      timer = millis() + changeCoverInterval;
     }
     return OPEN;
 
@@ -34,7 +34,7 @@ LdrState TimedStateDecider::decide(LdrBase const & ldr)
     if (ldr.value() < ldr.getThreshold())
     {
       state = OPENING;
-      timer = millis() + 500;
+      timer = millis() + changeOpenInterval;
     }
     return COVERED;
 
