@@ -31,4 +31,9 @@ public:
   }
 
   virtual LdrState decide(LdrBase const & ldr) override;
+
+  virtual void setState(LdrState state) override
+  {
+    this->state = state;
+  }
 };

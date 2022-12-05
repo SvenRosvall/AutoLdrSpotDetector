@@ -35,10 +35,7 @@ public:
   float getSelfDiffRatio() { return selfDiffRatio; }
 
   void setChangeCoverInterval(unsigned int i) { this->changeCoverInterval = i; }
-  unsigned int getChangeCoverInterval() { return changeCoverInterval; }
-
   void setChangeOpenInterval(unsigned int i) { this->changeOpenInterval = i; }
-  unsigned int getChangeOpenInterval() { return changeOpenInterval; }
 
   void setThresholdScaling(float s) { this->thresholdScaling = s; }
   float getThresholdScaling() { return thresholdScaling; }
@@ -48,6 +45,7 @@ public:
     return avgOfDiffs;
   }
 
+  void setup();
   virtual void update() override;
 
   // Called from GroupMovingAverageLDR

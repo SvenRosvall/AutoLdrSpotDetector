@@ -2,6 +2,7 @@
 
 #include "LDR.h"
 class GroupMovingAverageDetectors;
+class StateDecider;
 
 class GroupMovingAverageLDR : public LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>
 {
@@ -12,6 +13,7 @@ private:
   float movingAverage = -1;
   float movingDiffAverage = 0;
   unsigned long timer;
+  StateDecider * stateDecider;
 
 private:
   void updateThreshold();

@@ -126,7 +126,7 @@ namespace
     showLdr("after update() 1", ldrs[0]);
 
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].getState());
+    assertEquals(OPEN, ldrs[0].getState());
     assertEquals(202, ldrs[0].value());
     assertEquals(4, ldrs[1].value());
 
@@ -136,7 +136,7 @@ namespace
     detectors.update();
     showLdr("after update() 2", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].getState());
+    assertEquals(OPEN, ldrs[0].getState());
 
     addMillis(10);
     setAnalogRead(A0, 202);
@@ -144,7 +144,7 @@ namespace
     detectors.update();
     showLdr("after update() 3", ldrs[0]);
     assertEquals(0, action.changes.size());
-    assertEquals(COVERING, ldrs[0].getState());
+    assertEquals(OPEN, ldrs[0].getState());
 
     addMillis(10);
     setAnalogRead(A0, 202);

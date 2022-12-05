@@ -1,5 +1,6 @@
 #include "GroupMovingAverageLDR.h"
 #include "GroupMovingAverageDetectors.h"
+#include "StateDecider.h"
 
 #include <Streaming.h>
 
@@ -74,61 +75,25 @@ void GroupMovingAverageLDR::updateState()
   updateMovingAverage();
   updateThreshold();
 
-  switch (state)
+  LdrState newState = stateDecider->decide(*this);
+  if (state != newState)
   {
-    case OPEN:
-      if (lastValue > threshold)
-      {
-        state = COVERING;
-        timer = millis() + parent->getChangeCoverInterval();
-        DEBUG("LDR A" << sensorPin-A0 << " change to covering.");
-        DEBUG("changeCoverInterval = " << parent->getChangeCoverInterval());
-      }
-      break;
-    case COVERING:
-      if (lastValue < threshold)
-      {
-        // Not above threshold anymore. Revert to OPEN.
-        state = OPEN;
-        DEBUG("LDR A" << sensorPin-A0 << " change back to open.");
-      }
-      else if (millis() > timer && !parent->checkOtherLDRs(this, COVERING))
-      {
-        state = COVERED;
-        DEBUG("LDR A" << sensorPin-A0 << " change to covered.");
-        parent->onChange(this, state);
-        movingAverage = lastValue;
-        updateThreshold();
-      }
-      break;
-    case COVERED:
-      if (lastValue < threshold)
-      {
-        state = OPENING;
-        timer = millis() + parent->getChangeOpenInterval();
-        DEBUG("LDR A" << sensorPin-A0 << " change to opening.");
-        DEBUG("changeOpenInterval = " << parent->getChangeOpenInterval());
-      }
-      break;
-    case OPENING:
-      if (lastValue > threshold)
-      {
-        // Not above threshold anymore. Revert to COVERED.
-        state = COVERED;
-        DEBUG("LDR A" << sensorPin-A0 << " change back to covered.");
-      }
-      else if (millis() > timer && !parent->checkOtherLDRs(this, OPENING))
-      {
-        state = OPEN;
-        DEBUG("LDR A" << sensorPin-A0 << " change to opened.");
-        parent->onChange(this, state);
-        movingAverage = lastValue;
-        updateThreshold();
-      }
-      break;
-   }
+    if (parent->checkOtherLDRs(this, (newState == COVERED) ? COVERING : OPENING))
+    {
+      // Other LDR's are also changing.
+      // I.e. ambient light is changing so stay where we are.
+      stateDecider->setState(state);
+    }
+    else
+    {
+      // Not enough change in ambient light.
+      // Do the state transition.
+      state = newState;
+      parent->onChange(this, state);
+      updateThreshold();
+    }
+  }
 }
-
 
 Print & GroupMovingAverageLDR::printTitleDetailed(Print & p) const
 {

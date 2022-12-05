@@ -13,7 +13,7 @@ GroupMovingAverageDetectors.o: GroupMovingAverageDetectors.cpp \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \
  Arduino.hpp ../src/LdrState.h ../src/AutoLdrSpotDetectors.cpp \
  Streaming.h ../src/GroupMovingAverageLDR.h ../src/LDR.h ../src/LdrBase.h \
- ../src/LDR.cpp
+ ../src/LDR.cpp ../src/TimedStateDecider.h ../src/StateDecider.h
 MovingAverageDetectors.o: MovingAverageDetectors.cpp Arduino.hpp \
  ../src/MovingAverageDetectors.h ../src/AutoLdrSpotDetectors.h \
  ../src/initializer_list.h Arduino.h Arduino.hpp ../src/LdrState.h \

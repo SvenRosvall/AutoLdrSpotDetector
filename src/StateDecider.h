@@ -8,4 +8,5 @@ class StateDecider
 {
 public:
   virtual LdrState decide(LdrBase const & ldr) = 0;
+  virtual void setState(LdrState state) { };
 };
