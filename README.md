@@ -70,6 +70,9 @@ The currently available algorithms are:
   The LDR is considered covered when the read value exceeds a set threshold value.
   This algorithm is used for testing the hardware and as a reference
   implementation to show what can be achieved with LDR detectors.
+* [Adjusting Threshold](AdjustingThresholdDesign.md) adjusts the threshold
+  for slow changes to ambient light.
+  This algorithm is based on Julian Coles' LDR detectors.
 * [Moving Average](MovingAverageDesign.md) implements a self adjusting 
   algorithm where a threshold is set based on an average value read from
   each LDR.
