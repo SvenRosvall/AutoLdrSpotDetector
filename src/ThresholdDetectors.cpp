@@ -8,6 +8,16 @@ ThresholdDetectors::ThresholdDetectors(SensorChangeAction & action, const std::i
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
     ldrs[i].threshold = threshold;
+  }
+}
+
+void ThresholdDetectors::setup()
+{
+  AutoLdrSpotDetectors::setup();
+
+  // TODO: The decider should be configurable.
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
+  {
     ldrs[i].stateDecider = new InstantStateDecider();
   }
 }

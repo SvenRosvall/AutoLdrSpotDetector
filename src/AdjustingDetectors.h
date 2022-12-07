@@ -15,5 +15,6 @@ public:
 
   int getThresholdLevel() const { return thresholdLevel; }
 
+  void setup();
   virtual void update() override;
 };

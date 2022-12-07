@@ -6,6 +6,12 @@ AdjustingDetectors::AdjustingDetectors(SensorChangeAction & action, const std::i
   : AutoLdrSpotDetectors(action, il)
   , thresholdLevel(thresholdLevel)
 {
+}
+
+void AdjustingDetectors::setup()
+{
+  AutoLdrSpotDetectors::setup();
+
   // TODO: The decider should be configurable.
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
