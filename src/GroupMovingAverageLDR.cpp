@@ -75,7 +75,7 @@ void GroupMovingAverageLDR::updateState()
   updateMovingAverage();
   updateThreshold();
 
-  LdrState newState = stateDecider->decide(*this);
+  LdrState newState = stateDecider->decide();
   if (state != newState)
   {
     if (parent->checkOtherLDRs(this, (newState == COVERED) ? COVERING : OPENING))

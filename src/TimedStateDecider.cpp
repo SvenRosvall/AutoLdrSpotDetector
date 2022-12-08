@@ -1,6 +1,6 @@
 #include "TimedStateDecider.h"
 
-LdrState TimedStateDecider::decide(LdrBase const & ldr)
+LdrState TimedStateDecider::decide()
 {
   switch (state)
   {

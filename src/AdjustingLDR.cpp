@@ -56,7 +56,7 @@ void AdjustingLDR::updateState()
 {
   updateThreshold();
 
-  LdrState newState = stateDecider->decide(*this);
+  LdrState newState = stateDecider->decide();
   if (state != newState)
   {
     state = newState;

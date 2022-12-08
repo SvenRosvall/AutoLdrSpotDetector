@@ -30,13 +30,13 @@ namespace
 
     TimedStateDecider decider(ldr);
 
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
   }
 
   void testTimedStateDecider_aboveThreshold_noChange()
@@ -51,13 +51,13 @@ namespace
 
     TimedStateDecider decider(ldr);
 
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
   }
 
   void testTimedStateDecider_changeCovered()
@@ -72,17 +72,17 @@ namespace
 
     TimedStateDecider decider(ldr);
 
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
     ldr.lastValue = 501;
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
   }
 
   void testTimedStateDecider_changeOpen()
@@ -97,17 +97,17 @@ namespace
 
     TimedStateDecider decider(ldr);
 
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
     ldr.lastValue = 499;
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
   }
 
   void testTimedStateDecider_changeCovered_after1s()
@@ -123,17 +123,17 @@ namespace
     TimedStateDecider decider(ldr);
     decider.setChangeInterval(1000);
 
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
     ldr.lastValue = 501;
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(800);
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     addMillis(300);
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
   }
 
   void testTimedStateDecider_changeOpen_after1s()
@@ -149,17 +149,17 @@ namespace
     TimedStateDecider decider(ldr);
     decider.setChangeInterval(1000);
 
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
     ldr.lastValue = 499;
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(800);
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
 
     addMillis(300);
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
   }
 }
 

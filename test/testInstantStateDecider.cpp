@@ -23,14 +23,14 @@ namespace
     clearArduinoValues();
 
     MockLdr ldr;
-    InstantStateDecider decider;
+    InstantStateDecider decider(ldr);
 
     ldr.threshold = 500;
     ldr.lastValue = 499;
-    assertEquals(OPEN, decider.decide(ldr));
+    assertEquals(OPEN, decider.decide());
 
     ldr.lastValue = 500;
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
   }
 
   void testInstantStateDecider_aboveThreshold()
@@ -39,11 +39,11 @@ namespace
     clearArduinoValues();
 
     MockLdr ldr;
-    InstantStateDecider decider;
+    InstantStateDecider decider(ldr);
 
     ldr.threshold = 500;
     ldr.lastValue = 501;
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
   }
 
   void testInstantStateDecider_atThreshold()
@@ -52,11 +52,11 @@ namespace
     clearArduinoValues();
 
     MockLdr ldr;
-    InstantStateDecider decider;
+    InstantStateDecider decider(ldr);
 
     ldr.threshold = 500;
     ldr.lastValue = 500;
-    assertEquals(COVERED, decider.decide(ldr));
+    assertEquals(COVERED, decider.decide());
   }
 }
 

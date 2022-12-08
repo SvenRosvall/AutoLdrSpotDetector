@@ -30,7 +30,7 @@ public:
     this->changeOpenInterval = changeOpenInterval;
   }
 
-  virtual LdrState decide(LdrBase const & ldr) override;
+  virtual LdrState decide() override;
 
   virtual void setState(LdrState state) override
   {

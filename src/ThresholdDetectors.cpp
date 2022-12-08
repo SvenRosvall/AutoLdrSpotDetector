@@ -18,7 +18,7 @@ void ThresholdDetectors::setup()
   // TODO: The decider should be configurable.
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
-    ldrs[i].stateDecider = new InstantStateDecider();
+    ldrs[i].stateDecider = new InstantStateDecider(ldrs[i]);
   }
 }
 

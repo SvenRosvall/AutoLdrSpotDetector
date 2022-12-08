@@ -6,8 +6,14 @@
 
 class InstantStateDecider : public StateDecider
 {
+  LdrBase const & ldr;
+
 public:
-  virtual LdrState decide(LdrBase const & ldr) override
+  InstantStateDecider(LdrBase const & ldr)
+    : ldr(ldr)
+  { }
+
+  virtual LdrState decide() override
   {
     return (ldr.value() < ldr.getThreshold()) ? OPEN : COVERED;
   }
