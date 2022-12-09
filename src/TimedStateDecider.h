@@ -14,13 +14,13 @@ class TimedStateDecider : public StateDecider
   unsigned int changeCoverInterval = 500; // ms
   unsigned int changeOpenInterval = 500; // ms
 
-public:
   TimedStateDecider(LdrBase const & ldr)
     : ldr(ldr)
   {
     state = ldr.getState();
   }
 
+public:
   void setChangeInterval(unsigned int changeInterval)
   {
     setChangeInterval(changeInterval, changeInterval);
@@ -38,4 +38,13 @@ public:
   {
     this->state = state;
   }
+
+  class Factory
+  {
+  public:
+    TimedStateDecider * create(LdrBase const & ldr)
+    {
+      return new TimedStateDecider(ldr);
+    }
+  };
 };

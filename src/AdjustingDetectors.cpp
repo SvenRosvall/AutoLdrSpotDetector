@@ -13,9 +13,10 @@ void AdjustingDetectors::setup()
   AutoLdrSpotDetectors::setup();
 
   // TODO: The decider should be configurable.
+  TimedStateDecider::Factory deciderFactory;
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
-    ldrs[i].stateDecider = new TimedStateDecider(ldrs[i]);
+    ldrs[i].stateDecider = deciderFactory.create(ldrs[i]);
   }
 }
 

@@ -23,7 +23,8 @@ namespace
     clearArduinoValues();
 
     MockLdr ldr;
-    InstantStateDecider decider(ldr);
+    InstantStateDecider::Factory deciderFactory;
+    InstantStateDecider decider = * deciderFactory.create(ldr);
 
     ldr.threshold = 500;
     ldr.lastValue = 499;
@@ -39,11 +40,12 @@ namespace
     clearArduinoValues();
 
     MockLdr ldr;
-    InstantStateDecider decider(ldr);
+    InstantStateDecider::Factory deciderFactory;
+    InstantStateDecider * decider = deciderFactory.create(ldr);
 
     ldr.threshold = 500;
     ldr.lastValue = 501;
-    assertEquals(COVERED, decider.decide());
+    assertEquals(COVERED, decider->decide());
   }
 
   void testInstantStateDecider_atThreshold()
@@ -52,11 +54,12 @@ namespace
     clearArduinoValues();
 
     MockLdr ldr;
-    InstantStateDecider decider(ldr);
+    InstantStateDecider::Factory deciderFactory;
+    InstantStateDecider * decider = deciderFactory.create(ldr);
 
     ldr.threshold = 500;
     ldr.lastValue = 500;
-    assertEquals(COVERED, decider.decide());
+    assertEquals(COVERED, decider->decide());
   }
 }
 

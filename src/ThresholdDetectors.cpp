@@ -16,9 +16,10 @@ void ThresholdDetectors::setup()
   AutoLdrSpotDetectors::setup();
 
   // TODO: The decider should be configurable.
+  InstantStateDecider::Factory stateDeciderFactory;
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
-    ldrs[i].stateDecider = new InstantStateDecider(ldrs[i]);
+    ldrs[i].stateDecider = stateDeciderFactory.create(ldrs[i]);
   }
 }
 

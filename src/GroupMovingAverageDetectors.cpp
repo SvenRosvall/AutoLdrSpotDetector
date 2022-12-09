@@ -8,9 +8,10 @@ void GroupMovingAverageDetectors::setup()
 {
   AutoLdrSpotDetectors::setup();
 
+  TimedStateDecider::Factory deciderFactory;
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
-    TimedStateDecider * timedStateDecider = new TimedStateDecider(ldrs[i]);
+    TimedStateDecider * timedStateDecider = deciderFactory.create(ldrs[i]);
     timedStateDecider->setChangeInterval(changeCoverInterval, changeOpenInterval);
     ldrs[i].stateDecider = timedStateDecider;
   }
