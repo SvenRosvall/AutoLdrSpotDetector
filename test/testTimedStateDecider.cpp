@@ -125,8 +125,9 @@ namespace
     ldr.state = OPEN;
 
     TimedStateDecider::Factory deciderFactory;
+    deciderFactory.setChangeOpenInterval(1000);
+    deciderFactory.setChangeCoverInterval(1000);
     TimedStateDecider * decider = deciderFactory.create(ldr);
-    decider->setChangeInterval(1000);
 
     assertEquals(OPEN, decider->decide());
 
@@ -152,8 +153,9 @@ namespace
     ldr.state = COVERED;
 
     TimedStateDecider::Factory deciderFactory;
+    deciderFactory.setChangeOpenInterval(1000);
+    deciderFactory.setChangeCoverInterval(1000);
     TimedStateDecider * decider = deciderFactory.create(ldr);
-    decider->setChangeInterval(1000);
 
     assertEquals(COVERED, decider->decide());
 
