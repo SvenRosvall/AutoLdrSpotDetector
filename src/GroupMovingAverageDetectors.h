@@ -2,6 +2,7 @@
 
 #include "AutoLdrSpotDetectors.h"
 #include "GroupMovingAverageLDR.h"
+#include "TimedStateDecider.h"
 
 class GroupMovingAverageDetectors : public AutoLdrSpotDetectors<GroupMovingAverageLDR>
 {
@@ -10,17 +11,19 @@ class GroupMovingAverageDetectors : public AutoLdrSpotDetectors<GroupMovingAvera
   float movingAverageP = 0.1;
   float movingDiffAverageP = 0.3;
   float selfDiffRatio = 0.5;
-  unsigned int changeCoverInterval = 300; // ms
-  unsigned int changeOpenInterval = 300; // ms
+  const unsigned int defaultChangeCoverInterval = 300; // ms
+  const unsigned int defaultChangeOpenInterval = 300; // ms
   float thresholdScaling = 0.8;
 
   // Calculated values
   float avgOfDiffs;
 
+  TimedStateDecider::Factory deciderFactory;
+
   float calculateAvgOfDiffs() const;
 
 public:
-  using AutoLdrSpotDetectors::AutoLdrSpotDetectors;
+  GroupMovingAverageDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il);
 
   void setThresholdLevel(int l) { this->thresholdLevel = l; }
   int getThresholdLevel() { return thresholdLevel; }
@@ -34,8 +37,8 @@ public:
   void setSelfDiffRatio(float r) { this->selfDiffRatio = r; }
   float getSelfDiffRatio() { return selfDiffRatio; }
 
-  void setChangeCoverInterval(unsigned int i) { this->changeCoverInterval = i; }
-  void setChangeOpenInterval(unsigned int i) { this->changeOpenInterval = i; }
+  void setChangeCoverInterval(unsigned int i) { deciderFactory.setChangeCoverInterval(i); }
+  void setChangeOpenInterval(unsigned int i) { deciderFactory.setChangeOpenInterval(i); }
 
   void setThresholdScaling(float s) { this->thresholdScaling = s; }
   float getThresholdScaling() { return thresholdScaling; }

@@ -4,16 +4,20 @@
 
 #include <Streaming.h>
 
+GroupMovingAverageDetectors::GroupMovingAverageDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il)
+  : AutoLdrSpotDetectors(action, il)
+{
+  deciderFactory.setChangeCoverInterval(defaultChangeCoverInterval);
+  deciderFactory.setChangeOpenInterval(defaultChangeOpenInterval);
+}
+
 void GroupMovingAverageDetectors::setup()
 {
   AutoLdrSpotDetectors::setup();
 
-  TimedStateDecider::Factory * deciderFactory = new TimedStateDecider::Factory;
-  deciderFactory->setChangeCoverInterval(changeCoverInterval);
-  deciderFactory->setChangeOpenInterval(changeOpenInterval);
   for (unsigned int i = 0 ; i < ldrCount ; ++i)
   {
-    TimedStateDecider * timedStateDecider = deciderFactory->create(ldrs[i]);
+    TimedStateDecider * timedStateDecider = deciderFactory.create(ldrs[i]);
     ldrs[i].stateDecider = timedStateDecider;
   }
 }
