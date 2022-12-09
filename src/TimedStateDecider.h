@@ -4,6 +4,8 @@
 #include "LdrBase.h"
 #include "LdrState.h"
 
+#include <Arduino.h>
+
 class TimedStateDecider : public StateDecider
 {
   LdrBase const & ldr;

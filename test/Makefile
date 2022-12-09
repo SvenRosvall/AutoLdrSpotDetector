@@ -63,11 +63,6 @@ GroupMovingAverageDetectors.cpp : ../src/GroupMovingAverageDetectors.cpp
 	echo '#line 1 "../src/GroupMovingAverageDetectors.cpp"' >> $@
 	cat $< >> $@
 
-TimedStateDecider.cpp : ../src/TimedStateDecider.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/TimedStateDecider.cpp"' >> $@
-	cat $< >> $@
-
 LDR.o : ../src/LDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
@@ -81,6 +76,9 @@ MovingAverageLDR.o : ../src/MovingAverageLDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 GroupMovingAverageLDR.o : ../src/GroupMovingAverageLDR.cpp
+	$(CC) $(CPPFLAGS) -c $<
+
+TimedStateDecider.o : ../src/TimedStateDecider.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 Helper.o : ../src/Helper.cpp
@@ -97,8 +95,7 @@ include dependencies
 clean :
 	-rm *.o *.exe AutoLdrSpotDetectors.cpp \
 		ThresholdDetectors.cpp AdjustingDetectors.cpp \
-		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp \
-		TimedStateDecider.cpp
+		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \
