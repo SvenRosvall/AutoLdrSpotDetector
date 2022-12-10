@@ -8,10 +8,18 @@
 
 class AdjustingDetectors : public AutoLdrSpotDetectors<AdjustingLDR>
 {
+  StateDecider::Factory const & deciderFactory;
+
   int thresholdLevel;
 
 public:
-  AdjustingDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il, int thresholdLevel = 100);
+  AdjustingDetectors(SensorChangeAction & action,
+                     const std::initializer_list<uint8_t> & il,
+                     StateDecider::Factory const & deciderFactory,
+                     int thresholdLevel = 100);
+  AdjustingDetectors(SensorChangeAction & action,
+                     const std::initializer_list<uint8_t> & il,
+                     int thresholdLevel = 100);
 
   int getThresholdLevel() const { return thresholdLevel; }
 

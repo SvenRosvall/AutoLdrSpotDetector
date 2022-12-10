@@ -24,8 +24,8 @@ const int THRESHOLD_LEVEL = 150;
 const float P = 0.050f;  // for moving average
 const float Q = 0.2f;  // for moving diff average
 const float SelfDiffRatio = 0.2f; // How much to weigh in own LDR vs all LDRs
-const int CHANGE_INTERVAL = 500; // ms
 const int THRESHOLD_LEVEL = 150;
+const int CHANGE_INTERVAL = 500; // ms
 #endif
 
 // Note that the difference between open and covered is different at bright levels (low values) and dark levels (high values).
@@ -36,6 +36,7 @@ const int THRESHOLD_LEVEL = 150;
 #include <Streaming.h>
 #ifdef THRESHOLD_DETECTORS
 #include <ThresholdDetectors.h>
+#include <InstantStateDecider.h>
 #endif
 #ifdef ADJUSTING_DETECTORS
 #include <AdjustingDetectors.h>
@@ -54,7 +55,8 @@ std::initializer_list<LdrLedPair> ldrLedPairs = {{A0, 10}, {A1, 9}, {A2, 8}, {A3
 LedChanger ledChanger(ldrLedPairs);
 
 #ifdef THRESHOLD_DETECTORS
-ThresholdDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), THRESHOLD);
+InstantStateDecider::Factory stateDeciderFactory;
+ThresholdDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), stateDeciderFactory, THRESHOLD);
 #endif
 #ifdef ADJUSTING_DETECTORS
 AdjustingDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), 250);
@@ -63,7 +65,8 @@ AdjustingDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), 250);
 MovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
 #endif
 #ifdef GROUP_MOVING_AVERAGE_DETECTORS
-GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
+TimedStateDecider::Factory stateDeciderFactory;
+GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), stateDeciderFactory);
 #endif
 
 
@@ -79,9 +82,10 @@ void setup() {
   detectors.setMovingAverageP(P);
   detectors.setMovingDiffAverageP(Q);
   detectors.setSelfDiffRatio(SelfDiffRatio);
-  detectors.setChangeCoverInterval(CHANGE_INTERVAL);
-  detectors.setChangeOpenInterval(CHANGE_INTERVAL);
   detectors.setThresholdLevel(THRESHOLD_LEVEL);
+
+  stateDeciderFactory.setChangeCoverInterval(CHANGE_INTERVAL);
+  stateDeciderFactory.setChangeOpenInterval(CHANGE_INTERVAL);
 #endif
   detectors.setup();
 

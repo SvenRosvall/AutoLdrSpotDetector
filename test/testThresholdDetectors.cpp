@@ -4,7 +4,10 @@
 
 #include "ThresholdDetectors.h"
 #include "ThresholdLDR.h"
+#include "InstantStateDecider.h"
+
 #include "testThresholdDetectors.h"
+
 #include <vector>
 #include <iostream>
 
@@ -34,10 +37,13 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    ThresholdDetectors detectors1(action, {A0}, THRESHOLD);
+    InstantStateDecider::Factory stateDeciderFactory;
+    ThresholdDetectors detectors1(action, {A0}, stateDeciderFactory, THRESHOLD);
     assertEquals(-1, detectors1.getLdrs()[0].value());
 
-    ThresholdDetectors detectors6(action, {A0, A1, A2, A3, A4, A5}, THRESHOLD);
+    ThresholdDetectors detectors2(action, {A0}, THRESHOLD);
+
+    ThresholdDetectors detectors6(action, {A0, A1, A2, A3, A4, A5}, stateDeciderFactory, THRESHOLD);
     assertEquals(-1, detectors6.getLdrs()[0].value());
     assertEquals(-1, detectors6.getLdrs()[1].value());
     assertEquals(-1, detectors6.getLdrs()[2].value());
@@ -52,7 +58,8 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    ThresholdDetectors detectors(action, {A0, A1}, THRESHOLD);
+    InstantStateDecider::Factory stateDeciderFactory;
+    ThresholdDetectors detectors(action, {A0, A1}, stateDeciderFactory, THRESHOLD);
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -70,7 +77,8 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    ThresholdDetectors detectors(action, {A0, A1}, THRESHOLD);
+    InstantStateDecider::Factory stateDeciderFactory;
+    ThresholdDetectors detectors(action, {A0, A1}, stateDeciderFactory, THRESHOLD);
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -98,7 +106,8 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    ThresholdDetectors detectors(action, {A0, A1}, THRESHOLD);
+    InstantStateDecider::Factory stateDeciderFactory;
+    ThresholdDetectors detectors(action, {A0, A1}, stateDeciderFactory, THRESHOLD);
     ThresholdLDR const * ldrs = detectors.getLdrs();
 
     setAnalogRead(A0, 2);

@@ -32,7 +32,8 @@ namespace
   void testGroupMovingAverageLDR_updateThreshold()
   {
     MockAction action;
-    GroupMovingAverageDetectors detectors(action, {A0});
+    TimedStateDecider::Factory stateDeciderFactory;
+    GroupMovingAverageDetectors detectors(action, {A0}, stateDeciderFactory);
     GroupMovingAverageLDR & ldr = (const_cast<GroupMovingAverageLDR *>(detectors.getLdrs()))[0];
     detectors.setThresholdLevel(100);
 

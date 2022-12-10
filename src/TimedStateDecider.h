@@ -32,13 +32,13 @@ public:
     this->state = state;
   }
 
-  class Factory
+  class Factory : public StateDecider::Factory
   {
     unsigned int changeCoverInterval = 500; // ms
     unsigned int changeOpenInterval = 500; // ms
 
   public:
-    TimedStateDecider * create(LdrBase const & ldr)
+    virtual TimedStateDecider * create(LdrBase const & ldr) const override
     {
       return new TimedStateDecider(*this, ldr);
     }
@@ -49,3 +49,5 @@ public:
     unsigned getChangeOpenInterval() const { return changeOpenInterval; }
   };
 };
+
+TimedStateDecider::Factory const & createTimedStateDeciderFactory();

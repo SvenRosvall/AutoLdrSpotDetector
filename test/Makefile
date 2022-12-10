@@ -19,6 +19,7 @@ SRC_OBJECTS=AutoLdrSpotDetectors.o \
     AdjustingLDR.o \
     MovingAverageLDR.o \
     GroupMovingAverageLDR.o \
+    InstantStateDecider.o \
     TimedStateDecider.o \
     Helper.o
 
@@ -76,6 +77,9 @@ MovingAverageLDR.o : ../src/MovingAverageLDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 GroupMovingAverageLDR.o : ../src/GroupMovingAverageLDR.cpp
+	$(CC) $(CPPFLAGS) -c $<
+
+InstantStateDecider.o : ../src/InstantStateDecider.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 TimedStateDecider.o : ../src/TimedStateDecider.cpp

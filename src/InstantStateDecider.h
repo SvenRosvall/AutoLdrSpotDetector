@@ -18,12 +18,14 @@ public:
     return (ldr.value() < ldr.getThreshold()) ? OPEN : COVERED;
   }
 
-  class Factory
+  class Factory : public StateDecider::Factory
   {
   public:
-    InstantStateDecider * create(LdrBase const & ldr)
+    virtual InstantStateDecider * create(LdrBase const & ldr) const override
     {
       return new InstantStateDecider(ldr);
     }
   };
 };
+
+InstantStateDecider::Factory const & createInstantStateDeciderFactory();

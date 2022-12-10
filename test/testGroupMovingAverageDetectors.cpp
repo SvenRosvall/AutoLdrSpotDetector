@@ -37,13 +37,14 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    GroupMovingAverageDetectors detectors1(action, {A0});
+    TimedStateDecider::Factory stateDeciderFactory;
+    GroupMovingAverageDetectors detectors1(action, {A0}, stateDeciderFactory);
     assertEquals(-1, detectors1.getLdrs()[0].value());
 
-    GroupMovingAverageDetectors detectors2(action, LED_PINS_A);
+    GroupMovingAverageDetectors detectors2(action, LED_PINS_A, stateDeciderFactory);
     GroupMovingAverageDetectors detectors3(action, LED_PINS_D);
 
-    GroupMovingAverageDetectors detectors6(action, {A0, A1, A2, A3, A4, A5});
+    GroupMovingAverageDetectors detectors6(action, {A0, A1, A2, A3, A4, A5}, stateDeciderFactory);
     assertEquals(-1, detectors6.getLdrs()[0].value());
     assertEquals(-1, detectors6.getLdrs()[1].value());
     assertEquals(-1, detectors6.getLdrs()[2].value());
@@ -58,7 +59,8 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    GroupMovingAverageDetectors detectors(action, {A0, A1});
+    TimedStateDecider::Factory stateDeciderFactory;
+    GroupMovingAverageDetectors detectors(action, {A0, A1}, stateDeciderFactory);
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -76,7 +78,8 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    GroupMovingAverageDetectors detectors(action, {A0, A1});
+    TimedStateDecider::Factory stateDeciderFactory;
+    GroupMovingAverageDetectors detectors(action, {A0, A1}, stateDeciderFactory);
 
     setAnalogRead(A0, 123);
     setAnalogRead(A1, 129);
@@ -105,10 +108,11 @@ namespace
     clearArduinoValues();
 
     MockAction action;
-    GroupMovingAverageDetectors detectors(action, {A0, A1});
+    TimedStateDecider::Factory stateDeciderFactory;
+    stateDeciderFactory.setChangeCoverInterval(20);
+    stateDeciderFactory.setChangeOpenInterval(20);
+    GroupMovingAverageDetectors detectors(action, {A0, A1}, stateDeciderFactory);
     GroupMovingAverageLDR const * ldrs = detectors.getLdrs();
-    detectors.setChangeCoverInterval(20);
-    detectors.setChangeOpenInterval(20);
 
     setAnalogRead(A0, 2);
     setAnalogRead(A1, 4);

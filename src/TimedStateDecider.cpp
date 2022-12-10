@@ -61,3 +61,9 @@ LdrState TimedStateDecider::decide()
     return OPEN;
   }
 }
+
+TimedStateDecider::Factory const & createTimedStateDeciderFactory()
+{
+  static TimedStateDecider::Factory factory;
+  return factory;
+}
