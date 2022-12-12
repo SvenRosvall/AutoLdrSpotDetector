@@ -132,6 +132,10 @@ It will need some tweaking and fix the following problems:
 - 2 LDRs covered. Turn off room light. All LEDs go on.
   - Check condition. Need to adjust count.
 - LDR sometimes does not turn off LED when opened.
+  Seems to happen with flickering lights such as flourescent light tubes.
+  Analysis shows that the read LDR value fluctuates vividly which means that when
+  an LDR is opened up some samples exceed the threshold. 
+  This then cancels the current transition to open state.
 - Threshold value can be tricky. Say that the room gets a 
   bit darker so that only 3 LDRs trigger. Then because the
   other LDRs are not triggered, there is no consensus, and the 
