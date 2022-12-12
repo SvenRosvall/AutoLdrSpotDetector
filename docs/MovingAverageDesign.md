@@ -1,6 +1,9 @@
 # Design
 The key elements are the LDR objects that represent a physical LDR.
-It captures the sensor pin, state and trending value.
+It captures the sensor pin, state and trending value, i.e. a moving average of the read LDR value.
+A threshold is set above or below this moving average.
+The LDR value is compared to this calculated threshold and triggers a state change when 
+the value has been above or below that threshold some time.
 
 High Level Design
 -----------------

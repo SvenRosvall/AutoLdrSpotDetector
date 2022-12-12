@@ -66,17 +66,17 @@ The example sketch [DemoWitLEDs.ino](examples/DemoWithLEDs/DemoWithLEDs.ino)
 is prepared for easy selection of algorithm.
 
 The currently available algorithms are:
-* [Simple Threshold](ThresholdDesign.md) implements a simple threshold.
+* [Simple Threshold](docs/ThresholdDesign.md) implements a simple threshold.
   The LDR is considered covered when the read value exceeds a set threshold value.
   This algorithm is used for testing the hardware and as a reference
   implementation to show what can be achieved with LDR detectors.
-* [Adjusting Threshold](AdjustingThresholdDesign.md) adjusts the threshold
+* [Adjusting Threshold](docs/AdjustingThresholdDesign.md) adjusts the threshold
   for slow changes to ambient light.
   This algorithm is based on Julian Coles' LDR detectors.
-* [Moving Average](MovingAverageDesign.md) implements a self adjusting 
+* [Moving Average](docs/MovingAverageDesign.md) implements a self adjusting 
   algorithm where a threshold is set based on an average value read from
   each LDR.
-* [Group Moving Average](GroupMovingAverageDesign.md) is a variation
+* [Group Moving Average](docs/GroupMovingAverageDesign.md) is a variation
   where a moving average is kept of the recent difference between the last value
   and the moving average value.
   The LDR is adjusted with this average diff from all LDRs. The own
