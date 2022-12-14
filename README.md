@@ -38,8 +38,7 @@ The Arduino documentation says the pullup resistance shall be 20-50kΩ.
 
 LDR Types
 ---------
-
-| Model | Light Resistance (kOhm) | Dark Resistance (kOhm) | Arduino light level | Arduino dark level |
+| Model | Light Resistance<br/>(kOhm) | Dark Resistance<br/>(kOhm) | Arduino<br/>bright level | Arduino<br/>dark level |
 | ----- | ---: | ---: | ---: | ---: |
 | 5506 |  2-5   |  200 |  23 | 400 |
 | 5516 |  5-10  |  500 | 26 | 650 | 
@@ -81,6 +80,9 @@ The currently available algorithms are:
   and the moving average value.
   The LDR is adjusted with this average diff from all LDRs. The own
   LDR diff is weighted higher.
+
+See also [Software Design](docs/Design.md) for details on how the code of 
+this project is organized.
 
 Timing of A/D conversion
 ------------------------
