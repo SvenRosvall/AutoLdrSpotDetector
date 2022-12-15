@@ -7,27 +7,14 @@
 GroupMovingAverageDetectors::GroupMovingAverageDetectors(SensorChangeAction & action,
                                                          const std::initializer_list<uint8_t> & il,
                                                          StateDecider::Factory const & deciderFactory)
-  : AutoLdrSpotDetectors(action, il)
-  , deciderFactory(deciderFactory)
+  : AutoLdrSpotDetectors(action, il, deciderFactory)
 {
 }
 
 GroupMovingAverageDetectors::GroupMovingAverageDetectors(SensorChangeAction & action,
                                                          const std::initializer_list<uint8_t> & il)
-  : AutoLdrSpotDetectors(action, il)
-  , deciderFactory(createTimedStateDeciderFactory())
+  : AutoLdrSpotDetectors(action, il, createTimedStateDeciderFactory())
 {
-}
-
-void GroupMovingAverageDetectors::setup()
-{
-  AutoLdrSpotDetectors::setup();
-
-  for (unsigned int i = 0 ; i < ldrCount ; ++i)
-  {
-    StateDecider * stateDecider = deciderFactory.create(ldrs[i]);
-    ldrs[i].stateDecider = stateDecider;
-  }
 }
 
 float GroupMovingAverageDetectors::calculateAvgOfDiffs() const

@@ -1,6 +1,5 @@
 #include "GroupMovingAverageLDR.h"
 #include "GroupMovingAverageDetectors.h"
-#include "StateDecider.h"
 
 #include <Streaming.h>
 

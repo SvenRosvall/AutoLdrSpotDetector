@@ -2,6 +2,7 @@
 
 #include "LdrState.h"
 #include "LdrBase.h"
+#include "StateDecider.h"
 
 #include "Streaming.h"
 
@@ -19,6 +20,7 @@ protected:
   int lastValue = -1;
   LdrState state;
   int threshold = -1;
+  StateDecider * stateDecider;
 
 public:
   void create(AutoLdrSpotDetectors<LDRT> * parent, int sensorPin)

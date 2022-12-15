@@ -8,8 +8,6 @@
 
 class AdjustingDetectors : public AutoLdrSpotDetectors<AdjustingLDR>
 {
-  StateDecider::Factory const & deciderFactory;
-
   int thresholdLevel;
 
 public:
@@ -23,6 +21,5 @@ public:
 
   int getThresholdLevel() const { return thresholdLevel; }
 
-  void setup();
   virtual void update() override;
 };

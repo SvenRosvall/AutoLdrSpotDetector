@@ -2,6 +2,7 @@
 
 #include "AutoLdrSpotDetectors.h"
 #include "MovingAverageLDR.h"
+#include "InstantStateDecider.h"
 
 class MovingAverageDetectors : public AutoLdrSpotDetectors<MovingAverageLDR>
 {
@@ -10,7 +11,10 @@ class MovingAverageDetectors : public AutoLdrSpotDetectors<MovingAverageLDR>
   float movingAverageP = 0.1;
 
 public:
-  using AutoLdrSpotDetectors::AutoLdrSpotDetectors;
+  MovingAverageDetectors(SensorChangeAction & action,
+                         const std::initializer_list<uint8_t> & il)
+    : AutoLdrSpotDetectors(action, il, createInstantStateDeciderFactory())
+  {}
 
   void setThresholdLevel(int l) { this->thresholdLevel = l; }
   int getThresholdLevel() const { return thresholdLevel; }

@@ -51,9 +51,11 @@ void AutoLdrSpotDetectors<LDRT>::changeState(LdrState fromState, LdrState toStat
 
 template<class LDRT>
 AutoLdrSpotDetectors<LDRT>::AutoLdrSpotDetectors(SensorChangeAction & action,
-                                           const std::initializer_list<uint8_t> & il)
+                                           const std::initializer_list<uint8_t> & il,
+                                           StateDecider::Factory const & deciderFactory)
   : action(action)
   , ldrCount(il.size())
+  , deciderFactory(deciderFactory)
 {
   ldrs = new LDRT[ldrCount];
   
@@ -68,6 +70,10 @@ template<class LDRT>
 void AutoLdrSpotDetectors<LDRT>::setup()
 {
   allLdrs([](LDRT & ldr) { ldr.setup(); });
+  for (unsigned int i = 0 ; i < ldrCount ; ++i)
+  {
+    ldrs[i].stateDecider = deciderFactory.create(ldrs[i]);
+  }
 }
 
 template<class LDRT>

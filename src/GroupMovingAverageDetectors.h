@@ -16,8 +16,6 @@ class GroupMovingAverageDetectors : public AutoLdrSpotDetectors<GroupMovingAvera
   // Calculated values
   float avgOfDiffs;
 
-  StateDecider::Factory const & deciderFactory;
-
   float calculateAvgOfDiffs() const;
 
 public:
@@ -44,7 +42,6 @@ public:
     return avgOfDiffs;
   }
 
-  void setup();
   virtual void update() override;
 
   // Called from GroupMovingAverageLDR

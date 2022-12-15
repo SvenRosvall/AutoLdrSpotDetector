@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "LdrState.h"
+#include "StateDecider.h"
 
 template <class LDRT, class DetectorT>
 class LDR;
@@ -26,11 +27,12 @@ protected:
   SensorChangeAction & action;
   unsigned int ldrCount;
   LDRT * ldrs;
+  StateDecider::Factory const & deciderFactory;
 
   void changeState(LdrState fromState, LdrState toState);
 
 public:
-  AutoLdrSpotDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il);
+  AutoLdrSpotDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il, StateDecider::Factory const & deciderFactory);
 
   void setup();
   virtual void update() = 0;
