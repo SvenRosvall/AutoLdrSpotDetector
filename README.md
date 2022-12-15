@@ -38,8 +38,7 @@ The Arduino documentation says the pullup resistance shall be 20-50kΩ.
 
 LDR Types
 ---------
-
-| Model | Light Resistance (kOhm) | Dark Resistance (kOhm) | Arduino light level | Arduino dark level |
+| Model | Light Resistance<br/>(kOhm) | Dark Resistance<br/>(kOhm) | Arduino<br/>bright level | Arduino<br/>dark level |
 | ----- | ---: | ---: | ---: | ---: |
 | 5506 |  2-5   |  200 |  23 | 400 |
 | 5516 |  5-10  |  500 | 26 | 650 | 
@@ -66,21 +65,24 @@ The example sketch [DemoWitLEDs.ino](examples/DemoWithLEDs/DemoWithLEDs.ino)
 is prepared for easy selection of algorithm.
 
 The currently available algorithms are:
-* [Simple Threshold](ThresholdDesign.md) implements a simple threshold.
+* [Simple Threshold](docs/ThresholdDesign.md) implements a simple threshold.
   The LDR is considered covered when the read value exceeds a set threshold value.
   This algorithm is used for testing the hardware and as a reference
   implementation to show what can be achieved with LDR detectors.
-* [Adjusting Threshold](AdjustingThresholdDesign.md) adjusts the threshold
+* [Adjusting Threshold](docs/AdjustingThresholdDesign.md) adjusts the threshold
   for slow changes to ambient light.
   This algorithm is based on Julian Coles' LDR detectors.
-* [Moving Average](MovingAverageDesign.md) implements a self adjusting 
+* [Moving Average](docs/MovingAverageDesign.md) implements a self adjusting 
   algorithm where a threshold is set based on an average value read from
   each LDR.
-* [Group Moving Average](GroupMovingAverageDesign.md) is a variation
+* [Group Moving Average](docs/GroupMovingAverageDesign.md) is a variation
   where a moving average is kept of the recent difference between the last value
   and the moving average value.
   The LDR is adjusted with this average diff from all LDRs. The own
   LDR diff is weighted higher.
+
+See also [Software Design](docs/Design.md) for details on how the code of 
+this project is organized.
 
 Timing of A/D conversion
 ------------------------
@@ -132,6 +134,10 @@ It will need some tweaking and fix the following problems:
 - 2 LDRs covered. Turn off room light. All LEDs go on.
   - Check condition. Need to adjust count.
 - LDR sometimes does not turn off LED when opened.
+  Seems to happen with flickering lights such as flourescent light tubes.
+  Analysis shows that the read LDR value fluctuates vividly which means that when
+  an LDR is opened up some samples exceed the threshold. 
+  This then cancels the current transition to open state.
 - Threshold value can be tricky. Say that the room gets a 
   bit darker so that only 3 LDRs trigger. Then because the
   other LDRs are not triggered, there is no consensus, and the 
