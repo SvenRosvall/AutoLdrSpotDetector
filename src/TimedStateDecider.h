@@ -1,8 +1,9 @@
 #pragma once
 
 #include "StateDecider.h"
-#include "LdrBase.h"
-#include "LdrState.h"
+
+class LdrBase;
+enum LdrState;
 
 #include <Arduino.h>
 
@@ -13,16 +14,10 @@ public:
 
 private:
   Factory const & factory;
-  LdrBase const & ldr;
   LdrState state;
   unsigned long timer = millis() + 200;
 
-  TimedStateDecider(Factory const & factory, LdrBase const & ldr)
-    : factory(factory)
-    , ldr(ldr)
-  {
-    state = ldr.getState();
-  }
+  TimedStateDecider(Factory const & factory, LdrBase const & ldr);
 
 public:
   virtual LdrState decide() override;

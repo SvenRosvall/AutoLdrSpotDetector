@@ -1,4 +1,12 @@
 #include "TimedStateDecider.h"
+#include "LdrBase.h"
+
+TimedStateDecider::TimedStateDecider(Factory const & factory, LdrBase const & ldr)
+  : StateDecider(ldr)
+  , factory(factory)
+{
+  state = ldr.getState();
+}
 
 LdrState TimedStateDecider::decide()
 {

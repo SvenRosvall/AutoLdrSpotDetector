@@ -90,5 +90,5 @@ testThresholdDetectors.o: testThresholdDetectors.cpp Arduino.hpp \
  ../src/InstantStateDecider.h testThresholdDetectors.h
 testTimedStateDecider.o: testTimedStateDecider.cpp Arduino.hpp \
  ArduinoMock.hpp TestTools.hpp ../src/TimedStateDecider.h \
- ../src/StateDecider.h ../src/LdrState.h ../src/LdrBase.h Arduino.h \
- Arduino.hpp
+ ../src/StateDecider.h ../src/LdrState.h Arduino.h Arduino.hpp \
+ ../src/LdrBase.h
