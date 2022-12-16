@@ -5,6 +5,9 @@ The detector class consists of a base class that manages the set of connected LD
 one child class for each detector algorithm.
 The LDR class also consists of a base class that holds information about the LDR and
 one child class for each detector algorithm that holds data needed for that algorithm.
+There is also a StateDecider class that decides when an LDR shall change state.
+The StateDecider class is a base class and a number of child classes implement different
+decider algorithms.
 
 A class diagram is shown below where the base classes are shown at the top and child
 classes for one of the detector algorithms below.
@@ -62,7 +65,7 @@ The LDR class defines these key methods:
 * ```readValue()``` : reads the LDR value from the connected pin. This is virtual so that 
   child classes can do any specific processing.
 
-## Child classes
+## Algorithm classes
 The child classes of AutoLdrSpotDetectors and LDR are described in the pages that describe 
 the different detector algorithms: 
 * [Simple Threshold](ThresholdDesign.md) implements a simple threshold.
@@ -80,3 +83,20 @@ the different detector algorithms:
   and the moving average value.
   The LDR is adjusted with this average diff from all LDRs. The own
   LDR diff is weighted higher.
+
+## StateDecider class
+The concrete state decider implements the algorithms for deciding when an LDR
+shall change state.
+There is one StateDecider object for each LDR.
+The StateDecider object is created during the setup phase by a factory object
+owned by the specific detector algorithm.
+
+There are a few state decider algorithms:
+* InstantStateDecider : Changes state of the LDR as soon as the read value 
+  passes the threshold of the LDR.
+* TimedStateDecider : Changes state of the LDR when the read value has stayed
+  above/below the threshold for a given time period.
+
+A state decider factory can be provided when a detector algorithm is created.
+If no such factory is provided the detector algorithm uses a default factory 
+that is chosen to suit that detector algorithm.

@@ -27,8 +27,7 @@ either as a candidate for covered or for getting uncovered.
 If the LDR value stays at this side of the threshold for a given time then the
 LDR is changed to a new state.
 
-The LDR value must stay above/below the threshold for a given
-time to trigger a state change.
+The default state decider algorithm is the TimedStateDecider.
 
 ## GroupMovingAverageDetectors Class
 In addition to fields defined in [AutoLdrSpotDetectors class](Design.md#autoldrspotdetectors-class)

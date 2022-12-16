@@ -7,7 +7,7 @@ High Level Design
 Every 200ms the threshold is incremented if the read LDR value is higher than the threshold
 and the threshold is decremented if the LDR value is lower.
 
-The LDR changes state if the LDR value is above/lower than the current threshold for 500ms.
+The default state decider algorithm is the TimedStateDecider.
 
 ## AdjustingDetectors class
 In addition to fields defined in [AutoLdrSpotDetectors class](Design.md#autoldrspotdetectors-class)
