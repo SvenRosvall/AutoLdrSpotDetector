@@ -17,6 +17,9 @@ public:
   virtual LdrState decide() = 0;
   virtual void setState(LdrState state) { };
 
+  virtual Print & printTitleDetailed(Print & p) const { return p; }
+  virtual Print & printValueDetailed(Print & p) const { return p; }
+
   class Factory
   {
   public:

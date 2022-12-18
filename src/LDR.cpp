@@ -60,6 +60,7 @@ template<class LDRT, class DetectorT>
 Print & LDR<LDRT, DetectorT>::printTitleDetailed(Print & p) const
 {
   p << " valA" << sensorPin-A0 << " thresholdA" << sensorPin-A0 << " stateA" << sensorPin-A0;
+  stateDecider->printTitleDetailed(p);
   return p;
 }
 
@@ -67,6 +68,7 @@ template<class LDRT, class DetectorT>
 Print & LDR<LDRT, DetectorT>::printValueDetailed(Print & p) const
 {
   p << " " << lastValue << " " << threshold << " " << state;
+  stateDecider->printValueDetailed(p);
   return p;
 }
 

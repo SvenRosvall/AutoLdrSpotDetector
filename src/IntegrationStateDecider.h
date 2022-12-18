@@ -27,6 +27,9 @@ public:
     this->state = state;
   }
 
+  virtual Print & printTitleDetailed(Print & p) const;
+  virtual Print & printValueDetailed(Print & p) const;
+
   class Factory : public StateDecider::Factory
   {
     // TODO: Possible parameters for scaling how fast the intDiff rises/falls.

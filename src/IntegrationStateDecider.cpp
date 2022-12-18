@@ -32,3 +32,15 @@ LdrState IntegrationStateDecider::decide()
     return ldr.getState();
   }
 }
+
+Print & IntegrationStateDecider::printTitleDetailed(Print & p) const
+{
+  p << " intDiff";
+  return p;
+}
+
+Print & IntegrationStateDecider::printValueDetailed(Print & p) const
+{
+  p << " " << integratedDiff;
+  return p;
+}
