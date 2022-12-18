@@ -21,6 +21,7 @@ SRC_OBJECTS=AutoLdrSpotDetectors.o \
     GroupMovingAverageLDR.o \
     InstantStateDecider.o \
     TimedStateDecider.o \
+    IntegrationStateDecider.o \
     Helper.o
 
 srcObjects : $(SRC_OBJECTS)
@@ -29,6 +30,7 @@ testAll : ${SRC_OBJECTS} \
     testAll.o \
     testInstantStateDecider.o \
     testTimedStateDecider.o \
+    testIntegrationStateDecider.o \
     testThresholdDetectors.o \
     testAdjustingDetectors.o \
     testMovingAverageDetectors.o \
@@ -83,6 +85,9 @@ InstantStateDecider.o : ../src/InstantStateDecider.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 TimedStateDecider.o : ../src/TimedStateDecider.cpp
+	$(CC) $(CPPFLAGS) -c $<
+
+IntegrationStateDecider.o : ../src/IntegrationStateDecider.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
 Helper.o : ../src/Helper.cpp

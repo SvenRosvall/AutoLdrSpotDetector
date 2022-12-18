@@ -54,7 +54,8 @@ testAdjustingDetectors.o: testAdjustingDetectors.cpp Arduino.hpp \
 testAll.o: testAll.cpp testArduino.hpp testThresholdDetectors.h \
  testAdjustingDetectors.h testMovingAverageDetectors.h \
  testGroupMovingAverageDetectors.h testGroupMovingAverageLDR.h \
- testInstantStateDecider.h testTimedStateDecider.h
+ testInstantStateDecider.h testTimedStateDecider.h \
+ testIntegrationStateDecider.h
 testArduino.o: testArduino.cpp Arduino.hpp TestTools.hpp
 testGroupMovingAverageDetectors.o: testGroupMovingAverageDetectors.cpp \
  Arduino.hpp ArduinoMock.hpp TestTools.hpp \
@@ -74,6 +75,10 @@ testGroupMovingAverageLDR.o: testGroupMovingAverageLDR.cpp Arduino.hpp \
 testInstantStateDecider.o: testInstantStateDecider.cpp Arduino.hpp \
  ArduinoMock.hpp TestTools.hpp ../src/InstantStateDecider.h \
  ../src/StateDecider.h ../src/LdrState.h ../src/LdrBase.h
+testIntegrationStateDecider.o: testIntegrationStateDecider.cpp \
+ Arduino.hpp ArduinoMock.hpp TestTools.hpp \
+ ../src/IntegrationStateDecider.h ../src/StateDecider.h ../src/LdrState.h \
+ Arduino.h Arduino.hpp ../src/LdrBase.h
 testMovingAverageDetectors.o: testMovingAverageDetectors.cpp Arduino.hpp \
  ArduinoMock.hpp TestTools.hpp ../src/MovingAverageDetectors.h \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \

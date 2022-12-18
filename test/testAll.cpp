@@ -9,11 +9,13 @@
 #include "testGroupMovingAverageLDR.h"
 #include "testInstantStateDecider.h"
 #include "testTimedStateDecider.h"
+#include "testIntegrationStateDecider.h"
 
 std::map<std::string, void (*)()> suites = {
   {"Arduino", testArduino},
   {"InstantStateDecider", testInstantStateDecider},
   {"TimedStateDecider", testTimedStateDecider},
+  {"IntegrationStateDecider", testIntegrationStateDecider},
   {"ThresholdDetectors", testThresholdDetectors},
   {"AdjustingDetectors", testAdjustingDetectors},
   {"MovingAverageDetectors", testMovingAverageDetectors},

@@ -2,7 +2,8 @@
 //#define THRESHOLD_DETECTORS
 //#define ADJUSTING_DETECTORS
 //#define MOVING_AVERAGE_DETECTORS
-#define GROUP_MOVING_AVERAGE_DETECTORS
+//#define GROUP_MOVING_AVERAGE_DETECTORS
+#define GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING
 
 // Choose what set of output is wanted.
 //#define PLOT_ALL_VALUES
@@ -20,7 +21,7 @@ const float P = 0.050f;  // for moving average
 const int THRESHOLD_LEVEL = 150;
 // 50 is too low. Will trigger on a train on the adjacent track.
 #endif
-#ifdef GROUP_MOVING_AVERAGE_DETECTORS
+#if defined(GROUP_MOVING_AVERAGE_DETECTORS) || defined(GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING)
 const float P = 0.050f;  // for moving average
 const float Q = 0.2f;  // for moving diff average
 const float SelfDiffRatio = 0.2f; // How much to weigh in own LDR vs all LDRs
@@ -44,9 +45,13 @@ const int CHANGE_INTERVAL = 500; // ms
 #ifdef MOVING_AVERAGE_DETECTORS
 #include <MovingAverageDetectors.h>
 #endif
-#ifdef GROUP_MOVING_AVERAGE_DETECTORS
+#if defined(GROUP_MOVING_AVERAGE_DETECTORS) || defined(GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING)
 #include <GroupMovingAverageDetectors.h>
 #endif
+#if defined(GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING)
+#include <IntegrationStateDecider.h>
+#endif
+
 #include <initializer_list.h>
 #include "LedChanger.h"
 
@@ -68,6 +73,10 @@ MovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs));
 TimedStateDecider::Factory stateDeciderFactory;
 GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), stateDeciderFactory);
 #endif
+#ifdef GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING
+IntegrationStateDecider::Factory stateDeciderFactory;
+GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), stateDeciderFactory);
+#endif
 
 
 void setup() {
@@ -86,6 +95,12 @@ void setup() {
 
   stateDeciderFactory.setChangeCoverInterval(CHANGE_INTERVAL);
   stateDeciderFactory.setChangeOpenInterval(CHANGE_INTERVAL);
+#endif
+#ifdef GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING
+  detectors.setMovingAverageP(P);
+  detectors.setMovingDiffAverageP(Q);
+  detectors.setSelfDiffRatio(SelfDiffRatio);
+  detectors.setThresholdLevel(THRESHOLD_LEVEL);
 #endif
   detectors.setup();
 
