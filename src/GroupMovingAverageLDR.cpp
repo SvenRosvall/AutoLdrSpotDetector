@@ -46,6 +46,12 @@ void GroupMovingAverageLDR::updateMovingAverage()
 #endif
 }
 
+void GroupMovingAverageLDR::resetMovingAverage()
+{
+  movingAverage = lastValue;
+  movingDiffAverage = 0;
+}
+
 void GroupMovingAverageLDR::updateThreshold()
 {
   // Threshold shall be set a bit below or above the average level.
@@ -89,6 +95,7 @@ void GroupMovingAverageLDR::updateState()
       // Do the state transition.
       state = newState;
       parent->onChange(this, state);
+      resetMovingAverage();
       updateThreshold();
     }
   }

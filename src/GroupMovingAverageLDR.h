@@ -16,6 +16,7 @@ private:
 private:
   void updateThreshold();
   void updateMovingAverage();
+  void resetMovingAverage();
 
 public:
   float getMovingAverage() const { return movingAverage; }
