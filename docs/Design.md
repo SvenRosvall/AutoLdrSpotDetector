@@ -96,6 +96,9 @@ There are a few state decider algorithms:
   passes the threshold of the LDR.
 * TimedStateDecider : Changes state of the LDR when the read value has stayed
   above/below the threshold for a given time period.
+* IntegrationStateDecider : Keeps a counter that is incremented by the difference
+  between the LDR value and threshold. 
+  When this counter reaches a limit the LDR state is changed.
 
 A state decider factory can be provided when a detector algorithm is created.
 If no such factory is provided the detector algorithm uses a default factory 
