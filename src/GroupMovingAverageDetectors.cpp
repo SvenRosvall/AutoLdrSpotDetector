@@ -36,7 +36,7 @@ void GroupMovingAverageDetectors::update()
 
 bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr, LdrState checkedState)
 {
-  const int diffChangeThreshold = 50;
+  const int diffChangeThreshold = 100;
 
   // Check the trend (avgDiff) for the other LDRs.
   int sumOfDiffs = 0;

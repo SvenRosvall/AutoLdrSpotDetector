@@ -27,7 +27,7 @@ void GroupMovingAverageLDR::readValue()
 
 void GroupMovingAverageLDR::updateMovingAverage()
 {
-#if 0
+#if 1
   // This didn't work well. It can make the threshold overshoot the value
   // and thus cause a false state change.
   // TODO: Review this idea if it can be tuned better or shall be scrapped.
@@ -40,7 +40,7 @@ void GroupMovingAverageLDR::updateMovingAverage()
   float diffToApply = R * movingDiffAverage + (1 - R) * allLdrMovingDiffAverage;
   movingAverage += parent->getMovingAverageP() * diffToApply;
 #else
-  // Use exponential smooting for the average.
+  // Use exponential smoothing for the average.
   float P = parent->getMovingAverageP();
   movingAverage = P * lastValue + (1 - P) * movingAverage;
 #endif
@@ -50,6 +50,8 @@ void GroupMovingAverageLDR::resetMovingAverage()
 {
   movingAverage = lastValue;
   movingDiffAverage = 0;
+    // TODO REVIEW: moving diff average is used when deciding if other LDRs are also changing.
+    // Resetting this here cancels out the trend for these other LDRs.
 }
 
 void GroupMovingAverageLDR::updateThreshold()
