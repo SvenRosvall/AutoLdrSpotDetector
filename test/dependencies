@@ -37,7 +37,7 @@ sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../src/StateDecider.h ../src/AutoLdrSpotDetectors.cpp \
  ../src/GroupMovingAverageLDR.h ../src/LDR.h ../src/LdrBase.h \
  ../src/LDR.cpp ../src/TimedStateDecider.h \
- ../examples/DemoWithLEDs/LedChanger.h
+ ../src/IntegrationStateDecider.h ../examples/DemoWithLEDs/LedChanger.h
 sketchMonitorLDRs.o: sketchMonitorLDRs.cpp Arduino.hpp \
  ../examples/MonitorLDRs/MonitorLDRs.ino ../src/AdjustingDetectors.h \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \

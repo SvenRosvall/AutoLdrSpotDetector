@@ -72,10 +72,10 @@ namespace
     ldr.lastValue = 800;
     assertEquals(OPEN, decider->decide());
     assertEquals(OPEN, decider->decide());
-    assertEquals(OPEN, decider->decide());
-    assertEquals(OPEN, decider->decide());
-    assertEquals(OPEN, decider->decide());
-    assertEquals(OPEN, decider->decide());
+    //assertEquals(OPEN, decider->decide());
+    //assertEquals(OPEN, decider->decide());
+    //assertEquals(OPEN, decider->decide());
+    //assertEquals(OPEN, decider->decide());
     assertEquals(COVERED, decider->decide());
   }
 
@@ -100,7 +100,7 @@ namespace
     assertEquals(COVERED, decider->decide());
     assertEquals(COVERED, decider->decide());
     assertEquals(COVERED, decider->decide());
-    assertEquals(COVERED, decider->decide());
+    //assertEquals(COVERED, decider->decide());
     assertEquals(OPEN, decider->decide());
   }
 }
