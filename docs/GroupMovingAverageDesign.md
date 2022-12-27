@@ -10,10 +10,14 @@ The main difference is that the moving average is calculated
 using a moving average of the difference of the last read value
 and the moving average.
 
-```AvgDiff = (Value-AvgDiff) * P + AvgDiff * (1-P)```
+First for each LDR we calculate the moving average of the difference 
+between the read value and the moving average of the value. 
+
+```AvgDiff = (Value-Avg) * P + AvgDiff * (1-P)```
 
 We then weigh the diff for the same LDR against all diffs for
-all the other LDRs:
+all the other LDRs. The parameter R controls how much of the diff comes
+the current LDR vs all the LDRs combined.
 
 ```Diff = R * AvgDiff + (1-R) * avg(all AvgDiffs)```
 
