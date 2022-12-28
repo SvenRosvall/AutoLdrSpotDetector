@@ -28,17 +28,17 @@ void GroupMovingAverageLDR::readValue()
 void GroupMovingAverageLDR::updateMovingAverage()
 {
 #if 1
-  // This didn't work well. It can make the threshold overshoot the value
-  // and thus cause a false state change.
-  // TODO: Review this idea if it can be tuned better or shall be scrapped.
+  // Use the difference value of all LDRs to determine new moving average.
+  // The other LDRs are used here to react quicker for changes in ambient light.
 
-  // add up all movingDiffAverage for all LDRs
-  float allLdrMovingDiffAverage = parent->getAvgOfDiffs();
+  // add up all diffs for all LDRs
+  float allLdrDiffAverage = parent->getAvgOfDiffs();
 
   // - Apply a portion of the sum of diffs and a portion of diff for this LDR.
   float R = parent->getSelfDiffRatio();
-  float diffToApply = R * movingDiffAverage + (1 - R) * allLdrMovingDiffAverage;
-  movingAverage += parent->getMovingAverageP() * diffToApply;
+  float P = parent->getMovingAverageP();
+  float diffToApply = R * (lastValue - movingAverage) + (1 - R) * allLdrDiffAverage;
+  movingAverage += P * diffToApply;
 #else
   // Use exponential smoothing for the average.
   float P = parent->getMovingAverageP();
@@ -49,9 +49,6 @@ void GroupMovingAverageLDR::updateMovingAverage()
 void GroupMovingAverageLDR::resetMovingAverage()
 {
   movingAverage = lastValue;
-  movingDiffAverage = 0;
-    // TODO REVIEW: moving diff average is used when deciding if other LDRs are also changing.
-    // Resetting this here cancels out the trend for these other LDRs.
 }
 
 void GroupMovingAverageLDR::updateThreshold()

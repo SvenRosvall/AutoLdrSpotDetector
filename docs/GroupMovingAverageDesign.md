@@ -7,23 +7,28 @@ High Level Design
 
 Similar to Moving Average, the LDR is read for a value.
 The main difference is that the moving average is calculated
-using a moving average of the difference of the last read value
-and the moving average.
+using the difference of the last read value and the moving 
+average for all LDRs to react quicker to changes to the
+ambient light.
 
-First for each LDR we calculate the moving average of the difference 
-between the read value and the moving average of the value. 
-
-```AvgDiff = (Value-Avg) * P + AvgDiff * (1-P)```
+First we calculate the difference of the last read value and 
+the moving average for all LDRs.
 
 We then weigh the diff for the same LDR against all diffs for
 all the other LDRs. The parameter R controls how much of the diff comes
 the current LDR vs all the LDRs combined.
 
-```Diff = R * AvgDiff + (1-R) * avg(all AvgDiffs)```
+```DiffToApply = R * ThisDiff + (1-R) * avg(all Diffs)```
 
 This diff is then applied to the moving average for this LDR:
 
-```Avg = Avg + P*Diff```
+```Avg = Avg + P * DiffToApply```
+
+A moving average of the difference between the read value and the
+moving average of the value is calculated for each LDR.
+This is used for determining the trend of the LDRs
+
+```AvgDiff = (Value-Avg) * P + AvgDiff * (1-P)```
 
 A threshold is set above or below this average level.
 When the LDR value crosses the threshold we treat the LDR as changing,
@@ -32,6 +37,11 @@ If the LDR value stays at this side of the threshold for a given time then the
 LDR is changed to a new state.
 
 The default state decider algorithm is the TimedStateDecider.
+
+When the state decider decides that the state has changed,
+the average of movingDiffAverage for all the LDRs is checked against
+a threshold (100) to determine if the state change is due to a
+change in the ambient light.
 
 ## GroupMovingAverageDetectors Class
 In addition to fields defined in [AutoLdrSpotDetectors class](Design.md#autoldrspotdetectors-class)

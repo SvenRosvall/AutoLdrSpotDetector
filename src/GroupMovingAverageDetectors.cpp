@@ -22,7 +22,7 @@ float GroupMovingAverageDetectors::calculateAvgOfDiffs() const
   float sumOfDiffs = 0;
   for (unsigned int i=0 ; i < ldrCount ; ++i)
   {
-    sumOfDiffs += ldrs[i].movingDiffAverage;
+    sumOfDiffs += ldrs[i].lastValue - ldrs[i].movingAverage;
   }
   return sumOfDiffs / ldrCount;
 }
