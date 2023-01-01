@@ -23,7 +23,7 @@ const int THRESHOLD_LEVEL = 150;
 #endif
 #if defined(GROUP_MOVING_AVERAGE_DETECTORS) || defined(GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING)
 const float P = 0.20f;  // for moving average
-const float Q = 0.2f;  // for moving diff average
+const float Q = 0.1f;  // for moving diff average
 const float SelfDiffRatio = 0.2f; // How much to weigh in own LDR vs all LDRs
 const int THRESHOLD_LEVEL = 150;
 const int CHANGE_INTERVAL = 500; // ms

@@ -22,7 +22,10 @@ void GroupMovingAverageLDR::readValue()
 {
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::readValue();
   float P = parent->getMovingDiffAverageP();
-  movingDiffAverage = P * (lastValue - movingAverage) + (1 - P) * movingDiffAverage;
+  const float S = parent->getThresholdScaling(); // How much to take scaling into account. 1.0 => totally. 0.0 => Use threshold level as is.
+  float scale = (1-S) + S * (1024 - movingAverage) / 1024.0f;
+  float scaledDiff = (lastValue - movingAverage) / scale;
+  movingDiffAverage = P * scaledDiff + (1 - P) * movingDiffAverage;
 }
 
 void GroupMovingAverageLDR::updateMovingAverage()
