@@ -12,11 +12,13 @@ private:
   float movingAverage = -1;
   float movingDiffAverage = 0;
   unsigned long timer;
+  int avgOfOtherDiffs = 0;
 
 private:
   void updateThreshold();
   void updateMovingAverage();
   void resetMovingAverage();
+  void setAvgOfOtherDiffs(int d) { avgOfOtherDiffs = d; }
 
 public:
   float getMovingAverage() const { return movingAverage; }

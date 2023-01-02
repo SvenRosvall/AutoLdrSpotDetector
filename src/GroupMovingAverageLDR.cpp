@@ -106,13 +106,13 @@ void GroupMovingAverageLDR::updateState()
 Print & GroupMovingAverageLDR::printTitleDetailed(Print & p) const
 {
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::printTitleDetailed(p);
-  p << " avgA" << sensorPin-A0 << " avgDiffA" << sensorPin-A0;
+  p << " avgA" << sensorPin-A0 << " avgDiffA" << sensorPin-A0 << " sumDiffAll";
   return p;
 }
 
 Print & GroupMovingAverageLDR::printValueDetailed(Print & p) const
 {
   LDR<GroupMovingAverageLDR, GroupMovingAverageDetectors>::printValueDetailed(p);
-  p << " " << movingAverage << " " << movingDiffAverage;
+  p << " " << movingAverage << " " << movingDiffAverage << " " << avgOfOtherDiffs;
   return p;
 }
