@@ -36,7 +36,9 @@ void GroupMovingAverageDetectors::update()
 
 bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr, LdrState checkedState)
 {
-  const int diffChangeThreshold = 50;
+  const int diffChangeThreshold = 100;
+
+  const float S = getThresholdScaling(); // How much to take scaling into account. 1.0 => totally. 0.0 => Use value level as is.
 
   // Check the trend (avgDiff) for the other LDRs.
   int sumOfDiffs = 0;
@@ -44,8 +46,12 @@ bool GroupMovingAverageDetectors::checkOtherLDRs(GroupMovingAverageLDR * thisLdr
   {
     if (ldrs[i].sensorPin == thisLdr->sensorPin)
       continue;
-    sumOfDiffs += ldrs[i].movingDiffAverage;
+
+    float scale = (1-S) + S * (1024 - ldrs[i].movingAverage) / 1024.0f;
+    sumOfDiffs += ldrs[i].movingDiffAverage / scale;
   }
+  thisLdr->setAvgOfOtherDiffs(sumOfDiffs / ((int) ldrCount - 1));
+
   DEBUG("checkOtherLdrs(this Pin=" << thisLdr->sensorPin << ", checkedState=" << checkedState
         << ") sumOfDiffs=" << sumOfDiffs << " ldrCount=" << ldrCount);
   switch (checkedState)
