@@ -11,7 +11,7 @@
 //#define PRINT_DEBUG
 
 // Tuning parameters
-const int INTERVAL = 100; // ms
+const int INTERVAL = 100; // ms - Must be more than 10 ms to avoid interference with mains frequency.
 #ifdef THRESHOLD_DETECTORS
 const int THRESHOLD = 850; // good level for testing indoors without sun shining through window.
 #endif
