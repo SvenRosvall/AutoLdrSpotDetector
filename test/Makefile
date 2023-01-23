@@ -100,10 +100,7 @@ depend :
 include dependencies
 
 clean :
-	-rm *.o *.exe AutoLdrSpotDetectors.cpp \
-		ThresholdDetectors.cpp AdjustingDetectors.cpp \
-		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp \
-		SimplePinReader.cpp BucketPinReader.cpp
+	-rm *.o *.exe
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \
