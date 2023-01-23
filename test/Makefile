@@ -22,6 +22,8 @@ SRC_OBJECTS=AutoLdrSpotDetectors.o \
     InstantStateDecider.o \
     TimedStateDecider.o \
     IntegrationStateDecider.o \
+    SimplePinReader.o \
+    BucketPinReader.o \
     Helper.o
 
 srcObjects : $(SRC_OBJECTS)
@@ -66,6 +68,16 @@ GroupMovingAverageDetectors.cpp : ../src/GroupMovingAverageDetectors.cpp
 	echo '#line 1 "../src/GroupMovingAverageDetectors.cpp"' >> $@
 	cat $< >> $@
 
+SimplePinReader.cpp : ../src/SimplePinReader.cpp
+	echo '#include "Arduino.hpp"' > $@
+	echo '#line 1 "../src/SimplePinReader.cpp"' >> $@
+	cat $< >> $@
+
+BucketPinReader.cpp : ../src/BucketPinReader.cpp
+	echo '#include "Arduino.hpp"' > $@
+	echo '#line 1 "../src/BucketPinReader.cpp"' >> $@
+	cat $< >> $@
+
 LDR.o : ../src/LDR.cpp
 	$(CC) $(CPPFLAGS) -c $<
 
@@ -104,7 +116,8 @@ include dependencies
 clean :
 	-rm *.o *.exe AutoLdrSpotDetectors.cpp \
 		ThresholdDetectors.cpp AdjustingDetectors.cpp \
-		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp
+		MovingAverageDetectors.cpp GroupMovingAverageDetectors.cpp \
+		SimplePinReader.cpp BucketPinReader.cpp
 
 LIBDIR=../../libraries/AutoLdrSpotDetectors
 lib : $(wildcard $(LIBDIR)/src/*.cpp) \

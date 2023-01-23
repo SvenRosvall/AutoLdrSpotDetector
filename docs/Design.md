@@ -103,3 +103,20 @@ There are a few state decider algorithms:
 A state decider factory can be provided when a detector algorithm is created.
 If no such factory is provided the detector algorithm uses a default factory 
 that is chosen to suit that detector algorithm.
+
+## PinReader class
+This is a polymorphic class that separates the code for reading analogue values
+from an input pin. 
+
+There are two concrete pin reader classes:
+* SimplePinReader : Simply uses the ```analogRead()``` library function to 
+  read the analogue value.
+* BucketPinReader : This is an advanced implementation that makes use of 
+  interrupts to read analogue values as fast as possible. 
+  It uses an interrupt that is triggered when an analogue to digital conversion
+  has completed. 
+  This reader then collects all the read values in a bucket for each pin so that
+  when the value for the pin is requested this reader returns the average for the
+  values in this bucket. 
+  This eliminates any jitter that may occur where the ambient light is flourescent
+  light tubes or any other type that does not have a constant flow of light.

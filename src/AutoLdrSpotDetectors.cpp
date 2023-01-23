@@ -6,6 +6,7 @@
 
 // Temporarily reverse inclusion as this contains template code.
 #include "AutoLdrSpotDetectors.h"
+#include "SimplePinReader.h"
 
 //#define PRINT_DEBUG
 #ifdef PRINT_DEBUG
@@ -53,9 +54,18 @@ template<class LDRT>
 AutoLdrSpotDetectors<LDRT>::AutoLdrSpotDetectors(SensorChangeAction & action,
                                            const std::initializer_list<uint8_t> & il,
                                            StateDecider::Factory const & deciderFactory)
+  : AutoLdrSpotDetectors(action, il, deciderFactory, createSimplePinReader())
+{}
+
+template<class LDRT>
+AutoLdrSpotDetectors<LDRT>::AutoLdrSpotDetectors(SensorChangeAction & action,
+                                                 const std::initializer_list<uint8_t> & il,
+                                                 StateDecider::Factory const & deciderFactory,
+                                                 PinReader & pinReader)
   : action(action)
   , ldrCount(il.size())
   , deciderFactory(deciderFactory)
+  , pinReader(pinReader)
 {
   ldrs = new LDRT[ldrCount];
   
@@ -74,6 +84,7 @@ void AutoLdrSpotDetectors<LDRT>::setup()
   {
     ldrs[i].stateDecider = deciderFactory.create(ldrs[i]);
   }
+  pinReader.setup();
 }
 
 template<class LDRT>

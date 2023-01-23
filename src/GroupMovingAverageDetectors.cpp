@@ -6,6 +6,13 @@
 
 GroupMovingAverageDetectors::GroupMovingAverageDetectors(SensorChangeAction & action,
                                                          const std::initializer_list<uint8_t> & il,
+                                                         StateDecider::Factory const & deciderFactory,
+                                                         PinReader & pinReader)
+  : AutoLdrSpotDetectors(action, il, deciderFactory, pinReader)
+{
+}
+GroupMovingAverageDetectors::GroupMovingAverageDetectors(SensorChangeAction & action,
+                                                         const std::initializer_list<uint8_t> & il,
                                                          StateDecider::Factory const & deciderFactory)
   : AutoLdrSpotDetectors(action, il, deciderFactory)
 {

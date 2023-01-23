@@ -82,3 +82,19 @@ void Print::println(const char *)
 }
 
 struct Print Serial;
+
+// Hardware values used by ADC free running mode.
+uint8_t DIDR0;
+uint8_t ADMUX;
+uint8_t ADCSRA;
+uint8_t ADCSRB;
+uint8_t ADCL;
+uint8_t ADCH;
+
+void sei()
+{
+}
+
+void bitWrite(int, int, int)
+{
+}

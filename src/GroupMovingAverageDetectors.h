@@ -19,8 +19,15 @@ class GroupMovingAverageDetectors : public AutoLdrSpotDetectors<GroupMovingAvera
   float calculateAvgOfDiffs() const;
 
 public:
-  GroupMovingAverageDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il, StateDecider::Factory const & deciderFactory);
-  GroupMovingAverageDetectors(SensorChangeAction & action, const std::initializer_list<uint8_t> & il);
+  GroupMovingAverageDetectors(SensorChangeAction & action,
+                              const std::initializer_list<uint8_t> & il,
+                              StateDecider::Factory const & deciderFactory,
+                              PinReader & pinReader);
+  GroupMovingAverageDetectors(SensorChangeAction & action,
+                              const std::initializer_list<uint8_t> & il,
+                              StateDecider::Factory const & deciderFactory);
+  GroupMovingAverageDetectors(SensorChangeAction & action,
+                              const std::initializer_list<uint8_t> & il);
 
   void setThresholdLevel(int l) { this->thresholdLevel = l; }
   int getThresholdLevel() { return thresholdLevel; }

@@ -24,7 +24,7 @@ void LDR<LDRT, DetectorT>::setup()
 template<class LDRT, class DetectorT>
 void LDR<LDRT, DetectorT>::readValue()
 {
-  lastValue = analogRead(sensorPin);
+  lastValue = parent->readValue(sensorPin);
 }
 
 template<class LDRT, class DetectorT>

@@ -38,4 +38,15 @@ struct Print
 };
 extern struct Print Serial;
 
+// Hardware values used by ADC free running mode.
+extern uint8_t DIDR0;
+extern uint8_t ADMUX;
+extern uint8_t ADCSRA;
+extern uint8_t ADCSRB;
+extern uint8_t ADCL;
+extern uint8_t ADCH;
+void sei();
+void bitWrite(int, int, int);
+class ADC_vect{} ;
+
 #endif

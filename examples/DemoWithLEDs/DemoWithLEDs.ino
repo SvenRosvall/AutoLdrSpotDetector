@@ -6,12 +6,12 @@
 #define GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING
 
 // Choose what set of output is wanted.
-//#define PLOT_ALL_VALUES
-#define PLOT_DETAILS 0
+#define PLOT_ALL_VALUES
+//#define PLOT_DETAILS 0
 //#define PRINT_DEBUG
 
 // Tuning parameters
-const int INTERVAL = 100; // ms - Must be more than 10 ms to avoid interference with mains frequency.
+const int INTERVAL = 50; // ms - Must be more than 10 ms to avoid interference with mains frequency.
 #ifdef THRESHOLD_DETECTORS
 const int THRESHOLD = 850; // good level for testing indoors without sun shining through window.
 #endif
@@ -50,6 +50,7 @@ const int CHANGE_INTERVAL = 500; // ms
 #endif
 #if defined(GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING)
 #include <IntegrationStateDecider.h>
+#include <BucketPinReader.h>
 #endif
 
 #include <initializer_list.h>
@@ -75,7 +76,7 @@ GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), state
 #endif
 #ifdef GROUP_MOVING_AVERAGE_DETECTORS_INTEGRATING
 IntegrationStateDecider::Factory stateDeciderFactory;
-GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), stateDeciderFactory);
+GroupMovingAverageDetectors detectors(ledChanger, getLdrPins(ldrLedPairs), stateDeciderFactory, createBucketPinReader());
 #endif
 
 
