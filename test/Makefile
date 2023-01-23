@@ -43,40 +43,26 @@ testAll : ${SRC_OBJECTS} \
     Streaming.o \
     TestTools.o
 
-AutoLdrSpotDetectors.cpp : ../src/AutoLdrSpotDetectors.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/AutoLdrSpotDetectors.cpp"' >> $@
-	cat $< >> $@
+AutoLdrSpotDetectors.o : ../src/AutoLdrSpotDetectors.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
-ThresholdDetectors.cpp : ../src/ThresholdDetectors.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/ThresholdDetectors.cpp"' >> $@
-	cat $< >> $@
+ThresholdDetectors.o : ../src/ThresholdDetectors.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
-AdjustingDetectors.cpp : ../src/AdjustingDetectors.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/AdjustingDetectors.cpp"' >> $@
-	cat $< >> $@
+AdjustingDetectors.o : ../src/AdjustingDetectors.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
-MovingAverageDetectors.cpp : ../src/MovingAverageDetectors.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/MovingAverageDetectors.cpp"' >> $@
-	cat $< >> $@
+MovingAverageDetectors.o : ../src/MovingAverageDetectors.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
-GroupMovingAverageDetectors.cpp : ../src/GroupMovingAverageDetectors.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/GroupMovingAverageDetectors.cpp"' >> $@
-	cat $< >> $@
+GroupMovingAverageDetectors.o : ../src/GroupMovingAverageDetectors.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
-SimplePinReader.cpp : ../src/SimplePinReader.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/SimplePinReader.cpp"' >> $@
-	cat $< >> $@
+SimplePinReader.o : ../src/SimplePinReader.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
-BucketPinReader.cpp : ../src/BucketPinReader.cpp
-	echo '#include "Arduino.hpp"' > $@
-	echo '#line 1 "../src/BucketPinReader.cpp"' >> $@
-	cat $< >> $@
+BucketPinReader.o : ../src/BucketPinReader.cpp
+	$(CC) $(CPPFLAGS) -c $<
 
 LDR.o : ../src/LDR.cpp
 	$(CC) $(CPPFLAGS) -c $<

@@ -1,40 +1,6 @@
-AdjustingDetectors.o: AdjustingDetectors.cpp Arduino.hpp \
- ../src/AdjustingDetectors.h ../src/AutoLdrSpotDetectors.h \
- ../src/initializer_list.h Arduino.h Arduino.hpp ../src/LdrState.h \
- ../src/StateDecider.h ../src/PinReader.h ../src/AutoLdrSpotDetectors.cpp \
- Streaming.h ../src/SimplePinReader.h ../src/AdjustingLDR.h ../src/LDR.h \
- ../src/LdrBase.h ../src/LDR.cpp ../src/TimedStateDecider.h
 ArduinoMock.o: ArduinoMock.cpp Arduino.hpp ArduinoMock.hpp
-AutoLdrSpotDetectors.o: AutoLdrSpotDetectors.cpp Arduino.hpp Streaming.h \
- Arduino.hpp ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h \
- Arduino.h ../src/LdrState.h ../src/StateDecider.h ../src/PinReader.h \
- ../src/AutoLdrSpotDetectors.cpp ../src/SimplePinReader.h
-BucketPinReader.o: BucketPinReader.cpp Arduino.hpp \
- ../src/BucketPinReader.h ../src/PinReader.h
-GroupMovingAverageDetectors.o: GroupMovingAverageDetectors.cpp \
- Arduino.hpp ../src/GroupMovingAverageDetectors.h \
- ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \
- Arduino.hpp ../src/LdrState.h ../src/StateDecider.h ../src/PinReader.h \
- ../src/AutoLdrSpotDetectors.cpp Streaming.h ../src/SimplePinReader.h \
- ../src/GroupMovingAverageLDR.h ../src/LDR.h ../src/LdrBase.h \
- ../src/LDR.cpp ../src/TimedStateDecider.h
-MovingAverageDetectors.o: MovingAverageDetectors.cpp Arduino.hpp \
- ../src/MovingAverageDetectors.h ../src/AutoLdrSpotDetectors.h \
- ../src/initializer_list.h Arduino.h Arduino.hpp ../src/LdrState.h \
- ../src/StateDecider.h ../src/PinReader.h ../src/AutoLdrSpotDetectors.cpp \
- Streaming.h ../src/SimplePinReader.h ../src/MovingAverageLDR.h \
- ../src/LDR.h ../src/LdrBase.h ../src/LDR.cpp \
- ../src/InstantStateDecider.h
-SimplePinReader.o: SimplePinReader.cpp Arduino.hpp \
- ../src/SimplePinReader.h ../src/PinReader.h
 Streaming.o: Streaming.cpp Streaming.h Arduino.hpp
 TestTools.o: TestTools.cpp TestTools.hpp
-ThresholdDetectors.o: ThresholdDetectors.cpp Arduino.hpp \
- ../src/ThresholdDetectors.h ../src/AutoLdrSpotDetectors.h \
- ../src/initializer_list.h Arduino.h Arduino.hpp ../src/LdrState.h \
- ../src/StateDecider.h ../src/PinReader.h ../src/AutoLdrSpotDetectors.cpp \
- Streaming.h ../src/SimplePinReader.h ../src/ThresholdLDR.h ../src/LDR.h \
- ../src/LdrBase.h ../src/LDR.cpp ../src/InstantStateDecider.h
 sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../examples/DemoWithLEDs/DemoWithLEDs.ino Streaming.h Arduino.hpp \
  ../src/GroupMovingAverageDetectors.h ../src/AutoLdrSpotDetectors.h \
@@ -42,7 +8,8 @@ sketchDemoWithLeds.o: sketchDemoWithLeds.cpp Arduino.hpp \
  ../src/StateDecider.h ../src/PinReader.h ../src/AutoLdrSpotDetectors.cpp \
  ../src/SimplePinReader.h ../src/GroupMovingAverageLDR.h ../src/LDR.h \
  ../src/LdrBase.h ../src/LDR.cpp ../src/TimedStateDecider.h \
- ../src/IntegrationStateDecider.h ../examples/DemoWithLEDs/LedChanger.h
+ ../src/IntegrationStateDecider.h ../src/BucketPinReader.h \
+ ../examples/DemoWithLEDs/LedChanger.h
 sketchMonitorLDRs.o: sketchMonitorLDRs.cpp Arduino.hpp \
  ../examples/MonitorLDRs/MonitorLDRs.ino ../src/AdjustingDetectors.h \
  ../src/AutoLdrSpotDetectors.h ../src/initializer_list.h Arduino.h \
