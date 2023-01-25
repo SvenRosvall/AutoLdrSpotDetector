@@ -2,13 +2,15 @@
 #include <Streaming.h>
 #include "BucketPinReader.h"
 
+static const uint8_t ADReference = 0x40;
+
 BucketPinReader::Bucket BucketPinReader::buckets[8];
 
 void BucketPinReader::setup()
 {
   // Description of bit fields in https://www.arnabkumardas.com/arduino-tutorial/adc-register-description/
   DIDR0 = 0x3F;            // digital inputs disabled
-  ADMUX = 0xC0;            // measuring on ADC3, use default reference
+  ADMUX = ADReference;            // measuring on ADC3, use default reference
   ADCSRA = 0x8F;           // AD-converter on, interrupt enabled, prescaler = 16
   ADCSRB = 0x40;           // AD channels MUX on, free running mode
   bitWrite(ADCSRA, 6, 1);  // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
@@ -54,13 +56,13 @@ void ADConversionInterruptServiceRouting()
   {
     // Go back to first bucket.
     bucketIx = 0;
-    ADMUX = 0xC0;
+    ADMUX = ADReference;
   }
   else
   {
     // Use next bucket.
     bucketIx++;
-    ADMUX = 0xC0 + bucketIx;
+    ADMUX = ADReference + bucketIx;
   }
   bitWrite(ADCSRA, 6, 1);  // Start the conversion by setting bit 6 (=ADSC) in ADCSRA
 }
