@@ -20,7 +20,7 @@ void BucketPinReader::setup()
 int BucketPinReader::readValue(int pin)
 {
   Bucket & bucket = buckets[pin - A0];
-  int value = bucket.sumValues / bucket.count;
+  int value = bucket.avgValue;
   //Serial << "BucketPinReader pin=" << pin << " bucket=" << pin - A0
   //       << " sumValues=" << bucket.sumValues << " count=" << bucket.count
   //       << " returned value=" << value << endl;
@@ -48,6 +48,7 @@ void ADConversionInterruptServiceRouting()
     bucket.sumValues += aval;
     bucket.count += 1;
   }
+  bucket.avgValue = bucket.sumValues / bucket.count;
 
   //  Serial << "ISR bucket=" << bucketIx << " ADMUX=" << _HEX(ADMUX) << " new value=" << aval
   //         << " count=" << bucket.count << " sumValue=" << bucket.sumValues << endl;

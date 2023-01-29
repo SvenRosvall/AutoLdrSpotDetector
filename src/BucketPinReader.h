@@ -7,7 +7,8 @@ class BucketPinReader : public PinReader
   friend void ADConversionInterruptServiceRouting();
   struct Bucket
   {
-    bool isRead = false;
+    volatile bool isRead = false;
+    volatile int avgValue = 0;
     int count = 0;
     long sumValues = 0;
   };
