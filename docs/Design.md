@@ -68,17 +68,18 @@ The LDR class defines these key methods:
 ## Algorithm classes
 The child classes of AutoLdrSpotDetectors and LDR are described in the pages that describe 
 the different detector algorithms: 
-* [Simple Threshold](ThresholdDesign.md) implements a simple threshold.
+* **[Simple Threshold](ThresholdDesign.md)** implements a simple threshold.
+  The threshold is constant and does not change with ambient light.
   The LDR is considered covered when the read value exceeds a set threshold value.
   This algorithm is used for testing the hardware and as a reference
   implementation to show what can be achieved with LDR detectors.
-* [Adjusting Threshold](AdjustingThresholdDesign.md) adjusts the threshold
+* **[Adjusting Threshold](AdjustingThresholdDesign.md)** adjusts the threshold
   for slow changes to ambient light.
   This algorithm is based on Julian Coles' LDR detectors.
-* [Moving Average](MovingAverageDesign.md) implements a self adjusting
+* **[Moving Average](MovingAverageDesign.md)** implements a self adjusting
   algorithm where a threshold is set based on an average value read from
   each LDR.
-* [Group Moving Average](GroupMovingAverageDesign.md) is a variation
+* **[Group Moving Average](GroupMovingAverageDesign.md)** is a variation
   where a moving average is kept of the recent difference between the last value
   and the moving average value.
   The LDR is adjusted with this average diff from all LDRs. The own
@@ -92,17 +93,22 @@ The StateDecider object is created during the setup phase by a factory object
 owned by the specific detector algorithm.
 
 There are a few state decider algorithms:
-* InstantStateDecider : Changes state of the LDR as soon as the read value 
+* **InstantStateDecider** : Changes state of the LDR as soon as the read value 
   passes the threshold of the LDR.
-* TimedStateDecider : Changes state of the LDR when the read value has stayed
+* **TimedStateDecider** : Changes state of the LDR when the read value has stayed
   above/below the threshold for a given time period.
-* IntegrationStateDecider : Keeps a counter that is incremented by the difference
+* **IntegrationStateDecider** : Keeps a counter that is incremented by the difference
   between the LDR value and threshold. 
   When this counter reaches a limit the LDR state is changed.
+  This is useful as the decider reacts faster on distinct changes.
 
 A state decider factory can be provided when a detector algorithm is created.
 If no such factory is provided the detector algorithm uses a default factory 
 that is chosen to suit that detector algorithm.
+
+The state decider factory may hold any configuration parameters. 
+The factory contains these rather than the decider as there is one decider per LDR
+so keeping these parameters in the factory avoids duplication.
 
 ## PinReader class
 This is a polymorphic class that separates the code for reading analogue values
